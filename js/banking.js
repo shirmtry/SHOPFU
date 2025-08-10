@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Hàm gửi dữ liệu đến Google Sheets
 function saveToGoogleSheet(paymentData) {
     // Thay thế URL này bằng URL triển khai Google Apps Script của bạn
-    const scriptUrl = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbzP4gegtvVA7E6BBvB5EOJSvt2Nu1JTt76zyTVEuWtJr4cNlWmiBkKpxeyBOwZsW1wn/exec';
     
     axios.post(scriptUrl, paymentData)
         .then(response => {
