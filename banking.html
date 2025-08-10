@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="banking-container">
+        <h1>Thanh toán</h1>
+        <div class="order-summary">
+            <h3>Thông tin đơn hàng</h3>
+            <p id="product-name">Gói cơ bản</p>
+            <p id="product-price">100.000 VND</p>
+        </div>
+
+        <div class="qr-payment">
+            <h3>Quét mã QR để thanh toán</h3>
+            <img src="images/qr-code.png" alt="Mã QR thanh toán">
+            <p>Ngân hàng: ABC Bank</p>
+            <p>Số tài khoản: 123456789</p>
+            <p>Chủ tài khoản: CÔNG TY TNHH XYZ</p>
+            <p>Số tiền: <span id="amount-to-pay">100.000</span> VND</p>
+            <p>Nội dung: <span id="payment-content">NAP1_100000</span></p>
+        </div>
+
+        <div class="payment-confirm">
+            <p>Sau khi thanh toán, vui lòng nhấn xác nhận</p>
+            <button id="confirm-payment" class="btn">Tôi đã thanh toán</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/banking.js"></script>
+</body>
+</html>
