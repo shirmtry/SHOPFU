@@ -3,35 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanh toán</title>
+    <title>Thanh Toán QR - ACB Bank</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+        }
+        .banking-container {
+            max-width: 450px;
+            margin: 20px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        #qrCanvas {
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            background: white;
+            margin: 0 auto;
+            display: block;
+            border-radius: 8px;
+        }
+        .payment-info {
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 25px 0;
+            font-size: 15px;
+            border: 1px solid #eaeaea;
+        }
+        .btn-confirm {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-confirm:hover {
+            background: #0d62c9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(26, 115, 232, 0.2);
+        }
+        .highlight {
+            color: #d23f31;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <div class="banking-container">
-        <h1>Thanh toán</h1>
-        <div class="order-summary">
-            <h3>Thông tin đơn hàng</h3>
-            <p id="product-name">Gói cơ bản</p>
-            <p id="product-price">100.000 VND</p>
+        <h1 style="text-align: center; color: #1a73e8; margin-bottom: 25px;">
+            <img src="https://www.acb.com.vn/images/logo.png" alt="ACB Logo" style="height: 30px; vertical-align: middle;">
+            THANH TOÁN QUA QR
+        </h1>
+        
+        <div id="product-display" style="text-align: center; margin-bottom: 20px;">
+            <!-- Product info will be auto-filled -->
         </div>
 
-        <div class="qr-payment">
-            <h3>Quét mã QR để thanh toán</h3>
-            <img src="images/qr-code.png" alt="Mã QR thanh toán">
-            <p>Ngân hàng: ABC Bank</p>
-            <p>Số tài khoản: 123456789</p>
-            <p>Chủ tài khoản: CÔNG TY TNHH XYZ</p>
-            <p>Số tiền: <span id="amount-to-pay">100.000</span> VND</p>
-            <p>Nội dung: <span id="payment-content">NAP1_100000</span></p>
+        <canvas id="qrCanvas" width="260" height="260"></canvas>
+        
+        <div class="payment-info">
+            <h3 style="margin-top: 0; color: #1a73e8;">THÔNG TIN CHUYỂN KHOẢN</h3>
+            <p>🏦 <strong>Ngân hàng:</strong> ACB - Á Châu</p>
+            <p>🔢 <strong>Số tài khoản:</strong> <span id="acb-account">68686868</span></p>
+            <p>👤 <strong>Tên tài khoản:</strong> <span id="acb-name">CONG TY ABC</span></p>
+            <p>💰 <strong>Số tiền:</strong> <span id="payment-amount" class="highlight">0</span> VND</p>
+            <p>📌 <strong>Nội dung:</strong> <span id="payment-content" class="highlight">NAP_123456</span></p>
         </div>
 
-        <div class="payment-confirm">
-            <p>Sau khi thanh toán, vui lòng nhấn xác nhận</p>
-            <button id="confirm-payment" class="btn">Tôi đã thanh toán</button>
-        </div>
+        <button id="confirm-payment" class="btn-confirm">XÁC NHẬN ĐÃ CHUYỂN TIỀN</button>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="js/banking.js"></script>
 </body>
 </html>
