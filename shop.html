@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cửa hàng</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Cửa hàng sản phẩm</h1>
+        <div class="user-info">
+            <span id="username-display"></span>
+            <button id="logout-btn">Đăng xuất</button>
+        </div>
+    </header>
+
+    <div class="shop-container">
+        <h2>Chọn gói sản phẩm</h2>
+        <div class="products">
+            <div class="product-card" data-id="1" data-price="100000">
+                <h3>Gói cơ bản</h3>
+                <p>100.000 VND</p>
+                <button class="btn select-btn">Chọn</button>
+            </div>
+            <div class="product-card" data-id="2" data-price="200000">
+                <h3>Gói tiêu chuẩn</h3>
+                <p>200.000 VND</p>
+                <button class="btn select-btn">Chọn</button>
+            </div>
+            <div class="product-card" data-id="3" data-price="500000">
+                <h3>Gói cao cấp</h3>
+                <p>500.000 VND</p>
+                <button class="btn select-btn">Chọn</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/shop.js"></script>
+</body>
+</html>
