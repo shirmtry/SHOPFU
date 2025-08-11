@@ -453,5 +453,88 @@
             });
         });
     </script>
+    <!-- Anti-view-source helper (không tuyệt đối, chỉ làm khó người dùng bình thường) -->
+<script>
+(function(){
+  // disable right click
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    // optionally show message
+    // alert('Chuột phải đã bị vô hiệu hóa.');
+    return false;
+  }, {capture: true, passive: false});
+
+  // disable text selection, drag, copy, cut
+  document.addEventListener('selectstart', e => e.preventDefault(), {capture:true});
+  document.addEventListener('dragstart', e => e.preventDefault(), {capture:true});
+  document.addEventListener('copy', e => e.preventDefault(), {capture:true});
+  document.addEventListener('cut', e => e.preventDefault(), {capture:true});
+
+  // intercept common "view source" / devtools shortcuts
+  window.addEventListener('keydown', function(e) {
+    // F12
+    if (e.key === 'F12') { e.preventDefault(); e.stopPropagation(); return false; }
+
+    // Ctrl+Shift+I / J / C  or Ctrl+Shift+C
+    if (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) {
+      e.preventDefault(); e.stopPropagation(); return false;
+    }
+
+    // Ctrl+U (view-source)
+    if (e.ctrlKey && !e.shiftKey && e.key.toUpperCase() === 'U') {
+      e.preventDefault(); e.stopPropagation(); return false;
+    }
+
+    // Ctrl+S / Ctrl+P (save/print page)
+    if (e.ctrlKey && ['S','P'].includes(e.key.toUpperCase())) {
+      e.preventDefault(); e.stopPropagation(); return false;
+    }
+  }, {capture:true});
+
+  // Optional: detect when devtools opened (heuristic)
+  // This uses small timing hack / dimension check. It's not reliable.
+  var devtoolsOpen = false;
+  var element = new Image();
+  Object.defineProperty(element, 'id', {
+    get: function () {
+      devtoolsOpen = true;
+      // do something if opened
+      // e.g., redirect or show overlay:
+      // window.location.href = 'about:blank';
+      return '';
+    }
+  });
+  setInterval(function () {
+    devtoolsOpen = false;
+    console.log(element);
+    if (devtoolsOpen) {
+      // action when devtools detected (be careful with UX)
+      // show overlay as gentle deterrent
+      if(!document.getElementById('devtools-overlay')) {
+        var ov = document.createElement('div');
+        ov.id = 'devtools-overlay';
+        ov.style.position = 'fixed';
+        ov.style.top = 0;
+        ov.style.left = 0;
+        ov.style.width = '100%';
+        ov.style.height = '100%';
+        ov.style.background = 'rgba(0,0,0,0.85)';
+        ov.style.color = '#fff';
+        ov.style.zIndex = 99999;
+        ov.style.display = 'flex';
+        ov.style.alignItems = 'center';
+        ov.style.justifyContent = 'center';
+        ov.style.fontSize = '20px';
+        ov.innerText = 'DevTools detected — trang bị giới hạn tạm thời.';
+        document.body.appendChild(ov);
+      }
+    } else {
+      var o = document.getElementById('devtools-overlay');
+      if (o) o.remove();
+    }
+  }, 1000);
+})();
+</script>
+
 </body>
 </html>
