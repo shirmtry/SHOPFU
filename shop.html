@@ -25,8 +25,8 @@
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
         .product-item {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr 150px auto; /* 3 cột: tên - giá - nút */
             align-items: center;
             padding: 12px 0;
             border-bottom: 1px solid #eee;
@@ -36,16 +36,14 @@
             border-bottom: none;
         }
         .product-item:hover {
-            opacity: 0.95;
+            background-color: #f9f9f9;
         }
         .product-name {
-            flex: 1;
             font-weight: bold;
             font-size: 17px;
             color: #333;
         }
         .product-price {
-            width: 150px;
             color: #fff;
             font-weight: bold;
             font-size: 18px;
@@ -61,7 +59,6 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background 0.3s;
-            margin-left: 15px;
         }
         .btn-select:hover {
             background-color: #2980b9;
@@ -75,13 +72,13 @@
 
         /* Màu cho từng gói */
         .seb-price {
-            background-color: #e67e22; /* Cam */
+            background-color: #e67e22;
         }
         .eos-price {
-            background-color: #27ae60; /* Xanh lá */
+            background-color: #27ae60;
         }
         .combo-price {
-            background-color: #8e44ad; /* Tím */
+            background-color: #8e44ad;
         }
     </style>
 </head>
