@@ -169,10 +169,15 @@
     </div>
     <!-- Script lấy dữ liệu user từ Google Sheet qua API Apps Script -->
     <script>
-        // Thay username ở đây bằng giá trị động nếu có đăng nhập/session
-        const username = "khachhangvip";
-        // Thay đổi link API bên dưới thành link Google Apps Script của bạn!
+        // Lấy username từ localStorage (lưu khi đăng nhập)
+        const username = localStorage.getItem("username");
+        if (!username) {
+            // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
+            window.location.href = "login.html";
+        }
+
         const apiLink = 'https://script.google.com/macros/s/AKfycbwN58CHkEBXBUe7xc8QXeRni1ijt95Y8HObzB2q04wVM1z8Ve0gev-xnPOrLNG_SB6yYg/exec';
+
         function loadUserInfo() {
             fetch(apiLink + '?action=getUser&username=' + encodeURIComponent(username))
                 .then(res => res.json())
