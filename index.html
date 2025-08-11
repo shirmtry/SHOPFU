@@ -167,6 +167,7 @@
         const tabButtons = document.querySelectorAll(".tab-btn");
         const forms = document.querySelectorAll(".auth-form");
 
+        // Chuyển tab
         tabButtons.forEach(btn => {
             btn.addEventListener("click", () => {
                 tabButtons.forEach(b => b.classList.remove("active"));
@@ -175,6 +176,28 @@
                 btn.classList.add("active");
                 document.getElementById(btn.getAttribute("data-tab")).classList.add("active");
             });
+        });
+
+        // Xử lý đăng nhập
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            // TODO: Gửi dữ liệu lên Google Sheet nếu muốn
+            window.location.href = "shop.html"; // Chuyển sang trang shop
+        });
+
+        // Xử lý đăng ký
+        document.getElementById("registerForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const pass = document.getElementById("register-password").value;
+            const confirmPass = document.getElementById("register-confirm-password").value;
+
+            if (pass !== confirmPass) {
+                alert("Mật khẩu nhập lại không khớp!");
+                return;
+            }
+
+            // TODO: Gửi dữ liệu đăng ký lên Google Sheet nếu muốn
+            window.location.href = "shop.html"; // Chuyển sang trang shop
         });
     </script>
 </body>
