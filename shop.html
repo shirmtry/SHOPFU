@@ -246,10 +246,11 @@
             <h1>PREMIUM TOOL SHOP</h1>
         </div>
         
-        <div class="user-info">
-            <div class="user-greeting">Xin chào, <span>Khách hàng VIP</span>!</div>
-            <div class="user-balance">
-                <i class="fas fa-wallet"></i> Số dư: 5,000,000 VND
+        <!-- Sửa ở đây, thay class cũ bằng id để JS cập nhật động -->
+        <div class="user-info" id="user-info">
+            <div class="user-greeting" id="user-greeting">Đang tải...</div>
+            <div class="user-balance" id="user-balance">
+                <i class="fas fa-wallet"></i> Đang tải...
             </div>
         </div>
         
@@ -319,6 +320,31 @@
             <p>Sau khi chọn gói, hệ thống sẽ chuyển đến trang thanh toán qua QR Code</p>
         </div>
     </div>
+
+    <!-- Script lấy dữ liệu user từ Google Sheet qua API Apps Script -->
+    <script>
+        // Thay username ở đây bằng giá trị động nếu có đăng nhập/session
+        const username = "khachhangvip"; // ví dụ hard-code, thực tế lấy từ session hoặc localStorage
+
+        // Thay đổi link API bên dưới thành link Google Apps Script của bạn!
+        const apiLink = 'https://script.google.com/macros/s/AKfycbxxxxxxx/exec';
+
+        fetch(apiLink + '?username=' + encodeURIComponent(username))
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('user-greeting').innerHTML = `<span style="color:red">${data.error}</span>`;
+                    document.getElementById('user-balance').innerHTML = '';
+                } else {
+                    document.getElementById('user-greeting').innerHTML = `Xin chào, <span>${data.username}</span>!`;
+                    document.getElementById('user-balance').innerHTML = `<i class="fas fa-wallet"></i> Số dư: ${Number(data.balance).toLocaleString('vi-VN')} VND`;
+                }
+            })
+            .catch(e => {
+                document.getElementById('user-greeting').innerHTML = `<span style="color:red">Lỗi kết nối API</span>`;
+                document.getElementById('user-balance').innerHTML = '';
+            });
+    </script>
 
     <script>
         document.querySelectorAll('.btn-select').forEach(button => {
