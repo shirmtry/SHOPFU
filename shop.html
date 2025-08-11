@@ -329,7 +329,7 @@
         // Thay đổi link API bên dưới thành link Google Apps Script của bạn!
         const apiLink = 'https://script.google.com/macros/s/AKfycbwN58CHkEBXBUe7xc8QXeRni1ijt95Y8HObzB2q04wVM1z8Ve0gev-xnPOrLNG_SB6yYg/exec';
 
-        fetch(apiLink + '?username=' + encodeURIComponent(username))
+        fetch(apiLink + '?action=getUser&username=' + encodeURIComponent(username))
             .then(res => res.json())
             .then(data => {
                 if (data.error) {
