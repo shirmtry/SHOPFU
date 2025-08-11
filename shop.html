@@ -22,16 +22,16 @@
     .product-container {
         background: rgba(255, 255, 255, 0.9);
         border-radius: 10px;
-        padding: 25px;
+        padding: 20px;
         box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        width: 700px;
-        margin-left: 170px; /* Lệch trái 150px */
+        width: 400px; /* bó gọn khung */
+        margin-left: 150px; /* Lệch trái 150px */
     }
     .product-item {
-        display: grid;
-        grid-template-columns: 1fr auto; 
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        padding: 15px 0;
+        padding: 12px 0;
         border-bottom: 1px solid #eee;
     }
     .product-item:last-child {
@@ -41,35 +41,28 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 100%;
     }
     .product-name {
         font-weight: bold;
-        font-size: 18px;
+        font-size: 16px;
         color: #333;
     }
     .product-price {
+        background: #27ae60;
         color: #fff;
         font-weight: bold;
-        font-size: 18px;
+        font-size: 16px;
         margin-top: 5px;
-        padding: 8px 15px;
+        padding: 6px 12px;
         border-radius: 6px;
-        animation: colorChange 2s infinite alternate;
         text-align: center;
-        min-width: 140px;
-    }
-    @keyframes colorChange {
-        0% { background-color: #e67e22; }
-        33% { background-color: #27ae60; }
-        66% { background-color: #8e44ad; }
-        100% { background-color: #3498db; }
+        min-width: 120px;
     }
     .btn-select {
         background-color: #3498db;
         color: white;
         border: none;
-        padding: 8px 15px;
+        padding: 8px 12px;
         border-radius: 5px;
         cursor: pointer;
         transition: background 0.3s;
@@ -77,37 +70,22 @@
     .btn-select:hover {
         background-color: #2980b9;
     }
-    .note {
-        margin-top: 20px;
-        font-size: 14px;
-        color: #7f8c8d;
-        text-align: center;
-        text-shadow: 1px 1px 2px white;
-    }
-
-    /* Popup Telegram */
-    .popup-tele {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #0088cc;
-        color: white;
+    .note-box {
+        background: rgba(255, 255, 255, 0.85);
         padding: 15px;
         border-radius: 10px;
-        display: none;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        margin: 20px auto;
+        text-align: center;
         font-size: 14px;
-    }
-    .popup-tele a {
-        color: yellow;
-        text-decoration: none;
-        font-weight: bold;
+        color: #7f8c8d;
+        width: 400px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     }
 </style>
 </head>
 <body>
- 
- <h1> </h1>   
+    <h1>CỬA HÀNG</h1>
+    
     <div class="product-container">
         <h2 style="text-align:center;">Chọn gói TOOL</h2>
         
@@ -136,11 +114,8 @@
         </div>
     </div>
 
-    <p class="note">Sau khi chọn gói, hệ thống sẽ chuyển đến trang thanh toán qua QR Code</p>
-
-    <!-- Popup Telegram -->
-    <div class="popup-tele" id="popupTele">
-        📩 Liên hệ Telegram: <a href="https://t.me/hup3m2">@hup3m2</a>
+    <div class="note-box">
+        Sau khi chọn gói, hệ thống sẽ chuyển đến trang thanh toán qua QR Code
     </div>
 
     <script>
@@ -160,11 +135,6 @@
                 window.location.href = 'banking.html';
             });
         });
-
-        // Hàm hiện popup khi xác nhận chuyển khoản (gọi ở banking.html)
-        function showTelegramPopup() {
-            document.getElementById('popupTele').style.display = 'block';
-        }
     </script>
 </body>
 </html>
