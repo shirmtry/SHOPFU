@@ -15,7 +15,6 @@
             --light-color: #f8f9fa;
             --success-color: #4cc9f0;
         }
-        
         body {
             font-family: 'Montserrat', sans-serif;
             background: linear-gradient(135deg, #000428, #004e92);
@@ -28,215 +27,71 @@
             justify-content: center;
             color: var(--light-color);
         }
-        
-        .main-container {
-            width: 90%;
-            max-width: 800px;
-            margin: 2rem auto;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
+        .main-container { width: 90%; max-width: 800px; margin: 2rem auto; }
+        .header { text-align: center; margin-bottom: 2rem; }
         .header h1 {
-            font-size: 2.5rem;
-            margin: 0;
+            font-size: 2.5rem; margin: 0;
             background: linear-gradient(to right, #f72585, #4361ee);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            -webkit-background-clip: text; background-clip: text; color: transparent;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
         .user-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
-            backdrop-filter: blur(10px);
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: 10px;
+            margin-bottom: 1.5rem; backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
-        .user-greeting {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-        
-        .user-greeting span {
-            color: var(--accent-color);
-        }
-        
+        .user-greeting { font-size: 1.2rem; font-weight: 600; }
+        .user-greeting span { color: var(--accent-color); }
         .user-balance {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.3); padding: 0.5rem 1rem; border-radius: 20px;
             font-weight: 600;
         }
-        
         .products-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+            border-radius: 15px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--light-color);
-            display: flex;
-            align-items: center;
-        }
-        
-        .section-title i {
-            margin-right: 10px;
-            color: var(--accent-color);
-        }
-        
+        .section-title { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--light-color); display: flex; align-items: center; }
+        .section-title i { margin-right: 10px; color: var(--accent-color); }
         .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;
         }
-        
         .product-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
+            border-radius: 12px; padding: 1.5rem; transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden;
         }
-        
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); border-color: rgba(255, 255, 255, 0.3); }
         .product-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
-            z-index: 0;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent); z-index: 0;
         }
-        
-        .product-name {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            position: relative;
-            color: white;
-        }
-        
-        .product-features {
-            list-style-type: none;
-            padding: 0;
-            margin: 1rem 0;
-            font-size: 0.9rem;
-        }
-        
-        .product-features li {
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .product-features li::before {
-            content: '✓';
-            color: var(--success-color);
-            margin-right: 8px;
-            font-weight: bold;
-        }
-        
-        .product-price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin: 1.5rem 0;
-            color: var(--accent-color);
-            text-align: center;
-        }
-        
+        .product-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; position: relative; color: white; }
+        .product-features { list-style-type: none; padding: 0; margin: 1rem 0; font-size: 0.9rem; }
+        .product-features li { margin-bottom: 0.5rem; display: flex; align-items: center; }
+        .product-features li::before { content: '✓'; color: var(--success-color); margin-right: 8px; font-weight: bold; }
+        .product-price { font-size: 1.8rem; font-weight: 700; margin: 1.5rem 0; color: var(--accent-color); text-align: center; }
         .btn-select {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
+            width: 100%; padding: 12px; border: none; border-radius: 8px;
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
+            display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
         }
-        
-        .btn-select:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
-        }
-        
-        .btn-select:active {
-            transform: translateY(0);
-        }
-        
-        .btn-select i {
-            margin-right: 8px;
-        }
-        
+        .btn-select:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4); }
+        .btn-select:active { transform: translateY(0); }
+        .btn-select i { margin-right: 8px; }
         .note-box {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 10px;
+            padding: 1.5rem; margin-top: 2rem; text-align: center; font-size: 0.9rem;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
-        .payment-methods {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 1rem;
-        }
-        
-        .payment-method {
-            width: 40px;
-            height: 25px;
-            object-fit: contain;
-            filter: grayscale(100%) brightness(2);
-            transition: filter 0.3s;
-        }
-        
-        .payment-method:hover {
-            filter: grayscale(0) brightness(1);
-        }
-        
+        .payment-methods { display: flex; justify-content: center; gap: 15px; margin-top: 1rem; }
+        .payment-method { width: 40px; height: 25px; object-fit: contain; filter: grayscale(100%) brightness(2); transition: filter 0.3s; }
+        .payment-method:hover { filter: grayscale(0) brightness(1); }
         @media (max-width: 768px) {
-            .main-container {
-                width: 95%;
-            }
-            
-            .product-grid {
-                grid-template-columns: 1fr;
-            }
+            .main-container { width: 95%; }
+            .product-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -245,18 +100,14 @@
         <div class="header">
             <h1>PREMIUM TOOL SHOP</h1>
         </div>
-        
-        <!-- Sửa ở đây, thay class cũ bằng id để JS cập nhật động -->
         <div class="user-info" id="user-info">
             <div class="user-greeting" id="user-greeting">Đang tải...</div>
             <div class="user-balance" id="user-balance">
                 <i class="fas fa-wallet"></i> Đang tải...
             </div>
         </div>
-        
         <div class="products-container">
             <h2 class="section-title"><i class="fas fa-crown"></i> GÓI DỊCH VỤ CAO CẤP</h2>
-            
             <div class="product-grid">
                 <div class="product-card">
                     <h3 class="product-name">TOOL SEB</h3>
@@ -271,7 +122,6 @@
                         <i class="fas fa-shopping-cart"></i> Gói Basic
                     </button>
                 </div>
-                
                 <div class="product-card">
                     <h3 class="product-name">TOOL EOS</h3>
                     <ul class="product-features">
@@ -285,7 +135,6 @@
                         <i class="fas fa-shopping-cart"></i> Gói VIP1
                     </button>
                 </div>
-                
                 <div class="product-card">
                     <h3 class="product-name">TOOL EOS + SEB</h3>
                     <ul class="product-features">
@@ -299,7 +148,6 @@
                         <i class="fas fa-gem"></i> GÓI VIP2
                     </button>
                 </div>
-
                 <div class="product-card">
                     <h3 class="product-name">TOOL EOS + SEB</h3>
                     <ul class="product-features">
@@ -315,47 +163,60 @@
                 </div>
             </div>
         </div>
-        
         <div class="note-box">
             <p>Sau khi chọn gói, hệ thống sẽ chuyển đến trang thanh toán qua QR Code</p>
         </div>
     </div>
-
     <!-- Script lấy dữ liệu user từ Google Sheet qua API Apps Script -->
     <script>
         // Thay username ở đây bằng giá trị động nếu có đăng nhập/session
-        const username = "khachhangvip"; // ví dụ hard-code, thực tế lấy từ session hoặc localStorage
-
+        const username = "khachhangvip";
         // Thay đổi link API bên dưới thành link Google Apps Script của bạn!
         const apiLink = 'https://script.google.com/macros/s/AKfycbwN58CHkEBXBUe7xc8QXeRni1ijt95Y8HObzB2q04wVM1z8Ve0gev-xnPOrLNG_SB6yYg/exec';
-
-        fetch(apiLink + '?action=getUser&username=' + encodeURIComponent(username))
-            .then(res => res.json())
-            .then(data => {
-                if (data.error) {
-                    document.getElementById('user-greeting').innerHTML = `<span style="color:red">${data.error}</span>`;
+        function loadUserInfo() {
+            fetch(apiLink + '?action=getUser&username=' + encodeURIComponent(username))
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error && data.error === "User not found") {
+                        // Nếu chưa có user thì tạo tài khoản mới
+                        fetch(apiLink + '?action=createUser&username=' + encodeURIComponent(username))
+                            .then(res => res.json())
+                            .then(newData => {
+                                if (newData.error) {
+                                    document.getElementById('user-greeting').innerHTML = `<span style="color:red">${newData.error}</span>`;
+                                    document.getElementById('user-balance').innerHTML = '';
+                                } else {
+                                    document.getElementById('user-greeting').innerHTML = `Xin chào, <span>${newData.username}</span>!`;
+                                    document.getElementById('user-balance').innerHTML = `<i class="fas fa-wallet"></i> Số dư: 0 VND`;
+                                }
+                            })
+                            .catch(e => {
+                                document.getElementById('user-greeting').innerHTML = `<span style="color:red">Lỗi tạo user!</span>`;
+                                document.getElementById('user-balance').innerHTML = '';
+                            });
+                    } else if (data.error) {
+                        document.getElementById('user-greeting').innerHTML = `<span style="color:red">${data.error}</span>`;
+                        document.getElementById('user-balance').innerHTML = '';
+                    } else {
+                        document.getElementById('user-greeting').innerHTML = `Xin chào, <span>${data.username}</span>!`;
+                        document.getElementById('user-balance').innerHTML = `<i class="fas fa-wallet"></i> Số dư: ${Number(data.balance).toLocaleString('vi-VN')} VND`;
+                    }
+                })
+                .catch(e => {
+                    document.getElementById('user-greeting').innerHTML = `<span style="color:red">Lỗi kết nối API</span>`;
                     document.getElementById('user-balance').innerHTML = '';
-                } else {
-                    document.getElementById('user-greeting').innerHTML = `Xin chào, <span>${data.username}</span>!`;
-                    document.getElementById('user-balance').innerHTML = `<i class="fas fa-wallet"></i> Số dư: ${Number(data.balance).toLocaleString('vi-VN')} VND`;
-                }
-            })
-            .catch(e => {
-                document.getElementById('user-greeting').innerHTML = `<span style="color:red">Lỗi kết nối API</span>`;
-                document.getElementById('user-balance').innerHTML = '';
-            });
+                });
+        }
+        loadUserInfo();
     </script>
-
     <script>
         document.querySelectorAll('.btn-select').forEach(button => {
             button.addEventListener('click', function() {
                 const productName = this.parentElement.querySelector('.product-name').textContent;
                 const productPrice = this.getAttribute('data-price');
-                
                 // Hiệu ứng loading
                 this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG XỬ LÝ...';
                 this.disabled = true;
-                
                 setTimeout(() => {
                     const orderInfo = {
                         name: productName,
@@ -363,7 +224,6 @@
                         formattedPrice: this.parentElement.querySelector('.product-price').textContent,
                         orderCode: `VIP${new Date().getTime().toString().slice(-6)}`
                     };
-                    
                     localStorage.setItem('currentOrder', JSON.stringify(orderInfo));
                     window.location.href = 'banking.html';
                 }, 1000);
