@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cửa Hàng Bán TOOL</title>
-<link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkCKhZYZxgjrIUKl7fZ9ssSl919Qs-hfuw9g&s" type="image/png">
 <style>
     body {
         font-family: 'Arial', sans-serif;
@@ -25,7 +24,21 @@
         padding: 20px;
         box-shadow: 0 3px 10px rgba(0,0,0,0.2);
         width: 400px; /* bó gọn khung */
-        margin-left: 170px; /* Lệch trái 150px */
+        margin: 0 auto; /* canh giữa */
+    }
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    .header-row h2 {
+        margin: 0;
+    }
+    .welcome-user {
+        font-size: 14px;
+        color: #555;
+        font-weight: bold;
     }
     .product-item {
         display: flex;
@@ -74,7 +87,7 @@
         background: rgba(255, 255, 255, 0.85);
         padding: 15px;
         border-radius: 10px;
-        margin: 20px auto;
+        margin: 15px auto 0 auto;
         text-align: center;
         font-size: 14px;
         color: #7f8c8d;
@@ -87,7 +100,10 @@
     <h1>CỬA HÀNG</h1>
     
     <div class="product-container">
-        <h2 style="text-align:center;">Chọn gói TOOL</h2>
+        <div class="header-row">
+            <h2>Chọn gói TOOL</h2>
+            <div class="welcome-user">Xin chào, User!</div>
+        </div>
         
         <div class="product-item">
             <div class="product-details">
