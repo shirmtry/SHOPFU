@@ -25,9 +25,10 @@
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
         .product-item {
-            display: grid;
-            grid-template-columns: 1fr 150px auto; /* 3 cột: tên - giá - nút */
+            display: flex;
             align-items: center;
+            justify-content: space-between;
+            position: relative;
             padding: 12px 0;
             border-bottom: 1px solid #eee;
             transition: all 0.3s;
@@ -44,11 +45,13 @@
             color: #333;
         }
         .product-price {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             color: #fff;
             font-weight: bold;
             font-size: 18px;
-            text-align: center;
-            padding: 8px 0;
+            padding: 8px 12px;
             border-radius: 6px;
         }
         .btn-select {
@@ -69,17 +72,41 @@
             color: #7f8c8d;
             text-align: center;
         }
+        /* Màu giá */
+        .seb-price { background-color: #e67e22; }
+        .eos-price { background-color: #27ae60; }
+        .combo-price { background-color: #8e44ad; }
 
-        /* Màu cho từng gói */
-        .seb-price {
-            background-color: #e67e22;
+        /* Popup */
+        .popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            padding: 20px;
+            width: 280px;
+            display: none;
+            z-index: 1000;
+            animation: slideUp 0.3s ease-out;
         }
-        .eos-price {
-            background-color: #27ae60;
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
-        .combo-price {
-            background-color: #8e44ad;
+        .popup h3 {
+            margin-top: 0;
         }
+        .popup button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-confirm { background: #27ae60; color: white; }
+        .btn-close { background: #e74c3c; color: white; margin-left: 8px; }
     </style>
 </head>
 <body>
@@ -109,7 +136,19 @@
 
     <p class="note">Sau khi chọn gói, hệ thống sẽ chuyển đến trang thanh toán qua QR Code</p>
 
+    <!-- Popup Telegram -->
+    <div class="popup" id="telegramPopup">
+        <h3>Liên hệ Telegram</h3>
+        <p>Nhấn xác nhận để mở Telegram hỗ trợ.</p>
+        <button class="btn-confirm" id="confirmBtn">Xác nhận</button>
+        <button class="btn-close" id="closeBtn">Đóng</button>
+    </div>
+
     <script>
+        const popup = document.getElementById('telegramPopup');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const closeBtn = document.getElementById('closeBtn');
+
         document.querySelectorAll('.btn-select').forEach(button => {
             button.addEventListener('click', function() {
                 const productName = this.parentElement.querySelector('.product-name').textContent;
@@ -123,8 +162,17 @@
                 };
                 
                 localStorage.setItem('currentOrder', JSON.stringify(orderInfo));
-                window.location.href = 'banking.html';
+                popup.style.display = 'block'; // Hiện popup thay vì chuyển trang ngay
             });
+        });
+
+        closeBtn.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+
+        confirmBtn.addEventListener('click', () => {
+            window.open('https://t.me/hup3m2', '_blank');
+            popup.style.display = 'none';
         });
     </script>
 </body>
