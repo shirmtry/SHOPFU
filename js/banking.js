@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // 4. Tạo QR theo chuẩn VietQR ACB
     const qrData = generateACBVietQR(
-        '68686868',           // Số tài khoản ACB
-        'CONG TY ABC',        // Tên tài khoản
+        '43146717',           // Số tài khoản ACB
+        'ĐINH TẤN HUY',        // Tên tài khoản
         product.price,        // Số tiền
         paymentCode,          // Nội dung
         user.username         // Tên người gửi
