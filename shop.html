@@ -235,5 +235,84 @@
             });
         });
     </script>
+    <script>
+// --- Thông báo random người mua gói ---
+
+const NAMES = [
+    "Nguyễn Văn A", "Trần Thị B", "Lê Văn C", "Phạm Quốc D", "Đặng Hoàng E",
+    "Vũ Thị F", "Hoàng Minh G", "Bùi Thị H", "Đỗ Văn I", "Phan Thị J",
+    "Ngô Văn K", "Dương Minh L", "Lý Thị M", "Cao Văn N", "Võ Thị O"
+];
+const PROVINCES = [
+    "Hà Nội", "TP.HCM", "Đà Nẵng", "Hải Phòng", "Cần Thơ", "Bình Dương", "Nghệ An", "Thanh Hóa", "Quảng Ninh", "Huế"
+];
+const PRODUCTS = [
+    {name: "Gói Basic", price: "400.000 VND"},
+    {name: "Gói VIP1", price: "600.000 VND"},
+    {name: "Gói VIP2", price: "800.000 VND"},
+    {name: "Gói VIP3", price: "3.000.000 VND"}
+];
+
+function randomItem(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function createNotifyHTML() {
+    const name = randomItem(NAMES);
+    const province = randomItem(PROVINCES);
+    // Muốn chỉ hiện Gói Basic thì để const product = PRODUCTS[0];
+    const product = randomItem(PRODUCTS);
+
+    return `
+    <div style="
+        display:flex;
+        align-items:center;
+        background:rgba(0,0,0,0.85);
+        color:#fff;
+        border-radius:8px;
+        box-shadow:0 2px 12px rgba(0,0,0,.2);
+        padding:12px 20px 12px 12px;
+        position:fixed;
+        left:20px;
+        bottom:30px;
+        z-index:9999;
+        min-width:260px;
+        font-size:1rem;
+        animation: fadeIn 0.5s;
+    ">
+        <i class="fa-solid fa-bell" style="color:#f72585;font-size:1.4rem;margin-right:12px"></i>
+        <div>
+            <b>${name}</b> (${province}) vừa mua <span style="color:#4cc9f0;font-weight:600">${product.name}</span> <br>
+            <span style="font-size:0.95em;color:#fff9;">Giá: <b>${product.price}</b></span>
+        </div>
+    </div>
+    `;
+}
+
+function showNotify() {
+    const html = createNotifyHTML();
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    div.style.position = 'fixed'; // redundancy for safety
+    document.body.appendChild(div);
+
+    setTimeout(() => {
+        div.style.transition = 'opacity 0.6s';
+        div.style.opacity = 0;
+        setTimeout(() => {
+            document.body.removeChild(div);
+        }, 600);
+    }, 6000);
+}
+
+function startRandomNotify(intervalMs = 30000) {
+    setTimeout(function loop() {
+        showNotify();
+        setTimeout(loop, intervalMs + Math.floor(Math.random() * 4000) - 2000);
+    }, 2000 + Math.random() * 2000);
+}
+
+startRandomNotify();
+</script>
 </body>
 </html>
