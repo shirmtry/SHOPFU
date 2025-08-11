@@ -103,12 +103,12 @@
     </div>
 
     <div class="product-info">
-        <div class="product-name" id="orderName">Gói Cao Cấp</div>
-        <div class="product-price" id="orderPrice">500.000 VND</div>
+        <div class="product-name" id="orderName"></div>
+        <div class="product-price" id="orderPrice"></div>
     </div>
 
     <div class="qr-container">
-        <img id="qrImage" class="qr-code" src="https://img.vietqr.io/image/ACB-43146717-500000-NAP487634.jpg" alt="Mã QR thanh toán">
+        <img id="qrImage" class="qr-code" src="" alt="Mã QR thanh toán">
         <p>Quét mã để thanh toán qua ACB</p>
     </div>
 
@@ -129,11 +129,11 @@
         </div>
         <div class="info-item">
             <div class="info-label">Số tiền:</div>
-            <div>500.000 VND</div>
+            <div id="bankAmount"></div>
         </div>
         <div class="info-item">
             <div class="info-label">Nội dung:</div>
-            <div>NAP487634</div>
+            <div id="bankContent"></div>
         </div>
     </div>
 
@@ -143,6 +143,28 @@
     </div>
 
     <script>
+        function randomNAP() {
+            return "NAP" + Math.floor(10000 + Math.random() * 90000);
+        }
+
+        // Lấy thông tin từ localStorage
+        const orderData = JSON.parse(localStorage.getItem("currentOrder"));
+        if (orderData) {
+            const napCode = randomNAP();
+
+            document.getElementById("orderName").innerText = orderData.name;
+            document.getElementById("orderPrice").innerText = orderData.formattedPrice;
+            document.getElementById("bankAmount").innerText = orderData.formattedPrice;
+            document.getElementById("bankContent").innerText = napCode;
+
+            // Cập nhật QR Code
+            const qrUrl = `https://img.vietqr.io/image/ACB-43146717-${orderData.price}-${napCode}.jpg`;
+            document.getElementById("qrImage").src = qrUrl;
+        } else {
+            alert("Không có thông tin đơn hàng!");
+            window.location.href = "shop.html";
+        }
+
         document.getElementById('confirmBtn').addEventListener('click', function() {
             alert('Cảm ơn bạn đã thanh toán!\nChúng tôi sẽ kiểm tra và xác nhận đơn hàng sớm nhất.');
         });
