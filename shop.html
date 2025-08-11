@@ -1,132 +1,315 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cửa Hàng Bán TOOL</title>
-<style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background: url('https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/08/hinh-nen-anime-cute-1.jpg') no-repeat center center fixed;
-        background-size: cover;
-        margin: 0;
-        padding: 0;
-    }
-    
-    .product-container {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-    width: 400px;
-    margin-left: 200px; /* Dịch sang trái */
-}
-    .header-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-    }
-    .header-row h2 {
-        margin: 0;
-    }
-    .welcome-user {
-        font-size: 14px;
-        color: #555;
-        font-weight: bold;
-    }
-    .product-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px 0;
-        border-bottom: 1px solid #eee;
-    }
-    .product-item:last-child {
-        border-bottom: none;
-    }
-    .product-details {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .product-name {
-        font-weight: bold;
-        font-size: 16px;
-        color: #333;
-    }
-    .product-price {
-        background: #27ae60;
-        color: #fff;
-        font-weight: bold;
-        font-size: 16px;
-        margin-top: 5px;
-        padding: 6px 12px;
-        border-radius: 6px;
-        text-align: center;
-        min-width: 120px;
-    }
-    .btn-select {
-        background-color: #3498db;
-        color: white;
-        border: none;
-        padding: 8px 12px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background 0.3s;
-    }
-    .btn-select:hover {
-        background-color: #2980b9;
-    }
-    .note-box {
-    background: rgba(255, 255, 255, 0.85);
-    padding: 15px;
-    border-radius: 10px;
-    margin: 15px 0 0 200px; /* Dịch sang trái */
-    text-align: center;
-    font-size: 14px;
-    color: #7f8c8d;
-    width: 400px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium TOOL Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+            --success-color: #4cc9f0;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #000428, #004e92);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-color);
+        }
+        
+        .main-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            background: linear-gradient(to right, #f72585, #4361ee);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .user-greeting {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .user-greeting span {
+            color: var(--accent-color);
+        }
+        
+        .user-balance {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .products-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--light-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .product-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            z-index: 0;
+        }
+        
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            color: white;
+        }
+        
+        .product-features {
+            list-style-type: none;
+            padding: 0;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .product-features li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .product-features li::before {
+            content: '✓';
+            color: var(--success-color);
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 1.5rem 0;
+            color: var(--accent-color);
+            text-align: center;
+        }
+        
+        .btn-select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-select:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-select:active {
+            transform: translateY(0);
+        }
+        
+        .btn-select i {
+            margin-right: 8px;
+        }
+        
+        .note-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 1rem;
+        }
+        
+        .payment-method {
+            width: 40px;
+            height: 25px;
+            object-fit: contain;
+            filter: grayscale(100%) brightness(2);
+            transition: filter 0.3s;
+        }
+        
+        .payment-method:hover {
+            filter: grayscale(0) brightness(1);
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                width: 95%;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1> </h1>
-    
-    <div class="product-container">
-        <div class="header-row">
-            <h2>Chọn gói TOOL</h2>
-            <div class="welcome-user">Xin chào, User!</div>
+    <div class="main-container">
+        <div class="header">
+            <h1>PREMIUM TOOL SHOP</h1>
         </div>
         
-        <div class="product-item">
-            <div class="product-details">
-                <span class="product-name">TOOL SEB</span>
-                <span class="product-price">400.000 VND</span>
+        <div class="user-info">
+            <div class="user-greeting">Xin chào, <span>Khách hàng VIP</span>!</div>
+            <div class="user-balance">
+                <i class="fas fa-wallet"></i> Số dư: 5,000,000 VND
             </div>
-            <button class="btn-select" data-price="400000">Chọn</button>
         </div>
         
-        <div class="product-item">
-            <div class="product-details">
-                <span class="product-name">TOOL EOS</span>
-                <span class="product-price">600.000 VND</span>
+        <div class="products-container">
+            <h2 class="section-title"><i class="fas fa-crown"></i> GÓI DỊCH VỤ CAO CẤP</h2>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <h3 class="product-name">TOOL SEB</h3>
+                    <ul class="product-features">
+                        <li>Tính năng cơ bản 1</li>
+                        <li>Tính năng cơ bản 2</li>
+                        <li>Hỗ trợ 24/7</li>
+                        <li>Cập nhật hàng tuần</li>
+                    </ul>
+                    <div class="product-price">400.000 VND</div>
+                    <button class="btn-select" data-price="400000">
+                        <i class="fas fa-shopping-cart"></i> CHỌN NGAY
+                    </button>
+                </div>
+                
+                <div class="product-card">
+                    <h3 class="product-name">TOOL EOS</h3>
+                    <ul class="product-features">
+                        <li>Tất cả tính năng SEB</li>
+                        <li>Tính năng nâng cao 1</li>
+                        <li>Tính năng nâng cao 2</li>
+                        <li>Ưu tiên hỗ trợ</li>
+                    </ul>
+                    <div class="product-price">600.000 VND</div>
+                    <button class="btn-select" data-price="600000">
+                        <i class="fas fa-shopping-cart"></i> CHỌN NGAY
+                    </button>
+                </div>
+                
+                <div class="product-card">
+                    <h3 class="product-name">TOOL EOS + SEB</h3>
+                    <ul class="product-features">
+                        <li>Tất cả tính năng EOS & SEB</li>
+                        <li>Tính năng độc quyền</li>
+                        <li>Hỗ trợ VIP 1-1</li>
+                        <li>Bản quyền vĩnh viễn</li>
+                    </ul>
+                    <div class="product-price">800.000 VND</div>
+                    <button class="btn-select" data-price="800000">
+                        <i class="fas fa-gem"></i> GÓI CAO CẤP
+                    </button>
+                </div>
             </div>
-            <button class="btn-select" data-price="600000">Chọn</button>
         </div>
         
-        <div class="product-item">
-            <div class="product-details">
-                <span class="product-name">TOOL EOS + SEB</span>
-                <span class="product-price">800.000 VND</span>
+        <div class="note-box">
+            <p>Sau khi chọn gói, hệ thống sẽ chuyển đến trang thanh toán qua QR Code</p>
+            <div class="payment-methods">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" class="payment-method">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" alt="Mastercard" class="payment-method">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Momo_Logo.png" alt="Momo" class="payment-method">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/ZaloPay_Logo.png" alt="ZaloPay" class="payment-method">
             </div>
-            <button class="btn-select" data-price="800000">Chọn</button>
         </div>
-    </div>
-
-    <div class="note-box">
-        Sau khi chọn gói, hệ thống sẽ chuyển đến trang thanh toán qua QR Code
     </div>
 
     <script>
@@ -135,15 +318,21 @@
                 const productName = this.parentElement.querySelector('.product-name').textContent;
                 const productPrice = this.getAttribute('data-price');
                 
-                const orderInfo = {
-                    name: productName,
-                    price: productPrice,
-                    formattedPrice: this.parentElement.querySelector('.product-price').textContent,
-                    orderCode: `NAP${new Date().getTime().toString().slice(-6)}`
-                };
+                // Hiệu ứng loading
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG XỬ LÝ...';
+                this.disabled = true;
                 
-                localStorage.setItem('currentOrder', JSON.stringify(orderInfo));
-                window.location.href = 'banking.html';
+                setTimeout(() => {
+                    const orderInfo = {
+                        name: productName,
+                        price: productPrice,
+                        formattedPrice: this.parentElement.querySelector('.product-price').textContent,
+                        orderCode: `VIP${new Date().getTime().toString().slice(-6)}`
+                    };
+                    
+                    localStorage.setItem('currentOrder', JSON.stringify(orderInfo));
+                    window.location.href = 'banking.html';
+                }, 1000);
             });
         });
     </script>
