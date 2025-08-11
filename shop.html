@@ -36,7 +36,7 @@
             border-bottom: none;
         }
         .product-item:hover {
-            background-color: #f9f9f9;
+            opacity: 0.95;
         }
         .product-name {
             flex: 1;
@@ -45,11 +45,13 @@
             color: #333;
         }
         .product-price {
-            width: 150px; /* cố định để giá thẳng hàng */
-            color: #e74c3c;
+            width: 150px;
+            color: #fff;
             font-weight: bold;
             font-size: 18px;
-            text-align: right;
+            text-align: center;
+            padding: 8px 0;
+            border-radius: 6px;
         }
         .btn-select {
             background-color: #3498db;
@@ -70,6 +72,17 @@
             color: #7f8c8d;
             text-align: center;
         }
+
+        /* Màu cho từng gói */
+        .seb-price {
+            background-color: #e67e22; /* Cam */
+        }
+        .eos-price {
+            background-color: #27ae60; /* Xanh lá */
+        }
+        .combo-price {
+            background-color: #8e44ad; /* Tím */
+        }
     </style>
 </head>
 <body>
@@ -80,19 +93,19 @@
         
         <div class="product-item">
             <span class="product-name">TOOL SEB</span>
-            <span class="product-price">400.000 VND</span>
+            <span class="product-price seb-price">400.000 VND</span>
             <button class="btn-select" data-price="400000">Chọn</button>
         </div>
         
         <div class="product-item">
             <span class="product-name">TOOL EOS</span>
-            <span class="product-price">600.000 VND</span>
+            <span class="product-price eos-price">600.000 VND</span>
             <button class="btn-select" data-price="600000">Chọn</button>
         </div>
         
         <div class="product-item">
             <span class="product-name">TOOL EOS + SEB</span>
-            <span class="product-price">800.000 VND</span>
+            <span class="product-price combo-price">800.000 VND</span>
             <button class="btn-select" data-price="800000">Chọn</button>
         </div>
     </div>
