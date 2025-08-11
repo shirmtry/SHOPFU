@@ -11,169 +11,180 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #f9f9f9, #e6f2ff);
         }
         h1 {
             color: #2c3e50;
             text-align: center;
             margin-bottom: 30px;
+            font-size: 32px;
         }
         .product-container {
             background: white;
             border-radius: 10px;
             padding: 25px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
         }
         .product-item {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 150px auto;
             align-items: center;
-            justify-content: space-between;
-            position: relative;
-            padding: 12px 0;
+            padding: 15px 0;
             border-bottom: 1px solid #eee;
-            transition: all 0.3s;
         }
         .product-item:last-child {
             border-bottom: none;
         }
-        .product-item:hover {
-            background-color: #f9f9f9;
-        }
         .product-name {
             font-weight: bold;
-            font-size: 17px;
+            font-size: 18px;
             color: #333;
         }
         .product-price {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
             color: #fff;
             font-weight: bold;
             font-size: 18px;
-            padding: 8px 12px;
-            border-radius: 6px;
+            text-align: center;
+            padding: 8px 0;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
         }
+        .seb-price { background-color: #e67e22; }
+        .eos-price { background-color: #27ae60; }
+        .combo-price { background-color: #8e44ad; }
         .btn-select {
             background-color: #3498db;
             color: white;
             border: none;
             padding: 8px 15px;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             transition: background 0.3s;
         }
-        .btn-select:hover {
-            background-color: #2980b9;
-        }
+        .btn-select:hover { background-color: #2980b9; }
         .note {
             margin-top: 20px;
             font-size: 14px;
-            color: #7f8c8d;
+            color: #555;
             text-align: center;
         }
-        /* Màu giá */
-        .seb-price { background-color: #e67e22; }
-        .eos-price { background-color: #27ae60; }
-        .combo-price { background-color: #8e44ad; }
 
-        /* Popup */
-        .popup {
+        /* Modal Xác nhận */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+        .close {
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .btn-confirm {
+            background: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .btn-confirm:hover { background: #219150; }
+
+        /* Popup Telegram */
+        .telegram-popup {
+            display: none;
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: white;
+            background: #0088cc;
+            color: white;
+            padding: 15px 20px;
             border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            padding: 20px;
-            width: 280px;
-            display: none;
-            z-index: 1000;
-            animation: slideUp 0.3s ease-out;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            font-size: 16px;
+            animation: slideUp 0.5s ease;
         }
         @keyframes slideUp {
             from { transform: translateY(50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-        .popup h3 {
-            margin-top: 0;
-        }
-        .popup button {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .btn-confirm { background: #27ae60; color: white; }
-        .btn-close { background: #e74c3c; color: white; margin-left: 8px; }
     </style>
 </head>
 <body>
     <h1>CỬA HÀNG</h1>
-    
     <div class="product-container">
         <h2>Chọn gói TOOL</h2>
-        
         <div class="product-item">
             <span class="product-name">TOOL SEB</span>
             <span class="product-price seb-price">400.000 VND</span>
             <button class="btn-select" data-price="400000">Chọn</button>
         </div>
-        
         <div class="product-item">
             <span class="product-name">TOOL EOS</span>
             <span class="product-price eos-price">600.000 VND</span>
             <button class="btn-select" data-price="600000">Chọn</button>
         </div>
-        
         <div class="product-item">
             <span class="product-name">TOOL EOS + SEB</span>
             <span class="product-price combo-price">800.000 VND</span>
             <button class="btn-select" data-price="800000">Chọn</button>
         </div>
     </div>
+    <p class="note">Sau khi chọn gói, bạn sẽ được xác nhận thanh toán</p>
 
-    <p class="note">Sau khi chọn gói, hệ thống sẽ chuyển đến trang thanh toán qua QR Code</p>
+    <!-- Modal Xác nhận -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Xác nhận thanh toán</h3>
+            <p id="modalProduct"></p>
+            <button class="btn-confirm">Xác nhận đã chuyển khoản</button>
+        </div>
+    </div>
 
     <!-- Popup Telegram -->
-    <div class="popup" id="telegramPopup">
-        <h3>Liên hệ Telegram</h3>
-        <p>Nhấn xác nhận để mở Telegram hỗ trợ.</p>
-        <button class="btn-confirm" id="confirmBtn">Xác nhận</button>
-        <button class="btn-close" id="closeBtn">Đóng</button>
+    <div class="telegram-popup" id="telegramPopup">
+        📩 Liên hệ Telegram: <a href="https://t.me/hup3m2" style="color:white;font-weight:bold;" target="_blank">@hup3m2</a>
     </div>
 
     <script>
-        const popup = document.getElementById('telegramPopup');
-        const confirmBtn = document.getElementById('confirmBtn');
-        const closeBtn = document.getElementById('closeBtn');
+        const modal = document.getElementById("paymentModal");
+        const modalProduct = document.getElementById("modalProduct");
+        const closeBtn = document.querySelector(".close");
+        const confirmBtn = document.querySelector(".btn-confirm");
+        const telegramPopup = document.getElementById("telegramPopup");
 
         document.querySelectorAll('.btn-select').forEach(button => {
             button.addEventListener('click', function() {
                 const productName = this.parentElement.querySelector('.product-name').textContent;
-                const productPrice = this.getAttribute('data-price');
-                
-                const orderInfo = {
-                    name: productName,
-                    price: productPrice,
-                    formattedPrice: this.parentElement.querySelector('.product-price').textContent,
-                    orderCode: `NAP${new Date().getTime().toString().slice(-6)}`
-                };
-                
-                localStorage.setItem('currentOrder', JSON.stringify(orderInfo));
-                popup.style.display = 'block'; // Hiện popup thay vì chuyển trang ngay
+                const productPrice = this.parentElement.querySelector('.product-price').textContent;
+                modalProduct.textContent = `${productName} - ${productPrice}`;
+                modal.style.display = "block";
             });
         });
 
-        closeBtn.addEventListener('click', () => {
-            popup.style.display = 'none';
-        });
+        closeBtn.onclick = () => { modal.style.display = "none"; };
 
-        confirmBtn.addEventListener('click', () => {
-            window.open('https://t.me/hup3m2', '_blank');
-            popup.style.display = 'none';
-        });
+        window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; };
+
+        confirmBtn.onclick = () => {
+            modal.style.display = "none";
+            telegramPopup.style.display = "block";
+            setTimeout(() => { telegramPopup.style.display = "none"; }, 5000);
+        };
     </script>
 </body>
 </html>
