@@ -3,39 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cửa hàng</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Cửa Hàng Sản Phẩm</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .product-container {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s;
+        }
+        .product-item:hover {
+            background-color: #f9f9f9;
+        }
+        .product-name {
+            font-weight: bold;
+            font-size: 17px;
+            color: #333;
+        }
+        .product-price {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .btn-select {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-select:hover {
+            background-color: #2980b9;
+        }
+        .note {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #7f8c8d;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Cửa hàng sản phẩm</h1>
-        <div class="user-info">
-            <span id="username-display"></span>
-            <button id="logout-btn">Đăng xuất</button>
-        </div>
-    </header>
-
-    <div class="shop-container">
+    <h1>CỬA HÀNG SẢN PHẨM</h1>
+    
+    <div class="product-container">
         <h2>Chọn gói sản phẩm</h2>
-        <div class="products">
-            <div class="product-card" data-id="1" data-price="100000">
-                <h3>Gói cơ bản</h3>
-                <p>100.000 VND</p>
-                <button class="btn select-btn">Chọn</button>
-            </div>
-            <div class="product-card" data-id="2" data-price="200000">
-                <h3>Gói tiêu chuẩn</h3>
-                <p>200.000 VND</p>
-                <button class="btn select-btn">Chọn</button>
-            </div>
-            <div class="product-card" data-id="3" data-price="500000">
-                <h3>Gói cao cấp</h3>
-                <p>500.000 VND</p>
-                <button class="btn select-btn">Chọn</button>
-            </div>
+        
+        <div class="product-item">
+            <span class="product-name">Gói Cơ Bản</span>
+            <span class="product-price">100.000 VND</span>
+            <button class="btn-select" data-price="100000">Chọn</button>
+        </div>
+        
+        <div class="product-item">
+            <span class="product-name">Gói Tiêu Chuẩn</span>
+            <span class="product-price">200.000 VND</span>
+            <button class="btn-select" data-price="200000">Chọn</button>
+        </div>
+        
+        <div class="product-item">
+            <span class="product-name">Gói Cao Cấp</span>
+            <span class="product-price">500.000 VND</span>
+            <button class="btn-select" data-price="500000">Chọn</button>
         </div>
     </div>
 
-    <script src="js/shop.js"></script>
+    <p class="note">Sau khi chọn gói, hệ thống sẽ chuyển đến trang thanh toán qua QR Code</p>
+
+    <script>
+        document.querySelectorAll('.btn-select').forEach(button => {
+            button.addEventListener('click', function() {
+                const productName = this.parentElement.querySelector('.product-name').textContent;
+                const productPrice = this.getAttribute('data-price');
+                
+                // Lưu thông tin sản phẩm
+                const orderInfo = {
+                    name: productName,
+                    price: productPrice,
+                    formattedPrice: this.parentElement.querySelector('.product-price').textContent,
+                    orderCode: `NAP${new Date().getTime().toString().slice(-6)}`
+                };
+                
+                localStorage.setItem('currentOrder', JSON.stringify(orderInfo));
+                window.location.href = 'banking.html';
+            });
+        });
+    </script>
 </body>
 </html>
