@@ -4,177 +4,147 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cửa Hàng Bán TOOL</title>
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkCKhZYZxgjrIUKl7fZ9ssSl919Qs-hfuw9g&s" type="image/png">
     <style>
         body {
             font-family: 'Arial', sans-serif;
+            background: url('https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/08/hinh-nen-anime-cute-1.jpg') no-repeat center center fixed;
+            background-size: cover;
             margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: url('https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/08/hinh-nen-anime-cute-1.jpg') no-repeat center center/cover;
-        }
-        .container {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 30px;
-            width: 500px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            text-align: center;
-            transform: translateX(-150px); /* Dịch sang trái 150px */
+            padding: 0;
         }
         h1 {
-            margin-bottom: 20px;
             color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .product-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            width: 700px;
+            margin-left: 150px; /* Lệch trái 150px */
         }
         .product-item {
             display: grid;
-            grid-template-columns: 1fr auto auto;
+            grid-template-columns: 1fr 200px 80px; /* Tách giá và nút rõ ràng */
             align-items: center;
             padding: 12px 0;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #eee;
         }
-        .product-item:last-child { border-bottom: none; }
+        .product-item:last-child {
+            border-bottom: none;
+        }
         .product-name {
             font-weight: bold;
-            text-align: left;
+            font-size: 17px;
+            color: #333;
         }
         .product-price {
-            color: white;
+            color: #fff;
             font-weight: bold;
-            padding: 8px 15px;
-            border-radius: 8px;
-            animation: colorChange 3s infinite alternate;
-            justify-self: center; /* Đưa giá tiền vào giữa */
-        }
-        .btn-select {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 8px 12px;
+            font-size: 18px;
+            padding: 8px 0;
             border-radius: 6px;
-            cursor: pointer;
+            text-align: center;
+            animation: colorChange 2s infinite alternate;
         }
-        .btn-select:hover { background: #2980b9; }
-
         @keyframes colorChange {
             0% { background-color: #e67e22; }
             33% { background-color: #27ae60; }
             66% { background-color: #8e44ad; }
-            100% { background-color: #e74c3c; }
+            100% { background-color: #3498db; }
         }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-        }
-        .modal-content {
-            background: white;
-            margin: 15% auto;
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 400px;
-            text-align: center;
-        }
-        .close {
-            float: right;
-            cursor: pointer;
-            font-size: 20px;
-        }
-        .btn-confirm {
-            background: #27ae60;
+        .btn-select {
+            background-color: #3498db;
             color: white;
-            padding: 10px 15px;
             border: none;
-            border-radius: 6px;
-            margin-top: 15px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-select:hover {
+            background-color: #2980b9;
+        }
+        .note {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #7f8c8d;
+            text-align: center;
         }
 
         /* Popup Telegram */
-        .telegram-popup {
-            display: none;
+        .popup-tele {
             position: fixed;
             bottom: 20px;
             right: 20px;
             background: #0088cc;
             color: white;
-            padding: 15px 20px;
+            padding: 15px;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            font-size: 16px;
-            animation: slideUp 0.5s ease;
-        }
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            display: none;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>CỬA HÀNG</h1>
+    <h1>CỬA HÀNG</h1>
+    
+    <div class="product-container">
         <h2>Chọn gói TOOL</h2>
+        
         <div class="product-item">
             <span class="product-name">TOOL SEB</span>
             <span class="product-price">400.000 VND</span>
-            <button class="btn-select">Chọn</button>
+            <button class="btn-select" data-price="400000">Chọn</button>
         </div>
+        
         <div class="product-item">
             <span class="product-name">TOOL EOS</span>
             <span class="product-price">600.000 VND</span>
-            <button class="btn-select">Chọn</button>
+            <button class="btn-select" data-price="600000">Chọn</button>
         </div>
+        
         <div class="product-item">
             <span class="product-name">TOOL EOS + SEB</span>
             <span class="product-price">800.000 VND</span>
-            <button class="btn-select">Chọn</button>
+            <button class="btn-select" data-price="800000">Chọn</button>
         </div>
     </div>
 
-    <!-- Modal -->
-    <div id="paymentModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h3>Xác nhận thanh toán</h3>
-            <p id="modalProduct"></p>
-            <button class="btn-confirm">Xác nhận đã chuyển khoản</button>
-        </div>
-    </div>
+    <p class="note">Sau khi chọn gói, hệ thống sẽ chuyển đến trang thanh toán qua QR Code</p>
 
     <!-- Popup Telegram -->
-    <div class="telegram-popup" id="telegramPopup">
-        📩 Liên hệ Telegram: <a href="https://t.me/hup3m2" style="color:white;font-weight:bold;" target="_blank">@hup3m2</a>
+    <div class="popup-tele" id="popupTele">
+        📩 Liên hệ Telegram: <a href="https://t.me/yourusername" style="color:yellow;">@yourusername</a>
     </div>
 
     <script>
-        const modal = document.getElementById("paymentModal");
-        const modalProduct = document.getElementById("modalProduct");
-        const closeBtn = document.querySelector(".close");
-        const confirmBtn = document.querySelector(".btn-confirm");
-        const telegramPopup = document.getElementById("telegramPopup");
-
         document.querySelectorAll('.btn-select').forEach(button => {
             button.addEventListener('click', function() {
                 const productName = this.parentElement.querySelector('.product-name').textContent;
-                const productPrice = this.parentElement.querySelector('.product-price').textContent;
-                modalProduct.textContent = `${productName} - ${productPrice}`;
-                modal.style.display = "block";
+                const productPrice = this.getAttribute('data-price');
+                
+                const orderInfo = {
+                    name: productName,
+                    price: productPrice,
+                    formattedPrice: this.parentElement.querySelector('.product-price').textContent,
+                    orderCode: `NAP${new Date().getTime().toString().slice(-6)}`
+                };
+                
+                localStorage.setItem('currentOrder', JSON.stringify(orderInfo));
+                window.location.href = 'banking.html';
             });
         });
 
-        closeBtn.onclick = () => { modal.style.display = "none"; };
-        window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; };
-
-        confirmBtn.onclick = () => {
-            modal.style.display = "none";
-            telegramPopup.style.display = "block";
-            setTimeout(() => { telegramPopup.style.display = "none"; }, 5000);
-        };
+        // Hàm hiện popup khi xác nhận chuyển khoản
+        function showTelegramPopup() {
+            document.getElementById('popupTele').style.display = 'block';
+        }
+        // Gọi showTelegramPopup() khi khách xác nhận thanh toán ở banking.html
     </script>
 </body>
 </html>
