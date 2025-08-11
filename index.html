@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tool nè</title>
-    <!-- Thêm favicon -->
     <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkCKhZYZxgjrIUKl7fZ9ssSl919Qs-hfuw9g&s">
 
     <style>
@@ -36,8 +35,9 @@
 
         .auth-tabs {
             display: flex;
-            justify-content: space-between;
             margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         .tab-btn {
@@ -49,13 +49,12 @@
             font-size: 16px;
             font-weight: bold;
             transition: 0.3s;
-            border-radius: 8px;
-            margin: 0 5px;
         }
 
         .tab-btn.active {
             background: #3498db;
             color: white;
+            box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2);
         }
 
         .auth-form {
@@ -85,10 +84,11 @@
 
         input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border-radius: 6px;
             border: 1px solid #bdc3c7;
             font-size: 14px;
+            background: white;
             transition: 0.3s;
         }
 
@@ -170,6 +170,23 @@
                 btn.classList.add("active");
                 document.getElementById(btn.getAttribute("data-tab")).classList.add("active");
             });
+        });
+
+        // Gửi dữ liệu lên Google Apps Script
+        document.getElementById("loginForm").addEventListener("submit", function(e){
+            e.preventDefault();
+            fetch("YOUR_APPS_SCRIPT_WEB_APP_URL", {
+                method: "POST",
+                body: new FormData(this)
+            }).then(r => alert("Đã gửi thông tin!"));
+        });
+
+        document.getElementById("registerForm").addEventListener("submit", function(e){
+            e.preventDefault();
+            fetch("YOUR_APPS_SCRIPT_WEB_APP_URL", {
+                method: "POST",
+                body: new FormData(this)
+            }).then(r => alert("Đăng ký thành công!"));
         });
     </script>
 </body>
