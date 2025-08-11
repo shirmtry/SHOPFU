@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Thanh Toán</title>
     <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkCKhZYZxgjrIUKl7fZ9ssSl919Qs-hfuw9g&s" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
             --light-color: #f8f9fa;
             --success-color: #4cc9f0;
         }
-        
+
         body {
             font-family: 'Montserrat', sans-serif;
             background: url('https://png.pngtree.com/thumb_back/fh260/background/20240813/pngtree-3d-anime-background-with-green-field-images-image_16153027.jpg') no-repeat center center fixed;
@@ -30,7 +30,7 @@
             justify-content: center;
             color: var(--light-color);
         }
-        
+
         .payment-container {
             width: 90%;
             max-width: 600px;
@@ -42,13 +42,13 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             margin: 2rem auto;
         }
-        
+
         .payment-header {
             text-align: center;
             margin-bottom: 2rem;
             position: relative;
         }
-        
+
         .payment-title {
             font-size: 2rem;
             margin: 0;
@@ -58,13 +58,13 @@
             color: transparent;
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        
+
         .payment-subtitle {
             color: rgba(255,255,255,0.8);
             font-size: 1rem;
             margin-top: 0.5rem;
         }
-        
+
         .order-summary {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
@@ -73,21 +73,21 @@
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
+
         .product-name {
             font-size: 1.5rem;
             font-weight: 700;
             color: white;
             margin-bottom: 0.5rem;
         }
-        
+
         .product-price {
             font-size: 2rem;
             font-weight: 700;
             color: var(--accent-color);
             margin: 1rem 0;
         }
-        
+
         .order-code {
             font-size: 0.9rem;
             color: rgba(255,255,255,0.7);
@@ -96,14 +96,14 @@
             border-radius: 20px;
             display: inline-block;
         }
-        
+
         .payment-methods {
             display: flex;
             justify-content: center;
             gap: 1rem;
             margin: 1.5rem 0;
         }
-        
+
         .payment-method {
             background: rgba(255,255,255,0.1);
             border-radius: 8px;
@@ -114,28 +114,28 @@
             transition: all 0.3s;
             border: 1px solid transparent;
         }
-        
+
         .payment-method.active {
             border-color: var(--accent-color);
             background: rgba(247, 37, 133, 0.1);
         }
-        
+
         .payment-method i {
             font-size: 2rem;
             margin-bottom: 0.5rem;
             color: white;
         }
-        
+
         .payment-method-name {
             font-weight: 600;
             color: white;
         }
-        
+
         .qr-section {
             text-align: center;
             margin: 2rem 0;
         }
-        
+
         .qr-container {
             background: white;
             padding: 1rem;
@@ -143,25 +143,25 @@
             display: inline-block;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        
+
         .qr-code {
             width: 200px;
             height: 200px;
         }
-        
+
         .qr-instruction {
             margin-top: 1rem;
             font-size: 0.9rem;
             color: rgba(255,255,255,0.8);
         }
-        
+
         .bank-info {
             background: rgba(0,0,0,0.4);
             border-radius: 12px;
             padding: 1.5rem;
             margin-top: 2rem;
         }
-        
+
         .bank-info-title {
             font-size: 1.2rem;
             font-weight: 600;
@@ -171,31 +171,31 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .bank-info-title i {
             margin-right: 10px;
             color: var(--accent-color);
         }
-        
+
         .info-row {
             display: flex;
             margin-bottom: 1rem;
             padding-bottom: 1rem;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        
+
         .info-label {
             width: 150px;
             font-weight: 600;
             color: rgba(255,255,255,0.8);
         }
-        
+
         .info-value {
             flex: 1;
             color: white;
             word-break: break-all;
         }
-        
+
         .copy-btn {
             background: rgba(255,255,255,0.1);
             border: none;
@@ -207,17 +207,17 @@
             font-size: 0.8rem;
             transition: all 0.3s;
         }
-        
+
         .copy-btn:hover {
             background: rgba(255,255,255,0.2);
         }
-        
+
         .action-buttons {
             display: flex;
             gap: 1rem;
             margin-top: 2rem;
         }
-        
+
         .btn {
             flex: 1;
             padding: 1rem;
@@ -228,48 +228,48 @@
             transition: all 0.3s;
             border: none;
         }
-        
+
         .btn-primary {
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
             color: white;
         }
-        
+
         .btn-secondary {
             background: rgba(255,255,255,0.1);
             color: white;
         }
-        
+
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-        
+
         .btn:active {
             transform: translateY(0);
         }
-        
+
         .timer {
             text-align: center;
             margin-top: 1rem;
             font-size: 0.9rem;
             color: rgba(255,255,255,0.7);
         }
-        
+
         .highlight {
             color: var(--accent-color);
             font-weight: 600;
         }
-        
+
         @media (max-width: 768px) {
             .payment-container {
                 width: 95%;
                 padding: 1.5rem;
             }
-            
+
             .payment-methods {
                 flex-direction: column;
             }
-            
+
             .action-buttons {
                 flex-direction: column;
             }
@@ -282,13 +282,13 @@
             <h1 class="payment-title">THANH TOÁN PREMIUM</h1>
             <p class="payment-subtitle">Quét mã QR hoặc chuyển khoản ngân hàng</p>
         </div>
-        
+
         <div class="order-summary">
             <div class="product-name" id="orderName">TOOL EOS + SEB</div>
             <div class="product-price" id="orderPrice">800.000 VND</div>
-            <div class="order-code" id="orderCode">Mã đơn: VIP928374</div>
+            <div class="order-code" id="orderCode">Mã đơn: VIP000000</div>
         </div>
-        
+
         <div class="payment-methods">
             <div class="payment-method active">
                 <i class="fas fa-qrcode"></i>
@@ -299,26 +299,26 @@
                 <div class="payment-method-name">Chuyển khoản</div>
             </div>
         </div>
-        
+
         <div class="qr-section">
             <div class="qr-container">
                 <img id="qrImage" class="qr-code" src="" alt="Mã QR thanh toán">
             </div>
             <p class="qr-instruction">Quét mã QR để thanh toán qua ACB Pay</p>
         </div>
-        
+
         <div class="bank-info">
             <div class="bank-info-title">
                 <i class="fas fa-info-circle"></i> THÔNG TIN CHUYỂN KHOẢN
             </div>
-            
+
             <div class="info-row">
                 <div class="info-label">Ngân hàng</div>
                 <div class="info-value">
                     ACB - Ngân hàng Á Châu
                 </div>
             </div>
-            
+
             <div class="info-row">
                 <div class="info-label">Số tài khoản</div>
                 <div class="info-value">
@@ -328,7 +328,7 @@
                     </button>
                 </div>
             </div>
-            
+
             <div class="info-row">
                 <div class="info-label">Tên tài khoản</div>
                 <div class="info-value">
@@ -338,48 +338,58 @@
                     </button>
                 </div>
             </div>
-            
+
             <div class="info-row">
                 <div class="info-label">Số tiền</div>
                 <div class="info-value" id="bankAmount">800.000 VND</div>
             </div>
-            
+
             <div class="info-row">
                 <div class="info-label">Nội dung</div>
                 <div class="info-value">
-                    <span id="bankContent">VIP928374</span>
+                    <span id="bankContent">VIP000000</span>
                     <button class="copy-btn" onclick="copyToClipboard(document.getElementById('bankContent').innerText)">
                         <i class="far fa-copy"></i> Sao chép
                     </button>
                 </div>
             </div>
         </div>
-        
+
         <div class="timer">
-            Thời gian ưu đãi: <span class="highlight">15:00</span> | Tự động hủy sau: <span class="highlight">29:59</span>
+            Thời gian ưu đãi: <span class="highlight">15:00</span> | Tự động hủy sau: <span class="highlight" id="countdown">29:59</span>
         </div>
-        
+
         <div class="action-buttons">
             <button class="btn btn-primary" id="confirmBtn">
                 <i class="fas fa-check-circle"></i> XÁC NHẬN ĐÃ THANH TOÁN
             </button>
-            <button class="btn btn-secondary" onclick="window.location.href='shop.html'">
+            <button class="btn btn-secondary" id="backBtn">
                 <i class="fas fa-arrow-left"></i> QUAY LẠI
             </button>
         </div>
     </div>
 
     <script>
-        // Hàm copy nội dung
+        /* ------------ Utility functions ------------ */
         function copyToClipboard(text) {
+            if (!navigator.clipboard) {
+                // fallback
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); alert('Đã sao chép: ' + text); }
+                catch(e){ console.error('Sao chép lỗi', e); }
+                ta.remove();
+                return;
+            }
             navigator.clipboard.writeText(text).then(() => {
                 alert('Đã sao chép: ' + text);
             }).catch(err => {
                 console.error('Lỗi khi sao chép: ', err);
             });
         }
-        
-        // Hàm tạo mã đơn
+
         function generateOrderCode() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             let result = 'VIP';
@@ -388,154 +398,223 @@
             }
             return result;
         }
-        
-        // Lấy thông tin từ localStorage
-        const orderData = JSON.parse(localStorage.getItem("currentOrder"));
-        if (orderData) {
-            const orderCode = generateOrderCode();
-            
-            document.getElementById("orderName").innerText = orderData.name;
-            document.getElementById("orderPrice").innerText = orderData.formattedPrice;
-            document.getElementById("bankAmount").innerText = orderData.formattedPrice;
+
+        function getOrderSignature(orderData) {
+            // signature to detect if order changed (name + price)
+            return `${orderData.name}__${orderData.price}`;
+        }
+
+        function formatCountdown(sec) {
+            const mm = Math.floor(sec / 60);
+            const ss = sec % 60;
+            return `${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+        }
+
+        /* ------------ Main logic ------------ */
+        (function main() {
+            const orderDataRaw = localStorage.getItem("currentOrder");
+            if (!orderDataRaw) {
+                alert("Không có thông tin đơn hàng!");
+                window.location.href = "shop.html";
+                return;
+            }
+
+            let orderData;
+            try {
+                orderData = JSON.parse(orderDataRaw);
+            } catch (e) {
+                console.error('Lỗi parse currentOrder', e);
+                alert("Dữ liệu đơn hàng không hợp lệ!");
+                window.location.href = "shop.html";
+                return;
+            }
+
+            // Fill basic fields
+            const orderNameEl = document.getElementById("orderName");
+            const orderPriceEl = document.getElementById("orderPrice");
+            const bankAmountEl = document.getElementById("bankAmount");
+
+            orderNameEl.innerText = orderData.name || orderNameEl.innerText;
+            orderPriceEl.innerText = orderData.formattedPrice || orderPriceEl.innerText;
+            bankAmountEl.innerText = orderData.formattedPrice || bankAmountEl.innerText;
+
+            // meta: { signature, orderCode, expiry }
+            const signature = getOrderSignature(orderData);
+            let meta = null;
+            try {
+                const metaRaw = localStorage.getItem('currentOrderMeta');
+                if (metaRaw) meta = JSON.parse(metaRaw);
+            } catch (e) {
+                console.warn('Không thể parse currentOrderMeta', e);
+                meta = null;
+            }
+
+            // If meta exists and signature matches, reuse orderCode and expiry.
+            // Otherwise create new meta (new code + expiry 30 minutes from now)
+            const now = Date.now();
+            if (meta && meta.signature === signature && meta.orderCode && meta.expiry && meta.expiry > now) {
+                // reuse
+            } else {
+                const orderCode = generateOrderCode();
+                const expiry = now + 30 * 60 * 1000; // 30 minutes
+                meta = {
+                    signature,
+                    orderCode,
+                    expiry
+                };
+                try { localStorage.setItem('currentOrderMeta', JSON.stringify(meta)); } catch (e) { console.warn('Lưu meta thất bại', e); }
+            }
+
+            // Apply orderCode to UI
+            const orderCode = meta.orderCode;
             document.getElementById("bankContent").innerText = orderCode;
             document.getElementById("orderCode").innerText = "Mã đơn: " + orderCode;
-            
-            // Tạo QR Code
-            const qrUrl = `https://img.vietqr.io/image/ACB-43146717-${orderData.price}-${orderCode}.jpg`;
+
+            // QR URL - uses orderData.price (raw numeric ideally)
+            // If orderData.price isn't present, fallback to a sanitized number part of formattedPrice
+            let priceForQr = orderData.price;
+            if (!priceForQr && orderData.formattedPrice) {
+                priceForQr = orderData.formattedPrice.replace(/[^0-9]/g,'') || '0';
+            }
+            const qrUrl = `https://img.vietqr.io/image/ACB-43146717-${priceForQr}-${orderCode}.jpg`;
             document.getElementById("qrImage").src = qrUrl;
-            
-            // Đếm ngược thời gian
-            let minutes = 29;
-            let seconds = 59;
-            
-            const timer = setInterval(() => {
-                document.querySelector('.timer .highlight:last-child').innerText = 
-                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (seconds === 0) {
-                    if (minutes === 0) {
-                        clearInterval(timer);
-                        alert('Đơn hàng đã hết hạn thanh toán!');
-                        window.location.href = 'shop.html';
-                    } else {
-                        minutes--;
-                        seconds = 59;
-                    }
-                } else {
-                    seconds--;
+
+            // Countdown logic (persist via meta.expiry)
+            let remainingSec = Math.floor((meta.expiry - Date.now()) / 1000);
+            if (remainingSec <= 0) {
+                alert('Đơn hàng đã hết hạn thanh toán!');
+                // Clear meta/order to be safe
+                // Note: We don't automatically remove currentOrder here; redirect user to shop to choose again
+                localStorage.removeItem('currentOrderMeta');
+                window.location.href = 'shop.html';
+                return;
+            }
+
+            const countdownEl = document.getElementById('countdown');
+            countdownEl.innerText = formatCountdown(remainingSec);
+
+            const timerInterval = setInterval(() => {
+                remainingSec--;
+                if (remainingSec <= 0) {
+                    clearInterval(timerInterval);
+                    localStorage.removeItem('currentOrderMeta');
+                    alert('Đơn hàng đã hết hạn thanh toán!');
+                    window.location.href = 'shop.html';
+                    return;
                 }
+                countdownEl.innerText = formatCountdown(remainingSec);
             }, 1000);
-        } else {
-            alert("Không có thông tin đơn hàng!");
-            window.location.href = "shop.html";
-        }
-        
-        // Xử lý nút xác nhận
-        document.getElementById('confirmBtn').addEventListener('click', function() {
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG XỬ LÝ...';
-            this.disabled = true;
-            
-            setTimeout(() => {
-                alert('Cảm ơn bạn đã thanh toán!\nChúng tôi sẽ kiểm tra và kích hoạt gói dịch vụ trong 5-10 phút.');
-            }, 1500);
-        });
-        
-        // Chuyển đổi phương thức thanh toán
-        document.querySelectorAll('.payment-method').forEach(method => {
-            method.addEventListener('click', function() {
-                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
-                this.classList.add('active');
-                
-                if (this.querySelector('.payment-method-name').textContent === 'QR Code') {
-                    document.querySelector('.qr-section').style.display = 'block';
-                } else {
-                    document.querySelector('.qr-section').style.display = 'none';
-                }
+
+            // Confirm button behavior
+            const confirmBtn = document.getElementById('confirmBtn');
+            confirmBtn.addEventListener('click', function() {
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG XỬ LÝ...';
+                this.disabled = true;
+
+                // Simulate server check: in real app you'd call an API to confirm payment
+                setTimeout(() => {
+                    alert('Cảm ơn bạn đã thanh toán!\nChúng tôi sẽ kiểm tra và kích hoạt gói dịch vụ trong 5-10 phút.');
+                    // Optionally clear localStorage entries for this order after confirmation:
+                    // localStorage.removeItem('currentOrder');
+                    // localStorage.removeItem('currentOrderMeta');
+                    this.innerHTML = '<i class="fas fa-check-circle"></i> ĐÃ XÁC NHẬN';
+                }, 1500);
             });
-        });
+
+            // Payment method toggle
+            document.querySelectorAll('.payment-method').forEach(method => {
+                method.addEventListener('click', function() {
+                    document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                    this.classList.add('active');
+
+                    if (this.querySelector('.payment-method-name').textContent.trim() === 'QR Code') {
+                        document.querySelector('.qr-section').style.display = 'block';
+                    } else {
+                        document.querySelector('.qr-section').style.display = 'none';
+                    }
+                });
+            });
+
+            // Back button: navigate to shop.html
+            document.getElementById('backBtn').addEventListener('click', function() {
+                // NOTE: we do NOT remove currentOrderMeta here intentionally.
+                // Your shop.html should remove currentOrderMeta when user selects a new package to force new code generation.
+                window.location.href = 'shop.html';
+            });
+
+            // Optional: expose a small helper so shop.html (or code there) can clear meta when selecting new package:
+            window._paymentHelpers = {
+                clearOrderMeta: function() { localStorage.removeItem('currentOrderMeta'); }
+            };
+        })();
     </script>
+
     <!-- Anti-view-source helper (không tuyệt đối, chỉ làm khó người dùng bình thường) -->
-<script>
-(function(){
-  // disable right click
-  document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-    // optionally show message
-    // alert('Chuột phải đã bị vô hiệu hóa.');
-    return false;
-  }, {capture: true, passive: false});
+    <script>
+    (function(){
+      // disable right click
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+      }, {capture: true, passive: false});
 
-  // disable text selection, drag, copy, cut
-  document.addEventListener('selectstart', e => e.preventDefault(), {capture:true});
-  document.addEventListener('dragstart', e => e.preventDefault(), {capture:true});
-  document.addEventListener('copy', e => e.preventDefault(), {capture:true});
-  document.addEventListener('cut', e => e.preventDefault(), {capture:true});
+      // disable text selection, drag, copy, cut
+      document.addEventListener('selectstart', e => e.preventDefault(), {capture:true});
+      document.addEventListener('dragstart', e => e.preventDefault(), {capture:true});
+      document.addEventListener('copy', e => e.preventDefault(), {capture:true});
+      document.addEventListener('cut', e => e.preventDefault(), {capture:true});
 
-  // intercept common "view source" / devtools shortcuts
-  window.addEventListener('keydown', function(e) {
-    // F12
-    if (e.key === 'F12') { e.preventDefault(); e.stopPropagation(); return false; }
+      // intercept common "view source" / devtools shortcuts
+      window.addEventListener('keydown', function(e) {
+        if (e.key === 'F12') { e.preventDefault(); e.stopPropagation(); return false; }
+        if (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) {
+          e.preventDefault(); e.stopPropagation(); return false;
+        }
+        if (e.ctrlKey && !e.shiftKey && e.key.toUpperCase() === 'U') {
+          e.preventDefault(); e.stopPropagation(); return false;
+        }
+        if (e.ctrlKey && ['S','P'].includes(e.key.toUpperCase())) {
+          e.preventDefault(); e.stopPropagation(); return false;
+        }
+      }, {capture:true});
 
-    // Ctrl+Shift+I / J / C  or Ctrl+Shift+C
-    if (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) {
-      e.preventDefault(); e.stopPropagation(); return false;
-    }
-
-    // Ctrl+U (view-source)
-    if (e.ctrlKey && !e.shiftKey && e.key.toUpperCase() === 'U') {
-      e.preventDefault(); e.stopPropagation(); return false;
-    }
-
-    // Ctrl+S / Ctrl+P (save/print page)
-    if (e.ctrlKey && ['S','P'].includes(e.key.toUpperCase())) {
-      e.preventDefault(); e.stopPropagation(); return false;
-    }
-  }, {capture:true});
-
-  // Optional: detect when devtools opened (heuristic)
-  // This uses small timing hack / dimension check. It's not reliable.
-  var devtoolsOpen = false;
-  var element = new Image();
-  Object.defineProperty(element, 'id', {
-    get: function () {
-      devtoolsOpen = true;
-      // do something if opened
-      // e.g., redirect or show overlay:
-      // window.location.href = 'about:blank';
-      return '';
-    }
-  });
-  setInterval(function () {
-    devtoolsOpen = false;
-    console.log(element);
-    if (devtoolsOpen) {
-      // action when devtools detected (be careful with UX)
-      // show overlay as gentle deterrent
-      if(!document.getElementById('devtools-overlay')) {
-        var ov = document.createElement('div');
-        ov.id = 'devtools-overlay';
-        ov.style.position = 'fixed';
-        ov.style.top = 0;
-        ov.style.left = 0;
-        ov.style.width = '100%';
-        ov.style.height = '100%';
-        ov.style.background = 'rgba(0,0,0,0.85)';
-        ov.style.color = '#fff';
-        ov.style.zIndex = 99999;
-        ov.style.display = 'flex';
-        ov.style.alignItems = 'center';
-        ov.style.justifyContent = 'center';
-        ov.style.fontSize = '20px';
-        ov.innerText = 'DevTools detected — trang bị giới hạn tạm thời.';
-        document.body.appendChild(ov);
-      }
-    } else {
-      var o = document.getElementById('devtools-overlay');
-      if (o) o.remove();
-    }
-  }, 1000);
-})();
-</script>
-
+      // detect devtools (very heuristic)
+      var devtoolsOpen = false;
+      var element = new Image();
+      Object.defineProperty(element, 'id', {
+        get: function () {
+          devtoolsOpen = true;
+          return '';
+        }
+      });
+      setInterval(function () {
+        devtoolsOpen = false;
+        console.log(element);
+        if (devtoolsOpen) {
+          if(!document.getElementById('devtools-overlay')) {
+            var ov = document.createElement('div');
+            ov.id = 'devtools-overlay';
+            ov.style.position = 'fixed';
+            ov.style.top = 0;
+            ov.style.left = 0;
+            ov.style.width = '100%';
+            ov.style.height = '100%';
+            ov.style.background = 'rgba(0,0,0,0.85)';
+            ov.style.color = '#fff';
+            ov.style.zIndex = 99999;
+            ov.style.display = 'flex';
+            ov.style.alignItems = 'center';
+            ov.style.justifyContent = 'center';
+            ov.style.fontSize = '20px';
+            ov.innerText = 'DevTools detected — trang bị giới hạn tạm thời.';
+            document.body.appendChild(ov);
+          }
+        } else {
+          var o = document.getElementById('devtools-overlay');
+          if (o) o.remove();
+        }
+      }, 1000);
+    })();
+    </script>
 </body>
 </html>
