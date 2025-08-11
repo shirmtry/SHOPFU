@@ -3,86 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanh Toán QR - ACB Bank</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <title>Thanh Toán</title>
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f5f7fa;
-        }
-        .banking-container {
-            max-width: 450px;
-            margin: 20px auto;
-            padding: 25px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        #qrCanvas {
-            border: 1px solid #e0e0e0;
-            padding: 12px;
-            background: white;
+            font-family: 'Arial', sans-serif;
+            max-width: 600px;
             margin: 0 auto;
-            display: block;
-            border-radius: 8px;
+            padding: 20px;
+            background-color: #f5f5f5;
         }
-        .payment-info {
-            background: #f8fafc;
-            padding: 18px;
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .logo {
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .order-summary {
+            background: white;
             border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .order-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .order-price {
+            font-size: 24px;
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .qr-section {
+            text-align: center;
             margin: 25px 0;
-            font-size: 15px;
-            border: 1px solid #eaeaea;
+        }
+        .qr-code {
+            width: 220px;
+            height: 220px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background: white;
+        }
+        .bank-info {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .info-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 12px;
+        }
+        .info-label {
+            width: 140px;
+            font-weight: bold;
+        }
+        .info-value {
+            flex: 1;
+        }
+        .confirm-section {
+            margin-top: 25px;
+            text-align: center;
         }
         .btn-confirm {
-            background: #1a73e8;
+            background-color: #27ae60;
             color: white;
             border: none;
-            padding: 14px;
+            padding: 12px 25px;
+            border-radius: 5px;
             font-size: 16px;
-            border-radius: 8px;
             cursor: pointer;
-            width: 100%;
-            font-weight: 500;
-            transition: all 0.2s;
+            transition: background 0.3s;
         }
         .btn-confirm:hover {
-            background: #0d62c9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(26, 115, 232, 0.2);
+            background-color: #219653;
         }
-        .highlight {
-            color: #d23f31;
-            font-weight: bold;
+        .note {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #7f8c8d;
         }
     </style>
 </head>
 <body>
-    <div class="banking-container">
-        <h1 style="text-align: center; color: #1a73e8; margin-bottom: 25px;">
-            <img src="https://www.acb.com.vn/images/logo.png" alt="ACB Logo" style="height: 30px; vertical-align: middle;">
-            THANH TOÁN QUA QR
-        </h1>
-        
-        <div id="product-display" style="text-align: center; margin-bottom: 20px;">
-            <!-- Product info will be auto-filled -->
-        </div>
-
-        <canvas id="qrCanvas" width="260" height="260"></canvas>
-        
-        <div class="payment-info">
-            <h3 style="margin-top: 0; color: #1a73e8;">THÔNG TIN CHUYỂN KHOẢN</h3>
-            <p>🏦 <strong>Ngân hàng:</strong> ACB - Á Châu</p>
-            <p>🔢 <strong>Số tài khoản:</strong> <span id="acb-account">68686868</span></p>
-            <p>👤 <strong>Tên tài khoản:</strong> <span id="acb-name">CONG TY ABC</span></p>
-            <p>💰 <strong>Số tiền:</strong> <span id="payment-amount" class="highlight">0</span> VND</p>
-            <p>📌 <strong>Nội dung:</strong> <span id="payment-content" class="highlight">NAP_123456</span></p>
-        </div>
-
-        <button id="confirm-payment" class="btn-confirm">XÁC NHẬN ĐÃ CHUYỂN TIỀN</button>
+    <div class="header">
+        <img src="https://www.acb.com.vn/acb/logo-acb-new.svg" alt="ACB Logo" class="logo">
+        <h1>THANH TOÁN QUA QR CODE</h1>
     </div>
 
-    <script src="js/banking.js"></script>
+    <div class="order-summary">
+        <div class="order-name" id="orderName">Gói Cao Cấp</div>
+        <div class="order-price" id="orderPrice">500.000 VND</div>
+    </div>
+
+    <div class="qr-section">
+        <img id="qrImage" class="qr-code" alt="Mã QR thanh toán">
+        <p>Quét mã để thanh toán qua ACB</p>
+    </div>
+
+    <div class="bank-info">
+        <div class="info-title">THÔNG TIN CHUYỂN KHOẢN</div>
+        
+        <div class="info-row">
+            <div class="info-label">Ngân hàng:</div>
+            <div class="info-value">ACB - Ngân hàng Á Châu</div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">Số tài khoản:</div>
+            <div class="info-value" id="accountNumber">68686868</div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">Tên tài khoản:</div>
+            <div class="info-value">CÔNG TY ABC</div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">Số tiền:</div>
+            <div class="info-value" id="amount">500.000 VND</div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">Nội dung:</div>
+            <div class="info-value" id="orderCode">NAP123456</div>
+        </div>
+    </div>
+
+    <div class="confirm-section">
+        <button class="btn-confirm" id="confirmBtn">XÁC NHẬN ĐÃ THANH TOÁN</button>
+        <p class="note">Vui lòng chuyển khoản chính xác nội dung để hệ thống tự động xác nhận</p>
+    </div>
+
+    <script>
+        // Lấy thông tin đơn hàng
+        const order = JSON.parse(localStorage.getItem('currentOrder'));
+        
+        // Thông tin tài khoản ACB (THAY BẰNG THÔNG TIN THẬT CỦA BẠN)
+        const bankInfo = {
+            bankId: "ACB",
+            accountNumber: "43146717", // Số tài khoản thật
+            accountName: "ĐINH TẤN HUY" // Tên tài khoản
+        };
+
+        // Hiển thị thông tin đơn hàng
+        if (order) {
+            document.getElementById('orderName').textContent = order.name;
+            document.getElementById('orderPrice').textContent = order.formattedPrice;
+            document.getElementById('amount').textContent = order.formattedPrice;
+            document.getElementById('orderCode').textContent = order.orderCode;
+            document.getElementById('accountNumber').textContent = bankInfo.accountNumber;
+            
+            // Tạo mã QR qua API VietQR
+            const qrUrl = `https://img.vietqr.io/image/${bankInfo.bankId}-${bankInfo.accountNumber}-${order.price}-${order.orderCode}.jpg?accountName=${encodeURIComponent(bankInfo.accountName)}`;
+            document.getElementById('qrImage').src = qrUrl;
+        }
+
+        // Xử lý nút xác nhận
+        document.getElementById('confirmBtn').addEventListener('click', function() {
+            alert('Cảm ơn bạn đã thanh toán!\nĐơn hàng sẽ được xử lý trong 5-10 phút.');
+            // Có thể thêm code gửi thông báo về server tại đây
+        });
+    </script>
 </body>
 </html>
