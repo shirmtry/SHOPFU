@@ -1,116 +1,137 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cửa Hàng Bán TOOL</title>
-    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkCKhZYZxgjrIUKl7fZ9ssSl919Qs-hfuw9g&s" type="image/png">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: url('https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/08/hinh-nen-anime-cute-1.jpg') no-repeat center center fixed;
-            background-size: cover;
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .product-container {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            width: 700px;
-            margin-left: 150px; /* Lệch trái 150px */
-        }
-        .product-item {
-            display: grid;
-            grid-template-columns: 1fr 200px 80px; /* Tách giá và nút rõ ràng */
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
-        }
-        .product-item:last-child {
-            border-bottom: none;
-        }
-        .product-name {
-            font-weight: bold;
-            font-size: 17px;
-            color: #333;
-        }
-        .product-price {
-            color: #fff;
-            font-weight: bold;
-            font-size: 18px;
-            padding: 8px 0;
-            border-radius: 6px;
-            text-align: center;
-            animation: colorChange 2s infinite alternate;
-        }
-        @keyframes colorChange {
-            0% { background-color: #e67e22; }
-            33% { background-color: #27ae60; }
-            66% { background-color: #8e44ad; }
-            100% { background-color: #3498db; }
-        }
-        .btn-select {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .btn-select:hover {
-            background-color: #2980b9;
-        }
-        .note {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #7f8c8d;
-            text-align: center;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cửa Hàng Bán TOOL</title>
+<link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkCKhZYZxgjrIUKl7fZ9ssSl919Qs-hfuw9g&s" type="image/png">
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background: url('https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/08/hinh-nen-anime-cute-1.jpg') no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+    }
+    h1 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 2px white;
+    }
+    .product-container {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        width: 700px;
+        margin-left: 150px; /* Lệch trái 150px */
+    }
+    .product-item {
+        display: grid;
+        grid-template-columns: 1fr auto; 
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .product-item:last-child {
+        border-bottom: none;
+    }
+    .product-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .product-name {
+        font-weight: bold;
+        font-size: 18px;
+        color: #333;
+    }
+    .product-price {
+        color: #fff;
+        font-weight: bold;
+        font-size: 18px;
+        margin-top: 5px;
+        padding: 8px 15px;
+        border-radius: 6px;
+        animation: colorChange 2s infinite alternate;
+        text-align: center;
+        min-width: 140px;
+    }
+    @keyframes colorChange {
+        0% { background-color: #e67e22; }
+        33% { background-color: #27ae60; }
+        66% { background-color: #8e44ad; }
+        100% { background-color: #3498db; }
+    }
+    .btn-select {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .btn-select:hover {
+        background-color: #2980b9;
+    }
+    .note {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #7f8c8d;
+        text-align: center;
+        text-shadow: 1px 1px 2px white;
+    }
 
-        /* Popup Telegram */
-        .popup-tele {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #0088cc;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            display: none;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-            font-size: 14px;
-        }
-    </style>
+    /* Popup Telegram */
+    .popup-tele {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #0088cc;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        display: none;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        font-size: 14px;
+    }
+    .popup-tele a {
+        color: yellow;
+        text-decoration: none;
+        font-weight: bold;
+    }
+</style>
 </head>
 <body>
     <h1>CỬA HÀNG</h1>
     
     <div class="product-container">
-        <h2>Chọn gói TOOL</h2>
+        <h2 style="text-align:center;">Chọn gói TOOL</h2>
         
         <div class="product-item">
-            <span class="product-name">TOOL SEB</span>
-            <span class="product-price">400.000 VND</span>
+            <div class="product-details">
+                <span class="product-name">TOOL SEB</span>
+                <span class="product-price">400.000 VND</span>
+            </div>
             <button class="btn-select" data-price="400000">Chọn</button>
         </div>
         
         <div class="product-item">
-            <span class="product-name">TOOL EOS</span>
-            <span class="product-price">600.000 VND</span>
+            <div class="product-details">
+                <span class="product-name">TOOL EOS</span>
+                <span class="product-price">600.000 VND</span>
+            </div>
             <button class="btn-select" data-price="600000">Chọn</button>
         </div>
         
         <div class="product-item">
-            <span class="product-name">TOOL EOS + SEB</span>
-            <span class="product-price">800.000 VND</span>
+            <div class="product-details">
+                <span class="product-name">TOOL EOS + SEB</span>
+                <span class="product-price">800.000 VND</span>
+            </div>
             <button class="btn-select" data-price="800000">Chọn</button>
         </div>
     </div>
@@ -119,7 +140,7 @@
 
     <!-- Popup Telegram -->
     <div class="popup-tele" id="popupTele">
-        📩 Liên hệ Telegram: <a href="https://t.me/yourusername" style="color:yellow;">@yourusername</a>
+        📩 Liên hệ Telegram: <a href="https://t.me/yourusername">@yourusername</a>
     </div>
 
     <script>
@@ -140,11 +161,10 @@
             });
         });
 
-        // Hàm hiện popup khi xác nhận chuyển khoản
+        // Hàm hiện popup khi xác nhận chuyển khoản (gọi ở banking.html)
         function showTelegramPopup() {
             document.getElementById('popupTele').style.display = 'block';
         }
-        // Gọi showTelegramPopup() khi khách xác nhận thanh toán ở banking.html
     </script>
 </body>
 </html>
