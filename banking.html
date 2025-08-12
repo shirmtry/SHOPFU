@@ -619,7 +619,7 @@
             const now = Date.now();
             if (!meta || meta.signature !== signature || !meta.orderCode || !meta.expiry || meta.expiry <= now) {
                 const orderCode = generateOrderCode();
-                const expiry = now + 15 * 60 * 1000; // 15 minutes
+                const expiry = now + 5 * 60 * 1000; // 15 minutes
                 meta = { signature, orderCode, expiry };
                 
                 try {
