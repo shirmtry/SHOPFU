@@ -27,7 +27,7 @@
             justify-content:center;
             color:var(--light-color);
             flex-direction: column;
-            padding: 2rem 0;
+            padding: 20px;
         }
         .thankyou-container{
             width:90%;
@@ -77,13 +77,13 @@
         }
         .toast.show{opacity:1;}
         iframe.tele-frame {
+            margin-top: 20px;
             width: 100%;
             max-width: 600px;
             height: 300px;
             border: none;
-            margin-top: 2rem;
             border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            overflow: hidden;
         }
     </style>
 </head>
@@ -133,7 +133,7 @@
         document.getElementById('orderId').textContent = orderMeta.orderCode || 'N/A';
         document.getElementById('productName').textContent = orderData.name || 'N/A';
         document.getElementById('orderAmount').textContent = orderData.formattedPrice || 'N/A';
-        document.getElementById('orderTime').textContent = orderMeta.orderTime || 'N/A';
+        document.getElementById('orderTime').textContent = orderMeta.orderTime || new Date().toLocaleString('vi-VN');
 
         document.getElementById('submitContact').addEventListener('click', () => {
             const telegram = document.getElementById('telegram').value.trim();
@@ -178,28 +178,6 @@
                 .catch(() => showToast('Có lỗi khi gửi dữ liệu!'));
         }
     });
-    </script>
-
-    <script>
-(function(){
-  document.addEventListener('contextmenu', e => e.preventDefault(), {capture: true, passive: false});
-  document.addEventListener('selectstart', e => e.preventDefault(), {capture:true});
-  document.addEventListener('dragstart', e => e.preventDefault(), {capture:true});
-  document.addEventListener('copy', e => e.preventDefault(), {capture:true});
-  document.addEventListener('cut', e => e.preventDefault(), {capture:true});
-  window.addEventListener('keydown', function(e) {
-    if (e.key === 'F12') { e.preventDefault(); e.stopPropagation(); return false; }
-    if (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) {
-      e.preventDefault(); e.stopPropagation(); return false;
-    }
-    if (e.ctrlKey && !e.shiftKey && e.key.toUpperCase() === 'U') {
-      e.preventDefault(); e.stopPropagation(); return false;
-    }
-    if (e.ctrlKey && ['S','P'].includes(e.key.toUpperCase())) {
-      e.preventDefault(); e.stopPropagation(); return false;
-    }
-  }, {capture:true});
-})();
     </script>
 </body>
 </html>
