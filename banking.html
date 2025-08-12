@@ -410,6 +410,12 @@
             return `${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
         }
 
+        function extractAmountNumber(formattedPrice) {
+            // Extract numeric value from formatted price (e.g. "800.000 VND" => 800000)
+            const numStr = formattedPrice.replace(/[^0-9]/g, '');
+            return parseInt(numStr, 10) || 0;
+        }
+
         /* ------------ Main logic ------------ */
         (function main() {
             const orderDataRaw = localStorage.getItem("currentOrder");
@@ -456,7 +462,7 @@
                 // reuse
             } else {
                 const orderCode = generateOrderCode();
-                const expiry = now + 10 * 60 * 1000; // 30 minutes
+                const expiry = now + 15 * 60 * 1000; // 15 minutes
                 meta = {
                     signature,
                     orderCode,
@@ -470,13 +476,9 @@
             document.getElementById("bankContent").innerText = orderCode;
             document.getElementById("orderCode").innerText = "Mã đơn: " + orderCode;
 
-            // QR URL - uses orderData.price (raw numeric ideally)
-            // If orderData.price isn't present, fallback to a sanitized number part of formattedPrice
-            let priceForQr = orderData.price;
-            if (!priceForQr && orderData.formattedPrice) {
-                priceForQr = orderData.formattedPrice.replace(/[^0-9]/g,'') || '0';
-            }
-            const qrUrl = `https://img.vietqr.io/image/ACB-43146717-${priceForQr}-${orderCode}.jpg`;
+            // QR URL - uses amount and order code
+            const amount = extractAmountNumber(orderData.formattedPrice || orderPriceEl.innerText);
+            const qrUrl = `https://img.vietqr.io/image/ACB-43146717-compact2.jpg?amount=${amount}&addInfo=${encodeURIComponent(orderCode)}&accountName=${encodeURIComponent('ĐINH TẤN HUY')}`;
             document.getElementById("qrImage").src = qrUrl;
 
             // Countdown logic (persist via meta.expiry)
@@ -484,7 +486,6 @@
             if (remainingSec <= 0) {
                 alert('Đơn hàng đã hết hạn thanh toán!');
                 // Clear meta/order to be safe
-                // Note: We don't automatically remove currentOrder here; redirect user to shop to choose again
                 localStorage.removeItem('currentOrderMeta');
                 window.location.href = 'shop.html';
                 return;
@@ -515,8 +516,8 @@
                 setTimeout(() => {
                     alert('Cảm ơn bạn đã thanh toán!\nChúng tôi sẽ kiểm tra và kích hoạt gói dịch vụ trong 5-10 phút.');
                     // Optionally clear localStorage entries for this order after confirmation:
-                    // localStorage.removeItem('currentOrder');
-                    // localStorage.removeItem('currentOrderMeta');
+                    localStorage.removeItem('currentOrder');
+                    localStorage.removeItem('currentOrderMeta');
                     this.innerHTML = '<i class="fas fa-check-circle"></i> ĐÃ XÁC NHẬN';
                 }, 1500);
             });
@@ -537,8 +538,6 @@
 
             // Back button: navigate to shop.html
             document.getElementById('backBtn').addEventListener('click', function() {
-                // NOTE: we do NOT remove currentOrderMeta here intentionally.
-                // Your shop.html should remove currentOrderMeta when user selects a new package to force new code generation.
                 window.location.href = 'shop.html';
             });
 
@@ -549,7 +548,7 @@
         })();
     </script>
 
-    <!-- Anti-view-source helper (không tuyệt đối, chỉ làm khó người dùng bình thường) -->
+    <!-- Anti-view-source helper -->
     <script>
     (function(){
       // disable right click
@@ -617,6 +616,5 @@
     })();
     </script>
     <iframe src="tele.html" style="position:fixed; bottom:0; right:0; width:300px; height:80px; border:none; background:transparent; z-index:9999;"></iframe>
-
 </body>
 </html>
