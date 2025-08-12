@@ -696,14 +696,12 @@
 
                 // Simulate payment confirmation
                 setTimeout(() => {
-                    showToast('Thanh toán thành công! Gói sẽ được kích hoạt trong 5-10 phút.');
-                    localStorage.removeItem('currentOrder');
-                    localStorage.removeItem('currentOrderMeta');
-                    
-                    setTimeout(() => {
-                        window.location.href = 'thankyou.html';
-                    }, 2000);
-                }, 2000);
+    showToast('Thanh toán thành công! Gói sẽ được kích hoạt trong 5-10 phút.');
+    
+    setTimeout(() => {
+        window.location.href = 'thankyou.html';
+    }, 2000);
+}, 2000);
             });
 
             // Back button
