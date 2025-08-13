@@ -2,23 +2,24 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Shop Mua Gói - Cao Cấp</title>
+<title>Shop Mua Gói - Sang Trọng</title>
 <style>
   body {
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #f4f4f9, #e9ecef);
+    background: linear-gradient(135deg, #e0eafc, #cfdef3);
     margin: 0;
     padding: 0;
   }
 
   header {
-    background: #1a1a1a;
+    background: linear-gradient(135deg, #1f1c2c, #928dab);
     color: white;
     padding: 20px 40px;
     text-align: center;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
     letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   }
 
   .user-info {
@@ -33,40 +34,47 @@
 
   .shop-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 25px;
     padding: 20px 40px;
-    max-width: 1300px;
+    max-width: 1400px;
     margin: auto;
   }
 
   .package {
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
+    position: relative;
   }
 
   .package:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    transform: translateY(-10px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  }
+
+  .package-icon {
+    font-size: 50px;
+    text-align: center;
+    margin-top: 20px;
   }
 
   .package-header {
     background: linear-gradient(135deg, #007bff, #0056b3);
     color: white;
-    padding: 20px;
+    padding: 15px;
     text-align: center;
     font-size: 20px;
     font-weight: bold;
   }
 
   .price {
-    font-size: 22px;
-    color: #dc3545;
+    font-size: 24px;
+    color: #e63946;
     text-align: center;
     margin: 15px 0;
     font-weight: bold;
@@ -76,18 +84,22 @@
     flex: 1;
     padding: 0 20px 20px 20px;
     font-size: 15px;
-    line-height: 1.5;
+    line-height: 1.6;
+    color: #444;
   }
 
   .btn-buy {
     background: linear-gradient(135deg, #28a745, #218838);
     color: white;
     border: none;
-    padding: 12px;
+    padding: 14px;
     font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
     width: 100%;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    font-weight: bold;
   }
 
   .btn-buy:hover {
@@ -97,25 +109,26 @@
   footer {
     text-align: center;
     padding: 20px;
-    color: #777;
+    color: #555;
     font-size: 14px;
     background: #f8f9fa;
-    margin-top: 30px;
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
   }
 </style>
 </head>
 <body>
 
-<header>🛒 Cửa Hàng Tool & Dịch Vụ</header>
+<header>🛒 Cửa Hàng Tool & Dịch Vụ Cao Cấp</header>
 
 <div class="user-info">
   Xin chào, <span id="username">Đang tải...</span> | Số dư: <span id="balance">0</span> VND
 </div>
 
 <div class="shop-container">
-  <!-- Gói 1 -->
   <div class="package">
     <div class="package-header">Gói Basic</div>
+    <div class="package-icon">💻</div>
     <div class="price">100,000 VND</div>
     <div class="features">
       - TOOL SEB bản cơ bản<br>
@@ -125,9 +138,9 @@
     <button class="btn-buy" data-price="100000" data-package="basic">Mua ngay</button>
   </div>
 
-  <!-- Gói 2 -->
   <div class="package">
     <div class="package-header">Gói VIP1</div>
+    <div class="package-icon">🚀</div>
     <div class="price">200,000 VND</div>
     <div class="features">
       - TOOL EOS<br>
@@ -137,9 +150,9 @@
     <button class="btn-buy" data-price="200000" data-package="vip1">Mua ngay</button>
   </div>
 
-  <!-- Gói 3 -->
   <div class="package">
     <div class="package-header">Gói VIP2</div>
+    <div class="package-icon">⚡</div>
     <div class="price">300,000 VND</div>
     <div class="features">
       - TOOL EOS + SEB<br>
@@ -149,9 +162,9 @@
     <button class="btn-buy" data-price="300000" data-package="vip2">Mua ngay</button>
   </div>
 
-  <!-- Gói 4 -->
   <div class="package">
     <div class="package-header">Gói VIP3</div>
+    <div class="package-icon">👑</div>
     <div class="price">500,000 VND</div>
     <div class="features">
       - TOOL EOS + SEB PRO<br>
@@ -161,9 +174,9 @@
     <button class="btn-buy" data-price="500000" data-package="vip3">Mua ngay</button>
   </div>
 
-  <!-- Gói 5 -->
   <div class="package">
     <div class="package-header">Gói Hỗ Trợ</div>
+    <div class="package-icon">🤝</div>
     <div class="price">50,000 VND</div>
     <div class="features">
       - Hỗ trợ kỹ thuật<br>
@@ -173,9 +186,9 @@
     <button class="btn-buy" data-price="50000" data-package="support">Mua ngay</button>
   </div>
 
-  <!-- Gói 6 -->
   <div class="package">
     <div class="package-header">App Banking Ảo</div>
+    <div class="package-icon">🏦</div>
     <div class="price">150,000 VND</div>
     <div class="features">
       - Fake bill chuyển khoản<br>
@@ -185,9 +198,9 @@
     <button class="btn-buy" data-price="150000" data-package="fakebill">Mua ngay</button>
   </div>
 
-  <!-- Gói 7 -->
   <div class="package">
     <div class="package-header">Gói Bảo Mật</div>
+    <div class="package-icon">🛡️</div>
     <div class="price">250,000 VND</div>
     <div class="features">
       - Chống bị phát hiện tool<br>
