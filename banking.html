@@ -68,7 +68,7 @@
 
   <div>
     <a href="shop.html" class="btn btn-back">⬅ Quay lại Shop</a>
-    <a href="thankyou.html" class="btn btn-confirm">✅ Xác nhận đã thanh toán</a>
+    <a href="#" id="confirmBtn" class="btn btn-confirm">✅ Xác nhận đã thanh toán</a>
   </div>
 </div>
 
@@ -96,10 +96,32 @@
   document.getElementById("amountDisplay").textContent = amount.toLocaleString() + " VND";
 
   // Tạo QR VietQR cho ACB
-  const accountNumber = "43146717"; // <-- Thay bằng số tài khoản ACB thật
+  const accountNumber = "43146717"; // Số tài khoản ACB
   const bankCode = "970416"; // mã ngân hàng ACB
   const qrUrl = `https://img.vietqr.io/image/${bankCode}-${accountNumber}-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(packageName)}`;
   document.getElementById("qrImage").src = qrUrl;
+
+  // Xử lý khi xác nhận thanh toán
+  document.getElementById("confirmBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    const orderCode = 'ORD' + Date.now();
+
+    const orderData = {
+      name: packageName,
+      formattedPrice: amount.toLocaleString() + ' VND'
+    };
+    const orderMeta = {
+      orderCode: orderCode,
+      orderTime: new Date().toLocaleString('vi-VN')
+    };
+
+    // Lưu vào localStorage
+    localStorage.setItem('currentOrder', JSON.stringify(orderData));
+    localStorage.setItem('currentOrderMeta', JSON.stringify(orderMeta));
+
+    // Chuyển sang thankyou.html
+    window.location.href = 'thankyou.html';
+  });
 </script>
 
 </body>
