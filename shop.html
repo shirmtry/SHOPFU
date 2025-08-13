@@ -1,563 +1,166 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PREMIUM TOOL SHOP</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --primary: #8b5cf6;
-      --secondary: #ec4899;
-      --dark: #0f172a;
-      --dark-light: #1e293b;
-      --text: #f8fafc;
-      --text-light: #94a3b8;
-    }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      margin: 0;
-      background: var(--dark);
-      color: var(--text);
-      line-height: 1.6;
-      user-select: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .header {
-      text-align: center;
-      margin-bottom: 30px;
-      position: relative;
-    }
-    .header h1 {
-      font-size: 2.8rem;
-      background: linear-gradient(to right, var(--secondary), var(--primary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin: 0;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    }
-    .header::after {
-      content: "";
-      display: block;
-      width: 100px;
-      height: 4px;
-      background: linear-gradient(to right, var(--secondary), var(--primary));
-      margin: 10px auto;
-      border-radius: 2px;
-    }
-    .user-info {
-      display: flex;
-      justify-content: space-between;
-      background: var(--dark-light);
-      padding: 15px 25px;
-      border-radius: 10px;
-      margin-bottom: 30px;
-      align-items: center;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .user-greeting {
-      font-size: 1.2rem;
-    }
-    .user-balance {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 10px 20px;
-      border-radius: 5px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .section-title {
-      font-size: 1.8rem;
-      color: var(--secondary);
-      margin: 40px 0 25px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 25px;
-      margin-bottom: 25px;
-    }
-    .support-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 25px;
-    }
-    .tool-card {
-      background: var(--dark-light);
-      padding: 25px;
-      border-radius: 12px;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .tool-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-      border-color: var(--primary);
-    }
-    .tool-card h3 {
-      margin-top: 0;
-      color: var(--primary);
-      font-size: 1.4rem;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-      padding-bottom: 12px;
-      margin-bottom: 15px;
-    }
-    .tool-features {
-      list-style: none;
-      padding: 0;
-      color: var(--text-light);
-      min-height: 140px;
-      margin-bottom: 20px;
-    }
-    .tool-features li {
-      margin-bottom: 10px;
-      padding-left: 25px;
-      position: relative;
-      line-height: 1.5;
-    }
-    .tool-features li:before {
-      content: "•";
-      color: var(--secondary);
-      position: absolute;
-      left: 10px;
-      font-size: 1.2rem;
-    }
-    .tool-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 20px;
-    }
-    .price-amount {
-      font-weight: 700;
-      font-size: 1.6rem;
-      color: var(--secondary);
-    }
-    .btn-buy {
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 1rem;
-    }
-    .btn-buy:hover {
-      opacity: 0.9;
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
-    }
-    .note-box {
-      background: var(--dark-light);
-      padding: 25px;
-      border-radius: 12px;
-      margin-top: 40px;
-      border-left: 5px solid var(--secondary);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .note-box h3 {
-      margin-top: 0;
-      color: var(--secondary);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.4rem;
-    }
-    .note-box ul {
-      padding-left: 25px;
-      color: var(--text-light);
-      line-height: 1.7;
-    }
-    .note-box li {
-      margin-bottom: 10px;
-    }
-    .support-card {
-      background: var(--dark-light);
-      padding: 30px;
-      border-radius: 12px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .support-card h3 {
-      color: var(--primary);
-      margin-top: 0;
-      margin-bottom: 15px;
-      font-size: 1.4rem;
-    }
-    .support-icon {
-      font-size: 3rem;
-      color: var(--secondary);
-      margin-bottom: 20px;
-    }
-    .support-card p {
-      margin: 8px 0;
-      line-height: 1.6;
-    }
-    .support-card strong {
-      color: var(--text);
-    }
-    .contact-link {
-      color: var(--primary);
-      text-decoration: none;
-      transition: color 0.3s;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .contact-link:hover {
-      color: var(--secondary);
-      text-decoration: underline;
-    }
-    .banking-card {
-      background: var(--dark-light);
-      padding: 30px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .banking-card h3 {
-      color: var(--primary);
-      margin-top: 0;
-      margin-bottom: 20px;
-      font-size: 1.4rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .bank-info {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    .bank-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px dashed rgba(148, 163, 184, 0.3);
-      align-items: center;
-    }
-    .bank-name {
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .bank-number {
-      color: var(--secondary);
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-    .full-width {
-      grid-column: 1 / -1;
-    }
-    .highlight {
-      color: var(--secondary);
-      font-weight: 600;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Shop Mua Gói</title>
+<style>
+  /* ======= RESET ======= */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Arial, sans-serif;
+    background: #f8f9fa;
+    color: #333;
+    padding: 20px;
+  }
+  a { text-decoration: none; }
+
+  /* ======= HEADER USER ======= */
+  .user-info {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .user-info p { margin-bottom: 6px; }
+  #username { font-weight: bold; color: #007bff; }
+  #balance { font-weight: bold; color: #28a745; }
+
+  /* ======= PACKAGE CARD ======= */
+  .package {
+    background: white;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+  }
+  .package:hover { transform: translateY(-3px); }
+  .package h3 { margin-bottom: 10px; }
+  .price { color: #dc3545; font-weight: bold; margin-bottom: 15px; }
+  .btn-buy {
+    padding: 10px 18px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .btn-buy:hover { background: #218838; }
+
+  /* ======= FOOTER ======= */
+  footer {
+    margin-top: 40px;
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>PREMIUM TOOL SHOP</h1>
-    </div>
 
-    <div class="user-info">
-      <div class="user-greeting" id="user-greeting">Xin chào, <span id="username" class="highlight">Khách</span></div>
-      <div class="user-balance" id="user-balance">
-        <i class="fas fa-wallet"></i> 
-        <span>Số dư: <span id="balance" class="highlight">0</span> VND</span>
-      </div>
-    </div>
+<!-- USER INFO -->
+<div class="user-info">
+  <p>Xin chào, <span id="username">Đang tải...</span></p>
+  <p>Số dư: <span id="balance">0</span> VND</p>
+</div>
 
-    <h2 class="section-title">
-      <i class="fas fa-crown"></i> 
-      <span>GÓI DỊCH VỤ CAO CẤP</span>
-    </h2>
+<!-- PACKAGES -->
+<div class="package">
+  <h3>Gói Basic (TOOL SEB)</h3>
+  <div class="price">100,000 VND</div>
+  <button class="btn-buy" data-price="100000" data-package="basic">Mua ngay</button>
+</div>
 
-    <div class="tools-grid">
-      <div class="tool-card">
-        <h3><i class="fas fa-rocket"></i> TOOL SEB</h3>
-        <ul class="tool-features">
-          <li>Auto chụp ảnh bài tập</li>
-          <li>Auto giải bài chi tiết</li>
-          <li>Auto khoanh đáp án</li>
-          <li>Hỗ trợ 24/7 qua Telegram</li>
-        </ul>
-        <div class="tool-footer">
-          <div class="price-amount">400.000 VND</div>
-          <button class="btn-buy" data-price="400000" data-package="basic">
-            <i class="fas fa-shopping-cart"></i> Mua ngay
-          </button>
-        </div>
-      </div>
+<div class="package">
+  <h3>Gói VIP1 (TOOL EOS)</h3>
+  <div class="price">200,000 VND</div>
+  <button class="btn-buy" data-price="200000" data-package="vip1">Mua ngay</button>
+</div>
 
-      <div class="tool-card">
-        <h3><i class="fas fa-gem"></i> TOOL EOS</h3>
-        <ul class="tool-features">
-          <li>Auto chụp ảnh bài tập</li>
-          <li>Auto giải bài nâng cao</li>
-          <li>Auto khoanh đáp án</li>
-          <li>Hỗ trợ 24/7 qua Telegram</li>
-        </ul>
-        <div class="tool-footer">
-          <div class="price-amount">600.000 VND</div>
-          <button class="btn-buy" data-price="600000" data-package="vip1">
-            <i class="fas fa-crown"></i> Mua ngay
-          </button>
-        </div>
-      </div>
+<div class="package">
+  <h3>Gói VIP2 (TOOL EOS + SEB)</h3>
+  <div class="price">300,000 VND</div>
+  <button class="btn-buy" data-price="300000" data-package="vip2">Mua ngay</button>
+</div>
 
-      <div class="tool-card">
-        <h3><i class="fas fa-star"></i> TOOL EOS + SEB</h3>
-        <ul class="tool-features">
-          <li>Kết hợp cả 2 tool EOS & SEB</li>
-          <li>Auto chụp và giải bài nâng cao</li>
-          <li>Tốc độ xử lý cực nhanh</li>
-          <li>Bản quyền sử dụng 1 kỳ học</li>
-        </ul>
-        <div class="tool-footer">
-          <div class="price-amount">800.000 VND</div>
-          <button class="btn-buy" data-price="800000" data-package="vip2">
-            <i class="fas fa-gem"></i> Mua ngay
-          </button>
-        </div>
-      </div>
-    </div>
+<div class="package">
+  <h3>Gói VIP3 (TOOL EOS + SEB PRO)</h3>
+  <div class="price">500,000 VND</div>
+  <button class="btn-buy" data-price="500000" data-package="vip3">Mua ngay</button>
+</div>
 
-    <div class="tool-card full-width">
-      <h3><i class="fas fa-gem"></i> TOOL EOS + SEB PRO</h3>
-      <ul class="tool-features">
-        <li>Tất cả tính năng EOS & SEB</li>
-        <li>Tính năng độc quyền PRO</li>
-        <li>Hỗ trợ VIP 1-1 với admin</li>
-        <li>Bản quyền vĩnh viễn</li>
-        <li>Cập nhật trọn đời</li>
-      </ul>
-      <div class="tool-footer">
-        <div class="price-amount">3.000.000 VND</div>
-        <button class="btn-buy" data-price="3000000" data-package="vip3">
-          <i class="fas fa-star"></i> Mua ngay
-        </button>
-      </div>
-    </div>
+<!-- FOOTER -->
+<footer>
+  &copy; 2025 Cửa hàng Tool Online - Mọi quyền được bảo lưu.
+</footer>
 
-    <div class="tools-grid">
-      <div class="tool-card">
-        <h3><i class="fas fa-headset"></i> SUPPORT</h3>
-        <ul class="tool-features">
-          <li>Hỗ trợ cài đặt tool</li>
-          <li>Giải đáp thắc mắc 24/7</li>
-          <li>Hướng dẫn sử dụng</li>
-          <li>Bảo hành trọn đời</li>
-        </ul>
-        <div class="tool-footer">
-          <div class="price-amount">100.000 VND</div>
-          <button class="btn-buy" data-price="100000" data-package="Support">
-            <i class="fas fa-headset"></i> Mua ngay
-          </button>
-        </div>
-      </div>
+<script>
+  // Chặn copy & chuột phải
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('selectstart', e => e.preventDefault());
 
-      <div class="tool-card">
-        <h3><i class="fas fa-mobile-alt"></i> APP BANKING ẢO</h3>
-        <ul class="tool-features">
-          <li>Có mọi ngân hàng</li>
-          <li>ACB, MB, TP, VCB</li>
-          <li>Android và IOS đều cài được</li>
-          <li>Giao diện giống thật 100%</li>
-        </ul>
-        <div class="tool-footer">
-          <div class="price-amount">500.000 VND</div>
-          <button class="btn-buy" data-price="500000" data-package="Fake Bill">
-            <i class="fas fa-download"></i> Mua ngay
-          </button>
-        </div>
-      </div>
+  const API_URL = "https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec";
+  let userData = { name: "", balance: 0 };
 
-      <div class="tool-card">
-        <h3><i class="fas fa-shield-alt"></i> BẢO MẬT</h3>
-        <ul class="tool-features">
-          <li>Bảo vệ tài khoản</li>
-          <li>Chống theo dõi</li>
-          <li>Ẩn danh hoàn toàn</li>
-          <li>Hỗ trợ cấu hình</li>
-        </ul>
-        <div class="tool-footer">
-          <div class="price-amount">200.000 VND</div>
-          <button class="btn-buy" data-price="200000" data-package="Security">
-            <i class="fas fa-lock"></i> Mua ngay
-          </button>
-        </div>
-      </div>
-    </div>
+  async function fetchUserData() {
+    try {
+      const username = localStorage.getItem("username") || "";
+      if (!username) {
+        alert("Bạn chưa đăng nhập!");
+        window.location.href = "login.html";
+        return;
+      }
 
-    <h2 class="section-title">
-      <i class="fas fa-headset"></i> 
-      <span>HỖ TRỢ & THANH TOÁN</span>
-    </h2>
+      const res = await fetch(`${API_URL}?username=${encodeURIComponent(username)}`);
+      if (!res.ok) throw new Error("Lỗi mạng");
+      const data = await res.json();
 
-    <div class="support-grid">
-      <div class="support-card">
-        <div class="support-icon">
-          <i class="fab fa-telegram"></i>
-        </div>
-        <h3>HỖ TRỢ KHÁCH HÀNG</h3>
-        <p>Liên hệ với chúng tôi qua Telegram để được hỗ trợ nhanh nhất</p>
-        <p>
-          <strong>Telegram:</strong> 
-          <a href="https://t.me/hup3m2" class="contact-link" target="_blank">
-            <i class="fab fa-telegram"></i>admin
-          </a>
-        </p>
-        <p>
-          <strong>Email:</strong> 
-          <a href="mailto:okokw2958@gmail.com" class="contact-link">
-            <i class="fas fa-envelope"></i>admin
-          </a>
-        </p>
-      </div>
+      if (data && data.name && data.balance !== undefined) {
+        userData = { name: data.name, balance: parseInt(data.balance) };
+        updateUserDisplay();
+      } else {
+        throw new Error("Không tìm thấy dữ liệu người dùng");
+      }
+    } catch (err) {
+      console.error("Lỗi tải dữ liệu:", err);
+      alert("Không thể tải số dư, vui lòng thử lại sau.");
+    }
+  }
 
-      <div class="banking-card">
-        <h3><i class="fas fa-university"></i> THÔNG TIN CHUYỂN KHOẢN</h3>
-        <div class="bank-info">
-          <div class="bank-item">
-            <span class="bank-name"><i class="fas fa-landmark"></i> ACB:</span>
-            <span class="bank-number">43146717</span>
-          </div>
-          <div class="bank-item">
-            <span class="bank-name"><i class="fas fa-landmark"></i> MB Bank:</span>
-            <span class="bank-number">Trắng không có</span>
-          </div>
-          <div class="bank-item">
-            <span class="bank-name"><i class="fas fa-mobile-alt"></i> Momo:</span>
-            <span class="bank-number">0374756847</span>
-          </div>
-          <div class="bank-item">
-            <span class="bank-name"><i class="fas fa-wallet"></i> ZaloPay:</span>
-            <span class="bank-number">Trắng không có</span>
-          </div>
-        </div>
-      </div>
-    </div>
+  function updateUserDisplay() {
+    document.getElementById('username').textContent = userData.name;
+    document.getElementById('balance').textContent = userData.balance.toLocaleString();
+  }
 
-    <div class="note-box">
-      <h3><i class="fas fa-info-circle"></i> LƯU Ý QUAN TRỌNG</h3>
-      <ul>
-        <li>Tất cả các gói dịch vụ sau khi mua sẽ <span class="highlight">không được hoàn trả tiền</span></li>
-        <li>Thời gian kích hoạt: <span class="highlight">Ngay sau khi chuyển khoản thành công</span></li>
-        <li>Liên hệ Telegram: 
-          <a href="https://t.me/hup3m2" class="contact-link" target="_blank">
-            <i class="fab fa-telegram"></i>admin
-          </a> để được hỗ trợ nhanh nhất
-        </li>
-        <li><span class="highlight">Ưu đãi đặc biệt</span> khi mua combo nhiều gói</li>
-        <li>Sau khi chuyển khoản, vui lòng gửi <span class="highlight">mã giao dịch</span> qua Telegram để được kích hoạt</li>
-      </ul>
-    </div>
-  </div>
-
-  <script>
-    // Prevent text selection and copying
-    document.addEventListener('contextmenu', function(e) {
-      e.preventDefault();
-    });
-    
-    document.addEventListener('selectstart', function(e) {
-      e.preventDefault();
-    });
-
-    // Google Apps Script URL
-    const API_URL = "https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec";
-    
-    // User data
-    let userData = {
-      name: "Khách",
-      balance: 0
+  function handleBuyClick() {
+    const price = parseInt(this.getAttribute('data-price'));
+    const packageName = this.getAttribute('data-package');
+    const packageDisplayNames = {
+      'basic': 'Gói Basic (TOOL SEB)',
+      'vip1': 'Gói VIP1 (TOOL EOS)',
+      'vip2': 'Gói VIP2 (TOOL EOS + SEB)',
+      'vip3': 'Gói VIP3 (TOOL EOS + SEB PRO)'
     };
 
-    // Fetch user data from Google Sheet
-    async function fetchUserData() {
-      try {
-        const response = await fetch(API_URL);
-        if (!response.ok) throw new Error('Network error');
-        
-        const data = await response.json();
-        if (data && data.name && data.balance) {
-          userData = {
-            name: data.name,
-            balance: parseInt(data.balance)
-          };
-          updateUserDisplay();
-        } else {
-          throw new Error('Invalid data format');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        document.getElementById('user-greeting').textContent = "Xin chào, Khách";
-        document.getElementById('user-balance').innerHTML = '<i class="fas fa-wallet"></i> Số dư: 0 VND';
-      }
+    if (userData.balance >= price) {
+      alert(`Bạn đã mua thành công ${packageDisplayNames[packageName]} với giá ${price.toLocaleString()} VND`);
+      window.location.href = `thankyou.html?package=${encodeURIComponent(packageName)}`;
+    } else {
+      const needed = price - userData.balance;
+      alert(`Bạn cần nạp thêm ${needed.toLocaleString()} VND để mua gói này`);
+      window.location.href = `banking.html?package=${encodeURIComponent(packageName)}&amount=${needed}`;
     }
+  }
 
-    // Update user info display
-    function updateUserDisplay() {
-      document.getElementById('username').textContent = userData.name;
-      document.getElementById('balance').textContent = userData.balance.toLocaleString();
-    }
-
-    // Handle buy button clicks
-    function handleBuyClick() {
-      const price = parseInt(this.getAttribute('data-price'));
-      const packageName = this.getAttribute('data-package');
-      const packageDisplayNames = {
-        'basic': 'Gói Basic (TOOL SEB)',
-        'vip1': 'Gói VIP1 (TOOL EOS)',
-        'vip2': 'Gói VIP2 (TOOL EOS + SEB)',
-        'vip3': 'Gói VIP3 (TOOL EOS + SEB PRO)',
-        'Support': 'Gói Hỗ trợ',
-        'Fake Bill': 'App Banking ảo',
-        'Security': 'Gói Bảo mật'
-      };
-      
-      if (userData.balance >= price) {
-        alert(`Bạn đã mua thành công ${packageDisplayNames[packageName]} với giá ${price.toLocaleString()} VND`);
-        window.location.href = `thankyou.html?package=${packageName}`;
-      } else {
-        const needed = price - userData.balance;
-        alert(`Bạn cần nạp thêm ${needed.toLocaleString()} VND để mua gói này`);
-        window.location.href = `banking.html?package=${packageName}&amount=${needed}`;
-      }
-    }
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchUserData();
-      
-      // Set up buy buttons
-      document.querySelectorAll('.btn-buy').forEach(btn => {
-        btn.addEventListener('click', handleBuyClick);
-      });
+  document.addEventListener('DOMContentLoaded', () => {
+    fetchUserData();
+    document.querySelectorAll('.btn-buy').forEach(btn => {
+      btn.addEventListener('click', handleBuyClick);
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>
