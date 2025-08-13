@@ -159,8 +159,8 @@
     </div>
 
     <div class="user-info">
-      <div class="user-greeting" id="user-greeting">Xin chào, Nguyễn Văn A</div>
-      <div class="user-balance" id="user-balance"><i class="fas fa-wallet"></i> Số dư: 1,500,000 VND</div>
+      <div class="user-greeting" id="user-greeting">Đang tải thông tin...</div>
+      <div class="user-balance" id="user-balance"><i class="fas fa-wallet"></i> Đang tải số dư...</div>
     </div>
 
     <h2 class="section-title"><i class="fas fa-crown"></i> GÓI DỊCH VỤ CAO CẤP</h2>
@@ -212,22 +212,22 @@
       <div class="price-card">
         <div class="price-amount">400.000 VND</div>
         <div class="price-name">Gói Basic</div>
-        <button class="btn-buy" data-price="400000">Mua ngay</button>
+        <button class="btn-buy" data-price="400000" data-package="basic">Mua ngay</button>
       </div>
       <div class="price-card">
         <div class="price-amount">600.000 VND</div>
         <div class="price-name">Gói VIP1</div>
-        <button class="btn-buy" data-price="600000">Mua ngay</button>
+        <button class="btn-buy" data-price="600000" data-package="vip1">Mua ngay</button>
       </div>
       <div class="price-card">
         <div class="price-amount">800.000 VND</div>
         <div class="price-name">Gói VIP2</div>
-        <button class="btn-buy" data-price="800000">Mua ngay</button>
+        <button class="btn-buy" data-price="800000" data-package="vip2">Mua ngay</button>
       </div>
       <div class="price-card">
         <div class="price-amount">3.000.000 VND</div>
         <div class="price-name">Gói VIP3</div>
-        <button class="btn-buy" data-price="3000000">Mua ngay</button>
+        <button class="btn-buy" data-price="3000000" data-package="vip3">Mua ngay</button>
       </div>
     </div>
 
@@ -243,14 +243,65 @@
   </div>
 
   <script>
-    document.querySelectorAll('.btn-buy').forEach(button => {
-      button.addEventListener('click', function() {
-        const price = this.getAttribute('data-price');
-        const priceText = this.parentElement.querySelector('.price-amount').textContent;
-        const packageName = this.parentElement.querySelector('.price-name').textContent;
+    // URL Apps Script đã triển khai
+    const API_URL = "https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec";
+    
+    // Biến lưu thông tin người dùng
+    let currentUser = {
+      name: "",
+      balance: 0
+    };
+
+    // Hàm lấy thông tin người dùng từ Google Sheet
+    async function fetchUserData() {
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+          throw new Error('Lỗi kết nối đến server');
+        }
+        const data = await response.json();
         
-        alert(`Bạn đã chọn ${packageName} với giá ${priceText}`);
-        // Thêm logic xử lý thanh toán ở đây
+        // Cập nhật thông tin người dùng
+        currentUser = {
+          name: data.name || "Khách",
+          balance: parseInt(data.balance) || 0
+        };
+        
+        // Hiển thị thông tin lên giao diện
+        document.getElementById('user-greeting').innerHTML = `Xin chào, <span style="color: #f472b6;">${currentUser.name}</span>`;
+        document.getElementById('user-balance').innerHTML = `<i class="fas fa-wallet"></i> Số dư: ${currentUser.balance.toLocaleString()} VND`;
+        
+      } catch (error) {
+        console.error('Lỗi khi tải dữ liệu:', error);
+        document.getElementById('user-greeting').innerHTML = "Không thể tải thông tin";
+        document.getElementById('user-balance').innerHTML = `<i class="fas fa-wallet"></i> Số dư: 0 VND`;
+      }
+    }
+
+    // Hàm xử lý khi nhấn nút mua hàng
+    function handleBuyButtonClick() {
+      const price = parseInt(this.getAttribute('data-price'));
+      const packageType = this.getAttribute('data-package');
+      
+      // Kiểm tra số dư
+      if (currentUser.balance >= price) {
+        // Đủ tiền - chuyển thẳng đến trang cảm ơn
+        window.location.href = `thankyou.html?package=${packageType}`;
+      } else {
+        // Không đủ tiền - chuyển đến trang banking
+        const amountNeeded = price - currentUser.balance;
+        window.location.href = `banking.html?package=${packageType}&amount=${amountNeeded}`;
+      }
+    }
+
+    // Khởi tạo khi trang được tải
+    document.addEventListener('DOMContentLoaded', function() {
+      // Lấy thông tin người dùng
+      fetchUserData();
+      
+      // Gắn sự kiện cho các nút mua hàng
+      document.querySelectorAll('.btn-buy').forEach(button => {
+        button.addEventListener('click', handleBuyButtonClick);
       });
     });
   </script>
