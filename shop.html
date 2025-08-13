@@ -27,7 +27,7 @@
       -ms-user-select: none;
     }
     .container {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
     }
@@ -68,11 +68,26 @@
       align-items: center;
       justify-content: center;
     }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
     .tool-card {
       background: var(--dark-light);
       padding: 20px;
       border-radius: 10px;
-      margin-bottom: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
     .tool-card h3 {
       margin-top: 0;
@@ -85,6 +100,7 @@
       list-style: none;
       padding: 0;
       color: var(--text-light);
+      min-height: 120px;
     }
     .tool-features li {
       margin-bottom: 8px;
@@ -139,6 +155,47 @@
       padding-left: 20px;
       color: var(--text-light);
     }
+    .support-card {
+      background: var(--dark-light);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .support-card h3 {
+      color: var(--primary);
+      margin-top: 0;
+    }
+    .support-icon {
+      font-size: 2.5rem;
+      color: var(--secondary);
+      margin-bottom: 15px;
+    }
+    .banking-card {
+      background: var(--dark-light);
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .banking-card h3 {
+      color: var(--primary);
+      margin-top: 0;
+    }
+    .bank-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .bank-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px dashed rgba(148, 163, 184, 0.2);
+    }
+    .bank-name {
+      font-weight: 600;
+    }
+    .bank-number {
+      color: var(--secondary);
+    }
   </style>
 </head>
 <body>
@@ -154,45 +211,47 @@
 
     <h2 class="section-title"><i class="fas fa-crown"></i> GÓI DỊCH VỤ CAO CẤP</h2>
 
-    <div class="tool-card">
-      <h3>TOOL SEB</h3>
-      <ul class="tool-features">
-        <li>Auto chụp ảnh bài tập</li>
-        <li>Auto giải bài chi tiết</li>
-        <li>Auto khoanh đáp án</li>
-        <li>Hỗ trợ 24/7 qua Zalo</li>
-      </ul>
-      <div class="tool-footer">
-        <div class="price-amount">400.000 VND</div>
-        <button class="btn-buy" data-price="400000" data-package="basic"><i class="fas fa-shopping-cart"></i> Mua ngay</button>
+    <div class="tools-grid">
+      <div class="tool-card">
+        <h3>TOOL SEB</h3>
+        <ul class="tool-features">
+          <li>Auto chụp ảnh bài tập</li>
+          <li>Auto giải bài chi tiết</li>
+          <li>Auto khoanh đáp án</li>
+          <li>Hỗ trợ 24/7 qua Zalo</li>
+        </ul>
+        <div class="tool-footer">
+          <div class="price-amount">400.000 VND</div>
+          <button class="btn-buy" data-price="400000" data-package="basic"><i class="fas fa-shopping-cart"></i> Mua ngay</button>
+        </div>
       </div>
-    </div>
 
-    <div class="tool-card">
-      <h3>TOOL EOS</h3>
-      <ul class="tool-features">
-        <li>Auto chụp ảnh bài tập</li>
-        <li>Auto giải bài nâng cao</li>
-        <li>Auto khoanh đáp án</li>
-        <li>Hỗ trợ 24/7 qua Zalo</li>
-      </ul>
-      <div class="tool-footer">
-        <div class="price-amount">600.000 VND</div>
-        <button class="btn-buy" data-price="600000" data-package="vip1"><i class="fas fa-crown"></i> Mua ngay</button>
+      <div class="tool-card">
+        <h3>TOOL EOS</h3>
+        <ul class="tool-features">
+          <li>Auto chụp ảnh bài tập</li>
+          <li>Auto giải bài nâng cao</li>
+          <li>Auto khoanh đáp án</li>
+          <li>Hỗ trợ 24/7 qua Zalo</li>
+        </ul>
+        <div class="tool-footer">
+          <div class="price-amount">600.000 VND</div>
+          <button class="btn-buy" data-price="600000" data-package="vip1"><i class="fas fa-crown"></i> Mua ngay</button>
+        </div>
       </div>
-    </div>
 
-    <div class="tool-card">
-      <h3>TOOL EOS + SEB</h3>
-      <ul class="tool-features">
-        <li>Kết hợp cả 2 tool EOS & SEB</li>
-        <li>Auto chụp và giải bài nâng cao</li>
-        <li>Tốc độ xử lý cực nhanh</li>
-        <li>Bản quyền sử dụng 1 kỳ học</li>
-      </ul>
-      <div class="tool-footer">
-        <div class="price-amount">800.000 VND</div>
-        <button class="btn-buy" data-price="800000" data-package="vip2"><i class="fas fa-gem"></i> Mua ngay</button>
+      <div class="tool-card">
+        <h3>TOOL EOS + SEB</h3>
+        <ul class="tool-features">
+          <li>Kết hợp cả 2 tool EOS & SEB</li>
+          <li>Auto chụp và giải bài nâng cao</li>
+          <li>Tốc độ xử lý cực nhanh</li>
+          <li>Bản quyền sử dụng 1 kỳ học</li>
+        </ul>
+        <div class="tool-footer">
+          <div class="price-amount">800.000 VND</div>
+          <button class="btn-buy" data-price="800000" data-package="vip2"><i class="fas fa-gem"></i> Mua ngay</button>
+        </div>
       </div>
     </div>
 
@@ -211,6 +270,42 @@
       </div>
     </div>
 
+    <h2 class="section-title"><i class="fas fa-headset"></i> HỖ TRỢ & THANH TOÁN</h2>
+
+    <div class="support-grid">
+      <div class="support-card">
+        <div class="support-icon">
+          <i class="fas fa-headset"></i>
+        </div>
+        <h3>HỖ TRỢ KHÁCH HÀNG</h3>
+        <p>Liên hệ với chúng tôi qua Zalo để được hỗ trợ nhanh nhất</p>
+        <p><strong>Zalo:</strong> 0987.654.321</p>
+        <p><strong>Email:</strong> support@premiumtool.com</p>
+      </div>
+
+      <div class="banking-card">
+        <h3><i class="fas fa-university"></i> THÔNG TIN CHUYỂN KHOẢN</h3>
+        <div class="bank-info">
+          <div class="bank-item">
+            <span class="bank-name">MB Bank:</span>
+            <span class="bank-number">1234567890</span>
+          </div>
+          <div class="bank-item">
+            <span class="bank-name">Vietcombank:</span>
+            <span class="bank-number">9876543210</span>
+          </div>
+          <div class="bank-item">
+            <span class="bank-name">Momo:</span>
+            <span class="bank-number">0987654321</span>
+          </div>
+          <div class="bank-item">
+            <span class="bank-name">ZaloPay:</span>
+            <span class="bank-number">0987654321</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="note-box">
       <h3><i class="fas fa-info-circle"></i> Lưu ý quan trọng</h3>
       <ul>
@@ -218,6 +313,7 @@
         <li>Thời gian kích hoạt: Ngay sau khi chuyển khoản thành công</li>
         <li>Liên hệ Zalo: 0987.654.321 để được hỗ trợ nhanh nhất</li>
         <li>Ưu đãi đặc biệt khi mua combo nhiều gói</li>
+        <li>Sau khi chuyển khoản, vui lòng gửi mã giao dịch qua Zalo để được kích hoạt</li>
       </ul>
     </div>
   </div>
@@ -232,7 +328,7 @@
       e.preventDefault();
     });
 
-    // Google Apps Script URL
+    // Google Apps Script URL - Replace with your actual API URL
     const API_URL = "https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec";
     
     // User data
