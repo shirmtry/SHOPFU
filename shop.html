@@ -23,197 +23,149 @@
       line-height: 1.6;
     }
     .container {
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 0 auto;
       padding: 20px;
     }
     .header {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
     }
     .header h1 {
-      font-size: 2.8rem;
+      font-size: 2.5rem;
       background: linear-gradient(to right, var(--secondary), var(--primary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin: 0;
-      padding: 15px 0;
     }
     .user-info {
       display: flex;
       justify-content: space-between;
       background: var(--dark-light);
-      padding: 18px 30px;
-      border-radius: 12px;
-      margin-bottom: 40px;
+      padding: 15px 25px;
+      border-radius: 10px;
+      margin-bottom: 30px;
       align-items: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
     .user-greeting {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
     .user-balance {
       background: rgba(255, 255, 255, 0.1);
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: 700;
-      color: var(--secondary);
+      padding: 8px 15px;
+      border-radius: 5px;
+      font-weight: 600;
     }
     .section-title {
-      font-size: 2rem;
-      color: var(--text);
-      margin: 50px 0 30px;
-      text-align: center;
-      position: relative;
+      font-size: 1.5rem;
+      color: var(--secondary);
+      margin: 30px 0 20px;
+      display: flex;
+      align-items: center;
     }
-    .section-title::after {
-      content: "";
-      display: block;
-      width: 80px;
-      height: 4px;
-      background: linear-gradient(to right, var(--secondary), var(--primary));
-      margin: 15px auto;
-      border-radius: 2px;
+    .section-title i {
+      margin-right: 10px;
     }
-    .tools-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-      gap: 30px;
-      margin-bottom: 50px;
+    .tool-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 30px;
     }
     .tool-card {
       background: var(--dark-light);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-      transition: all 0.3s ease;
-      border: 1px solid rgba(148, 163, 184, 0.1);
-    }
-    .tool-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+      padding: 20px;
+      border-radius: 10px;
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      flex-direction: column;
     }
     .tool-card h3 {
-      font-size: 1.6rem;
-      color: var(--primary);
       margin-top: 0;
-      margin-bottom: 20px;
-      padding-bottom: 15px;
+      color: var(--primary);
+      font-size: 1.3rem;
       border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      padding-bottom: 10px;
+    }
+    .tool-content {
+      display: flex;
+      flex: 1;
     }
     .tool-features {
-      padding-left: 25px;
+      list-style: none;
+      padding: 0;
       color: var(--text-light);
-      margin-bottom: 0;
-      font-size: 1.05rem;
+      flex: 1;
     }
     .tool-features li {
-      margin-bottom: 12px;
+      margin-bottom: 8px;
+      padding-left: 20px;
       position: relative;
     }
-    .tool-features li::before {
-      content: "▸";
+    .tool-features li:before {
+      content: "•";
       color: var(--secondary);
       position: absolute;
-      left: -20px;
-      font-size: 1.1rem;
+      left: 0;
     }
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 25px;
-      margin-bottom: 50px;
-    }
-    .price-card {
-      background: var(--dark-light);
-      padding: 25px;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-      border-top: 4px solid var(--primary);
-    }
-    .price-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    .tool-price {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-left: 20px;
+      border-left: 1px solid rgba(148, 163, 184, 0.2);
+      min-width: 150px;
     }
     .price-amount {
-      font-size: 2rem;
       font-weight: 700;
+      font-size: 1.5rem;
       color: var(--secondary);
-      margin: 20px 0;
-      text-shadow: 0 2px 5px rgba(139, 92, 246, 0.3);
-    }
-    .price-name {
-      font-weight: 700;
-      font-size: 1.3rem;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
     .btn-buy {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      background: linear-gradient(to right, var(--primary), var(--secondary));
       color: white;
       border: none;
-      padding: 14px 25px;
-      border-radius: 8px;
+      padding: 10px 15px;
+      border-radius: 5px;
       cursor: pointer;
-      font-weight: 700;
-      font-size: 1.1rem;
+      font-weight: 600;
       width: 100%;
       transition: all 0.3s;
-      box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
-      text-transform: uppercase;
-      letter-spacing: 1px;
     }
     .btn-buy:hover {
-      opacity: 0.95;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(139, 92, 246, 0.6);
+      opacity: 0.9;
+      transform: translateY(-2px);
     }
     .note-box {
       background: var(--dark-light);
-      padding: 30px;
-      border-radius: 15px;
-      margin-top: 50px;
-      border-left: 5px solid var(--secondary);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 4px solid var(--secondary);
+      margin-top: 30px;
     }
     .note-box h3 {
       margin-top: 0;
       color: var(--secondary);
-      font-size: 1.5rem;
       display: flex;
       align-items: center;
-      gap: 12px;
     }
     .note-box ul {
-      padding-left: 25px;
+      padding-left: 20px;
       color: var(--text-light);
-      margin-bottom: 0;
-      font-size: 1.05rem;
-    }
-    .note-box li {
-      margin-bottom: 10px;
-    }
-    @media (max-width: 1200px) {
-      .tools-container {
-        grid-template-columns: 1fr 1fr;
-      }
-      .pricing-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
     }
     @media (max-width: 768px) {
-      .tools-container {
-        grid-template-columns: 1fr;
+      .tool-content {
+        flex-direction: column;
       }
-      .pricing-grid {
-        grid-template-columns: 1fr;
-      }
-      .header h1 {
-        font-size: 2.2rem;
-      }
-      .section-title {
-        font-size: 1.7rem;
+      .tool-price {
+        border-left: none;
+        border-top: 1px solid rgba(148, 163, 184, 0.2);
+        padding-left: 0;
+        padding-top: 20px;
+        margin-top: 20px;
       }
     }
   </style>
@@ -229,71 +181,72 @@
       <div class="user-balance" id="user-balance"><i class="fas fa-wallet"></i> Số dư: <span id="balance">0</span> VND</div>
     </div>
 
-    <h2 class="section-title">GÓI DỊCH VỤ CAO CẤP</h2>
+    <h2 class="section-title"><i class="fas fa-crown"></i> GÓI DỊCH VỤ CAO CẤP</h2>
 
-    <div class="tools-container">
+    <div class="tool-container">
       <div class="tool-card">
         <h3>TOOL SEB</h3>
-        <ul class="tool-features">
-          <li>Auto chụp ảnh bài tập</li>
-          <li>Auto giải bài chi tiết</li>
-          <li>Auto khoanh đáp án</li>
-          <li>Hỗ trợ 24/7 qua Zalo</li>
-        </ul>
+        <div class="tool-content">
+          <ul class="tool-features">
+            <li>Auto chụp ảnh bài tập</li>
+            <li>Auto giải bài chi tiết</li>
+            <li>Auto khoanh đáp án</li>
+            <li>Hỗ trợ 24/7 qua Zalo</li>
+          </ul>
+          <div class="tool-price">
+            <div class="price-amount">400.000 VND</div>
+            <button class="btn-buy" data-price="400000" data-package="basic"><i class="fas fa-shopping-cart"></i> Mua ngay</button>
+          </div>
+        </div>
       </div>
 
       <div class="tool-card">
         <h3>TOOL EOS</h3>
-        <ul class="tool-features">
-          <li>Auto chụp ảnh bài tập</li>
-          <li>Auto giải bài nâng cao</li>
-          <li>Auto khoanh đáp án</li>
-          <li>Hỗ trợ 24/7 qua Zalo</li>
-        </ul>
+        <div class="tool-content">
+          <ul class="tool-features">
+            <li>Auto chụp ảnh bài tập</li>
+            <li>Auto giải bài nâng cao</li>
+            <li>Auto khoanh đáp án</li>
+            <li>Hỗ trợ 24/7 qua Zalo</li>
+          </ul>
+          <div class="tool-price">
+            <div class="price-amount">600.000 VND</div>
+            <button class="btn-buy" data-price="600000" data-package="vip1"><i class="fas fa-crown"></i> Mua ngay</button>
+          </div>
+        </div>
       </div>
 
       <div class="tool-card">
         <h3>TOOL EOS + SEB</h3>
-        <ul class="tool-features">
-          <li>Kết hợp cả 2 tool EOS & SEB</li>
-          <li>Auto chụp và giải bài nâng cao</li>
-          <li>Tốc độ xử lý cực nhanh</li>
-          <li>Bản quyền sử dụng 1 kỳ học</li>
-        </ul>
+        <div class="tool-content">
+          <ul class="tool-features">
+            <li>Kết hợp cả 2 tool EOS & SEB</li>
+            <li>Auto chụp và giải bài nâng cao</li>
+            <li>Tốc độ xử lý cực nhanh</li>
+            <li>Bản quyền sử dụng 1 kỳ học</li>
+          </ul>
+          <div class="tool-price">
+            <div class="price-amount">800.000 VND</div>
+            <button class="btn-buy" data-price="800000" data-package="vip2"><i class="fas fa-gem"></i> Mua ngay</button>
+          </div>
+        </div>
       </div>
 
       <div class="tool-card">
         <h3>TOOL EOS + SEB PRO</h3>
-        <ul class="tool-features">
-          <li>Tất cả tính năng EOS & SEB</li>
-          <li>Tính năng độc quyền PRO</li>
-          <li>Hỗ trợ VIP 1-1 với admin</li>
-          <li>Bản quyền vĩnh viễn</li>
-          <li>Cập nhật trọn đời</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="pricing-grid">
-      <div class="price-card">
-        <div class="price-amount">400.000 VND</div>
-        <div class="price-name">Gói Basic</div>
-        <button class="btn-buy" data-price="400000" data-package="basic"><i class="fas fa-shopping-cart"></i> MUA NGAY</button>
-      </div>
-      <div class="price-card">
-        <div class="price-amount">600.000 VND</div>
-        <div class="price-name">Gói VIP1</div>
-        <button class="btn-buy" data-price="600000" data-package="vip1"><i class="fas fa-crown"></i> MUA NGAY</button>
-      </div>
-      <div class="price-card">
-        <div class="price-amount">800.000 VND</div>
-        <div class="price-name">Gói VIP2</div>
-        <button class="btn-buy" data-price="800000" data-package="vip2"><i class="fas fa-gem"></i> MUA NGAY</button>
-      </div>
-      <div class="price-card">
-        <div class="price-amount">3.000.000 VND</div>
-        <div class="price-name">Gói VIP3</div>
-        <button class="btn-buy" data-price="3000000" data-package="vip3"><i class="fas fa-star"></i> MUA NGAY</button>
+        <div class="tool-content">
+          <ul class="tool-features">
+            <li>Tất cả tính năng EOS & SEB</li>
+            <li>Tính năng độc quyền PRO</li>
+            <li>Hỗ trợ VIP 1-1 với admin</li>
+            <li>Bản quyền vĩnh viễn</li>
+            <li>Cập nhật trọn đời</li>
+          </ul>
+          <div class="tool-price">
+            <div class="price-amount">3.000.000 VND</div>
+            <button class="btn-buy" data-price="3000000" data-package="vip3"><i class="fas fa-star"></i> Mua ngay</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -322,7 +275,7 @@
     async function fetchUserData() {
       try {
         const response = await fetch(API_URL);
-        if (!response.ok) throw new Error('Lỗi kết nối');
+        if (!response.ok) throw new Error('Network error');
         
         const data = await response.json();
         if (data && data.name && data.balance) {
@@ -332,10 +285,10 @@
           };
           updateUserDisplay();
         } else {
-          throw new Error('Dữ liệu không hợp lệ');
+          throw new Error('Invalid data format');
         }
       } catch (error) {
-        console.error('Lỗi khi lấy dữ liệu:', error);
+        console.error('Error fetching user data:', error);
         document.getElementById('user-greeting').textContent = "Xin chào, Khách";
         document.getElementById('user-balance').innerHTML = '<i class="fas fa-wallet"></i> Số dư: 0 VND';
       }
@@ -359,15 +312,11 @@
       };
       
       if (userData.balance >= price) {
-        // Đủ tiền
         alert(`Bạn đã mua thành công ${packageDisplayNames[packageName]} với giá ${price.toLocaleString()} VND`);
-        // Chuyển đến trang cảm ơn
         window.location.href = `thankyou.html?package=${packageName}`;
       } else {
-        // Thiếu tiền
         const needed = price - userData.balance;
         alert(`Bạn cần nạp thêm ${needed.toLocaleString()} VND để mua gói này`);
-        // Chuyển đến trang banking với đúng số tiền cần nạp
         window.location.href = `banking.html?package=${packageName}&amount=${needed}`;
       }
     }
