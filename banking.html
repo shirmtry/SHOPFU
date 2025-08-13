@@ -1,768 +1,95 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Thanh Toán Premium</title>
-    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkCKhZYZxgjrIUKl7fZ9ssSl919Qs-hfuw9g&s" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3a0ca3;
-            --accent-color: #f72585;
-            --dark-color: #212529;
-            --light-color: #f8f9fa;
-            --success-color: #4cc9f0;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: url('https://png.pngtree.com/thumb_back/fh260/background/20240813/pngtree-3d-anime-background-with-green-field-images-image_16153027.jpg') no-repeat center center fixed;
-            background-size: cover;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--light-color);
-            line-height: 1.6;
-        }
-
-        .payment-container {
-            width: 90%;
-            max-width: 600px;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin: 2rem auto;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .payment-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .payment-header::after {
-            content: '';
-            display: block;
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-            margin: 1rem auto 0;
-            border-radius: 3px;
-        }
-
-        .payment-title {
-            font-size: 2rem;
-            margin: 0;
-            background: linear-gradient(to right, #f72585, #4361ee);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            letter-spacing: 1px;
-        }
-
-        .payment-subtitle {
-            color: rgba(255,255,255,0.8);
-            font-size: 1rem;
-            margin-top: 0.5rem;
-            font-weight: 400;
-        }
-
-        .order-summary {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .order-summary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .product-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 0.5rem;
-        }
-
-        .product-price {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            margin: 1rem 0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .order-code {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.7);
-            background: rgba(0,0,0,0.3);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            display: inline-block;
-            font-family: monospace;
-        }
-
-        .payment-methods {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-
-        .payment-method {
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 1rem;
-            flex: 1;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid transparent;
-            min-width: 120px;
-        }
-
-        .payment-method:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        .payment-method.active {
-            border-color: var(--accent-color);
-            background: rgba(247, 37, 133, 0.2);
-            box-shadow: 0 0 15px rgba(247, 37, 133, 0.3);
-        }
-
-        .payment-method i {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            color: white;
-        }
-
-        .payment-method-name {
-            font-weight: 600;
-            color: white;
-        }
-
-        .qr-section {
-            text-align: center;
-            margin: 2rem 0;
-            display: block;
-        }
-
-        .qr-container {
-            background: white;
-            padding: 1rem;
-            border-radius: 12px;
-            display: inline-block;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s;
-        }
-
-        .qr-container:hover {
-            transform: scale(1.03);
-        }
-
-        .qr-code {
-            width: 200px;
-            height: 200px;
-            object-fit: contain;
-        }
-
-        .qr-instruction {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.8);
-            max-width: 300px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .bank-info {
-            background: rgba(0,0,0,0.4);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .bank-info-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .bank-info-title i {
-            margin-right: 10px;
-            color: var(--accent-color);
-        }
-
-        .info-row {
-            display: flex;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            align-items: center;
-        }
-
-        .info-label {
-            width: 150px;
-            font-weight: 600;
-            color: rgba(255,255,255,0.8);
-            flex-shrink: 0;
-        }
-
-        .info-value {
-            flex: 1;
-            color: white;
-            word-break: break-all;
-            display: flex;
-            align-items: center;
-        }
-
-        .copy-btn {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: var(--accent-color);
-            padding: 0.3rem 0.6rem;
-            border-radius: 4px;
-            margin-left: 0.5rem;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .copy-btn:hover {
-            background: var(--accent-color);
-            color: white;
-        }
-
-        .copy-btn i {
-            font-size: 0.8rem;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 1rem;
-            border-radius: 8px;
-            font-weight: 600;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .btn i {
-            font-size: 1.1rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
-            box-shadow: 0 5px 15px rgba(58, 12, 163, 0.4);
-        }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.2);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(0,0,0,0.3);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .timer {
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.7);
-            font-weight: 500;
-        }
-
-        .highlight {
-            color: var(--accent-color);
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .toast.show {
-            opacity: 1;
-        }
-
-        .toast i {
-            color: var(--success-color);
-        }
-
-        @media (max-width: 768px) {
-            .payment-container {
-                width: 95%;
-                padding: 1.5rem;
-            }
-
-            .payment-methods {
-                flex-direction: column;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-            }
-
-            .info-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.3rem;
-            }
-
-            .info-label {
-                width: 100%;
-            }
-
-            .info-value {
-                width: 100%;
-            }
-
-            .payment-title {
-                font-size: 1.7rem;
-            }
-
-            .product-name {
-                font-size: 1.3rem;
-            }
-
-            .product-price {
-                font-size: 1.7rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .payment-container {
-                padding: 1.2rem;
-                border-radius: 15px;
-            }
-
-            .bank-info, .order-summary {
-                padding: 1rem;
-            }
-
-            .qr-code {
-                width: 180px;
-                height: 180px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Thanh toán Banking - ACB</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    text-align: center;
+    padding: 40px;
+  }
+  .container {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    animation: fadeIn 0.6s ease-in-out;
+  }
+  h1 { color: #007bff; }
+  p { font-size: 18px; color: #333; }
+  .amount { font-size: 22px; color: #e60000; font-weight: bold; }
+  img.qr {
+    margin-top: 20px;
+    width: 250px;
+    height: 250px;
+    border: 4px solid #007bff;
+    border-radius: 12px;
+    padding: 5px;
+    background: #fff;
+  }
+  .btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 20px;
+    background: #28a745;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+  .btn:hover { background: #1f7e32; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
 </head>
-<body>
-    <div class="payment-container">
-        <div class="payment-header">
-            <h1 class="payment-title">THANH TOÁN PREMIUM</h1>
-            <p class="payment-subtitle">Quét mã QR hoặc chuyển khoản ngân hàng</p>
-        </div>
+<body oncontextmenu="return false" onkeydown="if(event.keyCode==123){return false;}">
 
-        <div class="order-summary">
-            <div class="product-name" id="orderName">TOOL EOS + SEB</div>
-            <div class="product-price" id="orderPrice">800.000 VND</div>
-            <div class="order-code" id="orderCode">Mã đơn: VIP000000</div>
-        </div>
+<div class="container">
+  <h1>Thanh toán Banking - ACB</h1>
+  <p>Bạn đang mua: <strong id="packageName">Đang tải...</strong></p>
+  <p>Số tiền cần thanh toán:</p>
+  <div class="amount" id="amountDisplay">0 VND</div>
+  <img id="qrImage" class="qr" src="" alt="QR Thanh toán">
+  <div>
+    <a href="shop.html" class="btn">Quay lại Shop</a>
+  </div>
+</div>
 
-        <div class="payment-methods">
-            <div class="payment-method active" data-method="qr">
-                <i class="fas fa-qrcode"></i>
-                <div class="payment-method-name">QR Code</div>
-            </div>
-            <div class="payment-method" data-method="bank">
-                <i class="fas fa-university"></i>
-                <div class="payment-method-name">Chuyển khoản</div>
-            </div>
-        </div>
+<script>
+  // Lấy dữ liệu từ URL
+  const params = new URLSearchParams(window.location.search);
+  const amount = parseInt(params.get("amount"), 10) || 0;
+  const packageCode = params.get("package") || "";
 
-        <div class="qr-section" id="qrSection">
-            <div class="qr-container">
-                <img id="qrImage" class="qr-code" src="" alt="Mã QR thanh toán">
-            </div>
-            <p class="qr-instruction">Quét mã QR bằng ứng dụng ngân hàng để thanh toán</p>
-        </div>
+  // Map tên gói
+  const packageDisplayNames = {
+    'basic': 'Gói Basic (TOOL SEB)',
+    'vip1': 'Gói VIP1 (TOOL EOS)',
+    'vip2': 'Gói VIP2 (TOOL EOS + SEB)',
+    'vip3': 'Gói VIP3 (TOOL EOS + SEB PRO)',
+    'Support': 'Gói Hỗ trợ',
+    'FakeBill': 'App Banking ảo',
+    'Security': 'Gói Bảo mật'
+  };
 
-        <div class="bank-info" id="bankInfo">
-            <div class="bank-info-title">
-                <i class="fas fa-info-circle"></i> THÔNG TIN CHUYỂN KHOẢN
-            </div>
+  const packageName = packageDisplayNames[packageCode] || "Gói không xác định";
 
-            <div class="info-row">
-                <div class="info-label">Ngân hàng</div>
-                <div class="info-value">
-                    ACB - Ngân hàng Á Châu
-                </div>
-            </div>
+  // Hiển thị dữ liệu
+  document.getElementById("packageName").textContent = packageName;
+  document.getElementById("amountDisplay").textContent = amount.toLocaleString() + " VND";
 
-            <div class="info-row">
-                <div class="info-label">Số tài khoản</div>
-                <div class="info-value">
-                    43146717
-                    <button class="copy-btn" data-copy="43146717">
-                        <i class="far fa-copy"></i> Sao chép
-                    </button>
-                </div>
-            </div>
+  // Tạo QR VietQR cho ACB
+  const accountNumber = "43146717"; // <-- Thay bằng số tài khoản ACB thật
+  const bankCode = "970416"; // mã ngân hàng ACB
+  const qrUrl = `https://img.vietqr.io/image/${bankCode}-${accountNumber}-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(packageName)}`;
+  document.getElementById("qrImage").src = qrUrl;
+</script>
 
-            <div class="info-row">
-                <div class="info-label">Tên tài khoản</div>
-                <div class="info-value">
-                    ĐINH TẤN HUY
-                    <button class="copy-btn" data-copy="ĐINH TẤN HUY">
-                        <i class="far fa-copy"></i> Sao chép
-                    </button>
-                </div>
-            </div>
-
-            <div class="info-row">
-                <div class="info-label">Số tiền</div>
-                <div class="info-value" id="bankAmount">800.000 VND</div>
-            </div>
-
-            <div class="info-row">
-                <div class="info-label">Nội dung</div>
-                <div class="info-value">
-                    <span id="bankContent">VIP000000</span>
-                    <button class="copy-btn" data-copy-target="bankContent">
-                        <i class="far fa-copy"></i> Sao chép
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="timer">
-            Thời gian thanh toán còn: <span class="highlight" id="countdown">15:00</span>
-        </div>
-
-        <div class="action-buttons">
-            <button class="btn btn-primary" id="confirmBtn">
-                <i class="fas fa-check-circle"></i> XÁC NHẬN ĐÃ THANH TOÁN
-            </button>
-            <button class="btn btn-secondary" id="backBtn">
-                <i class="fas fa-arrow-left"></i> QUAY LẠI
-            </button>
-        </div>
-    </div>
-
-    <div class="toast" id="toast">
-        <i class="fas fa-check-circle"></i>
-        <span id="toastMessage">Đã sao chép!</span>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            /* ------------ Utility functions ------------ */
-            function showToast(message) {
-                const toast = document.getElementById('toast');
-                const toastMessage = document.getElementById('toastMessage');
-                
-                toastMessage.textContent = message;
-                toast.classList.add('show');
-                
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 3000);
-            }
-
-            function copyToClipboard(text) {
-                navigator.clipboard.writeText(text).then(() => {
-                    showToast('Đã sao chép: ' + text);
-                }).catch(err => {
-                    // Fallback for older browsers
-                    const textarea = document.createElement('textarea');
-                    textarea.value = text;
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    try {
-                        document.execCommand('copy');
-                        showToast('Đã sao chép: ' + text);
-                    } catch (e) {
-                        showToast('Sao chép thất bại!');
-                    }
-                    document.body.removeChild(textarea);
-                });
-            }
-
-            function generateOrderCode() {
-                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                let result = 'VIP';
-                for (let i = 0; i < 6; i++) {
-                    result += chars.charAt(Math.floor(Math.random() * chars.length));
-                }
-                return result;
-            }
-
-            function getOrderSignature(orderData) {
-                return `${orderData.name}__${orderData.price}`;
-            }
-
-            function formatCountdown(seconds) {
-                const mins = Math.floor(seconds / 60);
-                const secs = seconds % 60;
-                return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-            }
-
-            function extractAmountNumber(formattedPrice) {
-                const numStr = formattedPrice.replace(/[^0-9]/g, '');
-                return parseInt(numStr, 10) || 0;
-            }
-
-            /* ------------ Main logic ------------ */
-            const orderDataRaw = localStorage.getItem("currentOrder");
-            if (!orderDataRaw) {
-                showToast('Không có thông tin đơn hàng!');
-                setTimeout(() => window.location.href = "shop.html", 1500);
-                return;
-            }
-
-            let orderData;
-            try {
-                orderData = JSON.parse(orderDataRaw);
-            } catch (e) {
-                console.error('Lỗi parse currentOrder', e);
-                showToast('Dữ liệu đơn hàng không hợp lệ!');
-                setTimeout(() => window.location.href = "shop.html", 1500);
-                return;
-            }
-
-            // Fill basic fields
-            document.getElementById("orderName").textContent = orderData.name || "TOOL EOS + SEB";
-            const formattedPrice = orderData.formattedPrice || "800.000 VND";
-            document.getElementById("orderPrice").textContent = formattedPrice;
-            document.getElementById("bankAmount").textContent = formattedPrice;
-
-            // Handle order meta data
-            const signature = getOrderSignature(orderData);
-            let meta = null;
-            
-            try {
-                const metaRaw = localStorage.getItem('currentOrderMeta');
-                if (metaRaw) meta = JSON.parse(metaRaw);
-            } catch (e) {
-                console.warn('Không thể parse currentOrderMeta', e);
-            }
-
-            const now = Date.now();
-            if (!meta || meta.signature !== signature || !meta.orderCode || !meta.expiry || meta.expiry <= now) {
-                const orderCode = generateOrderCode();
-                const expiry = now + 5 * 60 * 1000; // 15 minutes
-                meta = { signature, orderCode, expiry };
-                
-                try {
-                    localStorage.setItem('currentOrderMeta', JSON.stringify(meta));
-                } catch (e) {
-                    console.warn('Lưu meta thất bại', e);
-                }
-            }
-
-            // Apply orderCode to UI
-            const orderCode = meta.orderCode;
-            document.getElementById("bankContent").textContent = orderCode;
-            document.getElementById("orderCode").textContent = "Mã đơn: " + orderCode;
-
-            // Generate QR code URL
-            const amount = extractAmountNumber(formattedPrice);
-            const qrUrl = `https://img.vietqr.io/image/ACB-43146717-compact2.jpg?amount=${amount}&addInfo=${encodeURIComponent(orderCode)}&accountName=${encodeURIComponent('ĐINH TẤN HUY')}`;
-            document.getElementById("qrImage").src = qrUrl;
-
-            // Countdown timer
-            let remainingSeconds = Math.floor((meta.expiry - now) / 1000);
-            if (remainingSeconds <= 0) {
-                showToast('Đơn hàng đã hết hạn thanh toán!');
-                localStorage.removeItem('currentOrderMeta');
-                setTimeout(() => window.location.href = 'shop.html', 1500);
-                return;
-            }
-
-            const countdownEl = document.getElementById('countdown');
-            countdownEl.textContent = formatCountdown(remainingSeconds);
-
-            const timerInterval = setInterval(() => {
-                remainingSeconds--;
-                countdownEl.textContent = formatCountdown(remainingSeconds);
-                
-                if (remainingSeconds <= 0) {
-                    clearInterval(timerInterval);
-                    localStorage.removeItem('currentOrderMeta');
-                    showToast('Đơn hàng đã hết hạn thanh toán!');
-                    setTimeout(() => window.location.href = 'shop.html', 1500);
-                }
-            }, 1000);
-
-            // Payment method toggle
-            document.querySelectorAll('.payment-method').forEach(method => {
-                method.addEventListener('click', function() {
-                    document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const methodType = this.getAttribute('data-method');
-                    if (methodType === 'qr') {
-                        document.getElementById('qrSection').style.display = 'block';
-                        document.getElementById('bankInfo').style.display = 'block';
-                    } else {
-                        document.getElementById('qrSection').style.display = 'none';
-                        document.getElementById('bankInfo').style.display = 'block';
-                    }
-                });
-            });
-
-            // Copy buttons
-            document.querySelectorAll('.copy-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const copyText = this.getAttribute('data-copy') || 
-                                     document.getElementById(this.getAttribute('data-copy-target')).textContent;
-                    copyToClipboard(copyText);
-                });
-            });
-
-            // Confirm payment button
-            document.getElementById('confirmBtn').addEventListener('click', function() {
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG XỬ LÝ...';
-                this.disabled = true;
-
-                // Simulate payment confirmation
-                setTimeout(() => {
-    showToast('Thanh toán thành công! Gói sẽ được kích hoạt trong 5-10 phút.');
-    
-    setTimeout(() => {
-        window.location.href = 'thankyou.html';
-    }, 2000);
-}, 2000);
-            });
-
-            // Back button
-            document.getElementById('backBtn').addEventListener('click', function() {
-                window.location.href = 'shop.html';
-            });
-
-            // Expose helper for shop page
-            window._paymentHelpers = {
-                clearOrderMeta: function() { 
-                    localStorage.removeItem('currentOrderMeta'); 
-                }
-            };
-        });
-
-        /* ------------ Security measures ------------ */
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        }, {capture: true, passive: false});
-
-        document.addEventListener('selectstart', e => e.preventDefault(), {capture:true});
-        document.addEventListener('dragstart', e => e.preventDefault(), {capture:true});
-        document.addEventListener('copy', e => e.preventDefault(), {capture:true});
-        document.addEventListener('cut', e => e.preventDefault(), {capture:true});
-
-        window.addEventListener('keydown', function(e) {
-            if (e.key === 'F12' || 
-                (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) || 
-                (e.ctrlKey && !e.shiftKey && e.key.toUpperCase() === 'U') ||
-                (e.ctrlKey && ['S','P'].includes(e.key.toUpperCase()))) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-        }, {capture:true});
-
-        // Basic devtools detection
-        let devtoolsOpen = false;
-        const devtoolsCheck = new Image();
-        Object.defineProperty(devtoolsCheck, 'id', {
-            get: function() {
-                devtoolsOpen = true;
-            }
-        });
-
-        setInterval(function() {
-            devtoolsOpen = false;
-            console.log(devtoolsCheck);
-            
-            if (devtoolsOpen) {
-                document.body.innerHTML = `
-                    <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);color:white;
-                                display:flex;justify-content:center;align-items:center;font-size:24px;z-index:99999;">
-                        <div style="text-align:center;padding:20px;">
-                            <i class="fas fa-ban" style="font-size:50px;color:#f72585;margin-bottom:20px;"></i>
-                            <p>DevTools đã được phát hiện - Trang đã bị vô hiệu hóa</p>
-                        </div>
-                    </div>
-                `;
-                document.body.style.overflow = 'hidden';
-            }
-        }, 1000);
-    </script>
 </body>
 </html>
