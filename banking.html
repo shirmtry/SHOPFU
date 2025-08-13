@@ -33,15 +33,24 @@
   }
   .btn {
     display: inline-block;
-    margin-top: 25px;
+    margin-top: 20px;
     padding: 12px 20px;
-    background: #28a745;
-    color: #fff;
     border-radius: 5px;
     text-decoration: none;
     transition: 0.3s;
+    font-size: 16px;
+    font-weight: bold;
   }
-  .btn:hover { background: #1f7e32; }
+  .btn-back {
+    background: #6c757d;
+    color: #fff;
+  }
+  .btn-back:hover { background: #565e64; }
+  .btn-confirm {
+    background: #28a745;
+    color: #fff;
+  }
+  .btn-confirm:hover { background: #1f7e32; }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -56,8 +65,10 @@
   <p>Số tiền cần thanh toán:</p>
   <div class="amount" id="amountDisplay">0 VND</div>
   <img id="qrImage" class="qr" src="" alt="QR Thanh toán">
+
   <div>
-    <a href="shop.html" class="btn">Quay lại Shop</a>
+    <a href="shop.html" class="btn btn-back">⬅ Quay lại Shop</a>
+    <a href="thankyou.html" class="btn btn-confirm">✅ Xác nhận đã thanh toán</a>
   </div>
 </div>
 
