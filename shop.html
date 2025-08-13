@@ -2,102 +2,207 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Shop Mua Gói</title>
+<title>Shop Mua Gói - Cao Cấp</title>
 <style>
-  /* ======= RESET ======= */
-  * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    font-family: Arial, sans-serif;
-    background: #f8f9fa;
-    color: #333;
-    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #f4f4f9, #e9ecef);
+    margin: 0;
+    padding: 0;
   }
-  a { text-decoration: none; }
 
-  /* ======= HEADER USER ======= */
+  header {
+    background: #1a1a1a;
+    color: white;
+    padding: 20px 40px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
   .user-info {
-    background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    margin: 20px 0;
+    font-size: 18px;
   }
-  .user-info p { margin-bottom: 6px; }
-  #username { font-weight: bold; color: #007bff; }
-  #balance { font-weight: bold; color: #28a745; }
+  .user-info span {
+    font-weight: bold;
+    color: #28a745;
+  }
 
-  /* ======= PACKAGE CARD ======= */
+  .shop-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    padding: 20px 40px;
+    max-width: 1300px;
+    margin: auto;
+  }
+
   .package {
     background: white;
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: 0.3s;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
   }
-  .package:hover { transform: translateY(-3px); }
-  .package h3 { margin-bottom: 10px; }
-  .price { color: #dc3545; font-weight: bold; margin-bottom: 15px; }
+
+  .package:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+
+  .package-header {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .price {
+    font-size: 22px;
+    color: #dc3545;
+    text-align: center;
+    margin: 15px 0;
+    font-weight: bold;
+  }
+
+  .features {
+    flex: 1;
+    padding: 0 20px 20px 20px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
   .btn-buy {
-    padding: 10px 18px;
-    background: #28a745;
+    background: linear-gradient(135deg, #28a745, #218838);
     color: white;
     border: none;
-    border-radius: 5px;
+    padding: 12px;
+    font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
+    width: 100%;
   }
-  .btn-buy:hover { background: #218838; }
 
-  /* ======= FOOTER ======= */
+  .btn-buy:hover {
+    background: linear-gradient(135deg, #218838, #1e7e34);
+  }
+
   footer {
-    margin-top: 40px;
     text-align: center;
+    padding: 20px;
     color: #777;
     font-size: 14px;
+    background: #f8f9fa;
+    margin-top: 30px;
   }
 </style>
 </head>
 <body>
 
-<!-- USER INFO -->
+<header>🛒 Cửa Hàng Tool & Dịch Vụ</header>
+
 <div class="user-info">
-  <p>Xin chào, <span id="username">Đang tải...</span></p>
-  <p>Số dư: <span id="balance">0</span> VND</p>
+  Xin chào, <span id="username">Đang tải...</span> | Số dư: <span id="balance">0</span> VND
 </div>
 
-<!-- PACKAGES -->
-<div class="package">
-  <h3>Gói Basic (TOOL SEB)</h3>
-  <div class="price">100,000 VND</div>
-  <button class="btn-buy" data-price="100000" data-package="basic">Mua ngay</button>
+<div class="shop-container">
+  <!-- Gói 1 -->
+  <div class="package">
+    <div class="package-header">Gói Basic</div>
+    <div class="price">100,000 VND</div>
+    <div class="features">
+      - TOOL SEB bản cơ bản<br>
+      - Sử dụng 1 thiết bị<br>
+      - Hỗ trợ 24/7 qua chat
+    </div>
+    <button class="btn-buy" data-price="100000" data-package="basic">Mua ngay</button>
+  </div>
+
+  <!-- Gói 2 -->
+  <div class="package">
+    <div class="package-header">Gói VIP1</div>
+    <div class="price">200,000 VND</div>
+    <div class="features">
+      - TOOL EOS<br>
+      - Không giới hạn thiết bị<br>
+      - Update miễn phí 1 năm
+    </div>
+    <button class="btn-buy" data-price="200000" data-package="vip1">Mua ngay</button>
+  </div>
+
+  <!-- Gói 3 -->
+  <div class="package">
+    <div class="package-header">Gói VIP2</div>
+    <div class="price">300,000 VND</div>
+    <div class="features">
+      - TOOL EOS + SEB<br>
+      - Tích hợp bảo mật nâng cao<br>
+      - Hỗ trợ từ xa
+    </div>
+    <button class="btn-buy" data-price="300000" data-package="vip2">Mua ngay</button>
+  </div>
+
+  <!-- Gói 4 -->
+  <div class="package">
+    <div class="package-header">Gói VIP3</div>
+    <div class="price">500,000 VND</div>
+    <div class="features">
+      - TOOL EOS + SEB PRO<br>
+      - Bảo mật cấp cao nhất<br>
+      - Ưu tiên hỗ trợ nhanh
+    </div>
+    <button class="btn-buy" data-price="500000" data-package="vip3">Mua ngay</button>
+  </div>
+
+  <!-- Gói 5 -->
+  <div class="package">
+    <div class="package-header">Gói Hỗ Trợ</div>
+    <div class="price">50,000 VND</div>
+    <div class="features">
+      - Hỗ trợ kỹ thuật<br>
+      - Cài đặt tool từ xa<br>
+      - Tư vấn tối ưu bảo mật
+    </div>
+    <button class="btn-buy" data-price="50000" data-package="support">Mua ngay</button>
+  </div>
+
+  <!-- Gói 6 -->
+  <div class="package">
+    <div class="package-header">App Banking Ảo</div>
+    <div class="price">150,000 VND</div>
+    <div class="features">
+      - Fake bill chuyển khoản<br>
+      - Hỗ trợ nhiều ngân hàng<br>
+      - Giao diện giống thật 99%
+    </div>
+    <button class="btn-buy" data-price="150000" data-package="fakebill">Mua ngay</button>
+  </div>
+
+  <!-- Gói 7 -->
+  <div class="package">
+    <div class="package-header">Gói Bảo Mật</div>
+    <div class="price">250,000 VND</div>
+    <div class="features">
+      - Chống bị phát hiện tool<br>
+      - Ẩn IP và thông tin thiết bị<br>
+      - Cập nhật liên tục
+    </div>
+    <button class="btn-buy" data-price="250000" data-package="security">Mua ngay</button>
+  </div>
 </div>
 
-<div class="package">
-  <h3>Gói VIP1 (TOOL EOS)</h3>
-  <div class="price">200,000 VND</div>
-  <button class="btn-buy" data-price="200000" data-package="vip1">Mua ngay</button>
-</div>
-
-<div class="package">
-  <h3>Gói VIP2 (TOOL EOS + SEB)</h3>
-  <div class="price">300,000 VND</div>
-  <button class="btn-buy" data-price="300000" data-package="vip2">Mua ngay</button>
-</div>
-
-<div class="package">
-  <h3>Gói VIP3 (TOOL EOS + SEB PRO)</h3>
-  <div class="price">500,000 VND</div>
-  <button class="btn-buy" data-price="500000" data-package="vip3">Mua ngay</button>
-</div>
-
-<!-- FOOTER -->
 <footer>
-  &copy; 2025 Cửa hàng Tool Online - Mọi quyền được bảo lưu.
+  &copy; 2025 Cửa hàng Tool Online - Sang trọng & Uy tín.
 </footer>
 
 <script>
-  // Chặn copy & chuột phải
   document.addEventListener('contextmenu', e => e.preventDefault());
   document.addEventListener('selectstart', e => e.preventDefault());
 
@@ -114,42 +219,39 @@
       }
 
       const res = await fetch(`${API_URL}?username=${encodeURIComponent(username)}`);
-      if (!res.ok) throw new Error("Lỗi mạng");
       const data = await res.json();
 
       if (data && data.name && data.balance !== undefined) {
         userData = { name: data.name, balance: parseInt(data.balance) };
-        updateUserDisplay();
+        document.getElementById('username').textContent = userData.name;
+        document.getElementById('balance').textContent = userData.balance.toLocaleString();
       } else {
-        throw new Error("Không tìm thấy dữ liệu người dùng");
+        throw new Error("Không tìm thấy dữ liệu");
       }
     } catch (err) {
-      console.error("Lỗi tải dữ liệu:", err);
-      alert("Không thể tải số dư, vui lòng thử lại sau.");
+      alert("Không thể tải dữ liệu, thử lại sau.");
     }
-  }
-
-  function updateUserDisplay() {
-    document.getElementById('username').textContent = userData.name;
-    document.getElementById('balance').textContent = userData.balance.toLocaleString();
   }
 
   function handleBuyClick() {
     const price = parseInt(this.getAttribute('data-price'));
     const packageName = this.getAttribute('data-package');
     const packageDisplayNames = {
-      'basic': 'Gói Basic (TOOL SEB)',
-      'vip1': 'Gói VIP1 (TOOL EOS)',
-      'vip2': 'Gói VIP2 (TOOL EOS + SEB)',
-      'vip3': 'Gói VIP3 (TOOL EOS + SEB PRO)'
+      'basic': 'Gói Basic',
+      'vip1': 'Gói VIP1',
+      'vip2': 'Gói VIP2',
+      'vip3': 'Gói VIP3',
+      'support': 'Gói Hỗ Trợ',
+      'fakebill': 'App Banking Ảo',
+      'security': 'Gói Bảo Mật'
     };
 
     if (userData.balance >= price) {
-      alert(`Bạn đã mua thành công ${packageDisplayNames[packageName]} với giá ${price.toLocaleString()} VND`);
+      alert(`Mua thành công ${packageDisplayNames[packageName]} với giá ${price.toLocaleString()} VND`);
       window.location.href = `thankyou.html?package=${encodeURIComponent(packageName)}`;
     } else {
       const needed = price - userData.balance;
-      alert(`Bạn cần nạp thêm ${needed.toLocaleString()} VND để mua gói này`);
+      alert(`Cần nạp thêm ${needed.toLocaleString()} VND để mua gói này`);
       window.location.href = `banking.html?package=${encodeURIComponent(packageName)}&amount=${needed}`;
     }
   }
