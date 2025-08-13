@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Shop Mua Gói - Sang Trọng</title>
+<title>🛒 Shop Tool & Dịch Vụ Cao Cấp</title>
 <style>
   body {
     font-family: 'Segoe UI', sans-serif;
@@ -14,7 +14,7 @@
   header {
     background: linear-gradient(135deg, #1f1c2c, #928dab);
     color: white;
-    padding: 20px 40px;
+    padding: 20px;
     text-align: center;
     font-size: 28px;
     font-weight: bold;
@@ -24,8 +24,13 @@
 
   .user-info {
     text-align: center;
-    margin: 20px 0;
+    margin: 15px 0;
     font-size: 18px;
+    background: white;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
   .user-info span {
     font-weight: bold;
@@ -44,23 +49,16 @@
   .package {
     background: white;
     border-radius: 15px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     overflow: hidden;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
-    position: relative;
   }
 
   .package:hover {
-    transform: translateY(-10px);
+    transform: translateY(-8px) scale(1.02);
     box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-  }
-
-  .package-icon {
-    font-size: 50px;
-    text-align: center;
-    margin-top: 20px;
   }
 
   .package-header {
@@ -72,11 +70,17 @@
     font-weight: bold;
   }
 
+  .package-icon {
+    font-size: 50px;
+    text-align: center;
+    margin: 20px 0;
+  }
+
   .price {
     font-size: 24px;
     color: #e63946;
     text-align: center;
-    margin: 15px 0;
+    margin-bottom: 15px;
     font-weight: bold;
   }
 
@@ -100,6 +104,10 @@
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
 
   .btn-buy:hover {
@@ -115,100 +123,30 @@
     margin-top: 40px;
     border-top: 1px solid #ddd;
   }
+
+  /* Hiệu ứng loading */
+  #loading {
+    text-align: center;
+    padding: 20px;
+    color: #555;
+    font-size: 16px;
+  }
 </style>
 </head>
 <body>
 
 <header>🛒 Cửa Hàng Tool & Dịch Vụ Cao Cấp</header>
 
-<div class="user-info">
-  Xin chào, <span id="username">Đang tải...</span> | Số dư: <span id="balance">0</span> VND
+<div style="text-align:center;">
+  <div class="user-info">
+    Xin chào, <span id="username">Đang tải...</span> | Số dư: <span id="balance">0</span> VND
+  </div>
 </div>
 
-<div class="shop-container">
-  <div class="package">
-    <div class="package-header">Gói Basic</div>
-    <div class="package-icon">💻</div>
-    <div class="price">400,000 VND</div>
-    <div class="features">
-      - TOOL SEB bản cơ bản<br>
-      - Sử dụng 1 thiết bị<br>
-      - Hỗ trợ 24/7 qua chat
-    </div>
-    <button class="btn-buy" data-price="400000" data-package="basic">Mua ngay</button>
-  </div>
+<div id="loading">⏳ Đang tải dữ liệu sản phẩm...</div>
 
-  <div class="package">
-    <div class="package-header">Gói VIP1</div>
-    <div class="package-icon">🚀</div>
-    <div class="price">600,000 VND</div>
-    <div class="features">
-      - TOOL EOS<br>
-      - Sử dụng 1 thiết bị<br>
-      - Update miễn phí liên tục
-    </div>
-    <button class="btn-buy" data-price="200000" data-package="vip1">Mua ngay</button>
-  </div>
-
-  <div class="package">
-    <div class="package-header">Gói VIP2</div>
-    <div class="package-icon">⚡</div>
-    <div class="price">800,000 VND</div>
-    <div class="features">
-      - TOOL EOS + SEB<br>
-      - Dùng được 1 kì<br>
-      - Hỗ trợ từ xa
-    </div>
-    <button class="btn-buy" data-price="800000" data-package="vip2">Mua ngay</button>
-  </div>
-
-  <div class="package">
-    <div class="package-header">Gói VIP3</div>
-    <div class="package-icon">👑</div>
-    <div class="price">3,000,000 VND</div>
-    <div class="features">
-      - TOOL EOS + SEB PRO<br>
-      - Dùng được 4 năm<br>
-      - Ưu tiên hỗ trợ nhanh
-    </div>
-    <button class="btn-buy" data-price="3000000" data-package="vip3">Mua ngay</button>
-  </div>
-
-  <div class="package">
-    <div class="package-header">Gói Support</div>
-    <div class="package-icon">🤝</div>
-    <div class="price">50,000 VND</div>
-    <div class="features">
-      - Hỗ trợ kỹ thuật<br>
-      - Cài đặt tool từ xa<br>
-      - Tư vấn tối ưu bảo mật
-    </div>
-    <button class="btn-buy" data-price="50000" data-package="support">Mua ngay</button>
-  </div>
-
-  <div class="package">
-    <div class="package-header">App Banking Ảo</div>
-    <div class="package-icon">🏦</div>
-    <div class="price">500,000 VND</div>
-    <div class="features">
-      - Fake bill chuyển khoản<br>
-      - Hỗ trợ nhiều ngân hàng<br>
-      - Giao diện giống thật 99%
-    </div>
-    <button class="btn-buy" data-price="500000" data-package="fakebill">Mua ngay</button>
-  </div>
-
-  <div class="package">
-    <div class="package-header">Gói Bảo Mật</div>
-    <div class="package-icon">🛡️</div>
-    <div class="price">250,000 VND</div>
-    <div class="features">
-      - Chống bị phát hiện tool<br>
-      - Ẩn IP và thông tin thiết bị<br>
-      - Cập nhật liên tục
-    </div>
-    <button class="btn-buy" data-price="250000" data-package="security">Mua ngay</button>
-  </div>
+<div class="shop-container" id="shop">
+  <!-- Gói sản phẩm sẽ load ở đây -->
 </div>
 
 <footer>
@@ -222,58 +160,87 @@
   const API_URL = "https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec";
   let userData = { name: "", balance: 0 };
 
+  const packages = [
+    {name: "Gói Basic", icon: "💻", price: 400000, code: "basic", features: ["TOOL SEB bản cơ bản","Sử dụng 1 thiết bị","Hỗ trợ 24/7 qua chat"]},
+    {name: "Gói VIP1", icon: "🚀", price: 600000, code: "vip1", features: ["TOOL EOS","Sử dụng 1 thiết bị","Update miễn phí liên tục"]},
+    {name: "Gói VIP2", icon: "⚡", price: 800000, code: "vip2", features: ["TOOL EOS + SEB","Dùng được 1 kì","Hỗ trợ từ xa"]},
+    {name: "Gói VIP3", icon: "👑", price: 3000000, code: "vip3", features: ["TOOL EOS + SEB PRO","Dùng được 4 năm","Ưu tiên hỗ trợ nhanh"]},
+    {name: "Gói Support", icon: "🤝", price: 50000, code: "support", features: ["Hỗ trợ kỹ thuật","Cài đặt tool từ xa","Tư vấn tối ưu bảo mật"]},
+    {name: "App Banking Ảo", icon: "🏦", price: 500000, code: "fakebill", features: ["Fake bill chuyển khoản","Hỗ trợ nhiều ngân hàng","Giao diện giống thật 99%"]},
+    {name: "Gói Bảo Mật", icon: "🛡️", price: 250000, code: "security", features: ["Chống bị phát hiện tool","Ẩn IP và thông tin thiết bị","Cập nhật liên tục"]},
+  ];
+
   async function fetchUserData() {
     try {
-      const username = localStorage.getItem("username") || "";
+      const username = localStorage.getItem("username")?.trim();
       if (!username) {
         alert("Bạn chưa đăng nhập!");
-        window.location.href = "login.html";
+        location.href = "login.html";
         return;
       }
 
-      const res = await fetch(`${API_URL}?username=${encodeURIComponent(username)}`);
-      const data = await res.json();
+      const res = await fetch(`${API_URL}?username=${encodeURIComponent(username)}`, {
+        method: "GET",
+        mode: "cors",
+        headers: {"Content-Type": "application/json"}
+      });
 
-      if (data && data.name && data.balance !== undefined) {
+      let data = await res.json();
+      if (typeof data === "string") {
+        try { data = JSON.parse(data); } catch { throw new Error("JSON không hợp lệ"); }
+      }
+
+      if (data?.name && !isNaN(data.balance)) {
         userData = { name: data.name, balance: parseInt(data.balance) };
         document.getElementById('username').textContent = userData.name;
         document.getElementById('balance').textContent = userData.balance.toLocaleString();
       } else {
-        throw new Error("Không tìm thấy dữ liệu");
+        throw new Error("Dữ liệu không hợp lệ");
       }
     } catch (err) {
-      alert("Không thể tải dữ liệu, thử lại sau.");
+      console.error(err);
+      alert("Không thể tải dữ liệu người dùng.");
     }
+  }
+
+  function renderShop() {
+    document.getElementById('loading').style.display = "none";
+    const shop = document.getElementById('shop');
+    shop.innerHTML = "";
+    packages.forEach(pkg => {
+      const featuresHtml = pkg.features.map(f => `- ${f}`).join("<br>");
+      shop.innerHTML += `
+        <div class="package">
+          <div class="package-header">${pkg.name}</div>
+          <div class="package-icon">${pkg.icon}</div>
+          <div class="price">${pkg.price.toLocaleString()} VND</div>
+          <div class="features">${featuresHtml}</div>
+          <button class="btn-buy" data-price="${pkg.price}" data-package="${pkg.code}">🛒 Mua ngay</button>
+        </div>
+      `;
+    });
+
+    document.querySelectorAll('.btn-buy').forEach(btn => {
+      btn.addEventListener('click', handleBuyClick);
+    });
   }
 
   function handleBuyClick() {
     const price = parseInt(this.getAttribute('data-price'));
     const packageName = this.getAttribute('data-package');
-    const packageDisplayNames = {
-      'basic': 'Gói Basic',
-      'vip1': 'Gói VIP1',
-      'vip2': 'Gói VIP2',
-      'vip3': 'Gói VIP3',
-      'support': 'Gói Hỗ Trợ',
-      'fakebill': 'App Banking Ảo',
-      'security': 'Gói Bảo Mật'
-    };
-
     if (userData.balance >= price) {
-      alert(`Mua thành công ${packageDisplayNames[packageName]} với giá ${price.toLocaleString()} VND`);
-      window.location.href = `thankyou.html?package=${encodeURIComponent(packageName)}`;
+      alert(`Mua thành công gói ${packageName} với giá ${price.toLocaleString()} VND`);
+      location.href = `thankyou.html?package=${encodeURIComponent(packageName)}`;
     } else {
       const needed = price - userData.balance;
-      alert(`Cần nạp thêm ${needed.toLocaleString()} VND để mua gói này`);
-      window.location.href = `banking.html?package=${encodeURIComponent(packageName)}&amount=${needed}`;
+      alert(`Bạn cần nạp thêm ${needed.toLocaleString()} VND để mua gói này`);
+      location.href = `banking.html?package=${encodeURIComponent(packageName)}&amount=${needed}`;
     }
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    fetchUserData();
-    document.querySelectorAll('.btn-buy').forEach(btn => {
-      btn.addEventListener('click', handleBuyClick);
-    });
+  document.addEventListener('DOMContentLoaded', async () => {
+    await fetchUserData();
+    renderShop();
   });
 </script>
 
