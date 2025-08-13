@@ -127,18 +127,45 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const orderData = JSON.parse(localStorage.getItem('currentOrder') || '{}');
-        const orderMeta = JSON.parse(localStorage.getItem('currentOrderMeta') || '{}');
+        // Get order data from localStorage or URL parameters
+        let orderData, orderMeta;
+        
+        try {
+            orderData = JSON.parse(localStorage.getItem('currentOrder') || '{}');
+            orderMeta = JSON.parse(localStorage.getItem('currentOrderMeta') || '{}');
+            
+            // If coming from payment page, save the current time as order time
+            if (!orderMeta.orderTime) {
+                orderMeta.orderTime = new Date().toLocaleString('vi-VN');
+                localStorage.setItem('currentOrderMeta', JSON.stringify(orderMeta));
+            }
+        } catch (e) {
+            console.error('Error parsing order data:', e);
+            orderData = {};
+            orderMeta = {};
+        }
 
+        // Display order information
         document.getElementById('orderId').textContent = orderMeta.orderCode || 'N/A';
         document.getElementById('productName').textContent = orderData.name || 'N/A';
         document.getElementById('orderAmount').textContent = orderData.formattedPrice || 'N/A';
-        document.getElementById('orderTime').textContent = orderMeta.orderTime || new Date().toLocaleString('vi-VN');
+        document.getElementById('orderTime').textContent = orderMeta.orderTime || 'N/A';
+
+        // Check if contact info was already submitted
+        const contactSubmitted = localStorage.getItem('contactSubmitted') === 'true';
+        if (contactSubmitted) {
+            document.getElementById('telegramBox').style.display = 'block';
+            document.querySelector('.contact-form').style.display = 'none';
+        }
 
         document.getElementById('submitContact').addEventListener('click', () => {
             const telegram = document.getElementById('telegram').value.trim();
             const feedback = document.getElementById('feedback').value.trim();
-            if (!telegram) return showToast('Vui lòng nhập Telegram!');
+            
+            if (!telegram) {
+                showToast('Vui lòng nhập Telegram!');
+                return;
+            }
             
             sendToGoogleSheets({
                 orderId: orderMeta.orderCode || 'N/A',
@@ -146,7 +173,7 @@
                 amount: orderData.formattedPrice || 'N/A',
                 telegram,
                 feedback,
-                timestamp: new Date().toLocaleString('vi-VN')
+                timestamp: orderMeta.orderTime || new Date().toLocaleString('vi-VN')
             });
         });
 
@@ -173,7 +200,11 @@
                         document.getElementById('telegram').value = '';
                         document.getElementById('feedback').value = '';
                         document.getElementById('telegramBox').style.display = 'block';
-                    } else throw new Error('Gửi thất bại');
+                        document.querySelector('.contact-form').style.display = 'none';
+                        localStorage.setItem('contactSubmitted', 'true');
+                    } else {
+                        throw new Error('Gửi thất bại');
+                    }
                 })
                 .catch(() => showToast('Có lỗi khi gửi dữ liệu!'));
         }
