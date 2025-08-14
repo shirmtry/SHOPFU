@@ -1,912 +1,546 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>🛒 Premium Tools & Services</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Fonts & icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        :root {
-            --primary: #4361ee;
-            --primary-dark: #3a56d4;
-            --secondary: #3f37c9;
-            --accent: #4895ef;
-            --success: #4cc9f0;
-            --danger: #f72585;
-            --warning: #f8961e;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --white: #ffffff;
-            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            --shadow: 0 10px 30px rgba(0,0,0,0.1);
-            --shadow-hover: 0 15px 40px rgba(0,0,0,0.15);
-            --radius: 16px;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        :root{
+            --primary: #2b6ef6;
+            --primary-dark: #244fd6;
+            --muted: #6c757d;
+            --bg: #f4f7fb;
+            --card: #ffffff;
+            --success: #16a34a;
+            --danger: #ef4444;
+            --radius: 14px;
+            --shadow: 0 10px 30px rgba(18, 38, 63, 0.07);
+            --glass: rgba(255,255,255,0.6);
+            --transition: 260ms cubic-bezier(.2,.9,.3,1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{
+            margin:0;
+            min-height:100%;
+            font-family:'Poppins',system-ui,Arial;
+            background:
+                radial-gradient(1200px 400px at -10% -10%, rgba(43,110,246,0.06), transparent 12%),
+                radial-gradient(800px 300px at 110% 110%, rgba(63,55,201,0.04), transparent 10%),
+                var(--bg);
+            color:#111827;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
         }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            color: var(--dark);
-            min-height: 100vh;
-            overflow-x: hidden;
-            line-height: 1.6;
+        header{
+            padding:28px 20px;
+            background: linear-gradient(135deg,var(--primary),var(--primary-dark));
+            color:#fff;
+            text-align:center;
+            font-family:'Montserrat',sans-serif;
+            font-weight:700;
+            font-size:20px;
+            border-bottom-left-radius:18px;
+            border-bottom-right-radius:18px;
+            box-shadow:var(--shadow);
+            position:relative;
+            overflow:hidden;
+        }
+        header .brand{
+            display:inline-flex;
+            gap:12px;
+            align-items:center;
+        }
+        header .brand i{font-size:22px; opacity:0.95}
+
+        .container{
+            max-width:1200px;
+            margin:28px auto;
+            padding:0 18px 80px;
         }
 
-        header {
-            background: var(--gradient);
-            color: var(--white);
-            padding: 1.8rem 2rem;
-            text-align: center;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
+        .user-panel{
+            display:flex;
+            gap:18px;
+            align-items:center;
+            justify-content:space-between;
+            background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5));
+            padding:18px;
+            border-radius:12px;
+            box-shadow:var(--shadow);
+            backdrop-filter: blur(6px);
+        }
+        .user-left{display:flex;align-items:center;gap:14px}
+        .user-avatar{
+            width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+            font-weight:700;color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+            box-shadow:0 6px 18px rgba(43,110,246,0.18); font-size:20px;
+        }
+        .user-info .name{font-weight:700;font-size:16px}
+        .user-info .balance{color:var(--muted);margin-top:4px;display:flex;gap:8px;align-items:center}
+        .user-info .balance .amount{color:var(--success);font-weight:700}
+
+        .action-buttons{display:flex;gap:12px}
+        .btn{
+            padding:10px 16px;border-radius:999px;border:none;cursor:pointer;font-weight:600;
+            box-shadow:0 6px 18px rgba(15,23,42,0.06);
+            transition:transform var(--transition), box-shadow var(--transition);
+            display:inline-flex;gap:10px;align-items:center;
+        }
+        .btn:active{transform:translateY(1px)}
+        .btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff}
+        .btn-secondary{background:#fff;color:#111;border:1px solid rgba(15,23,42,0.06)}
+
+        /* Shop grid */
+        .shop-container{
+            margin-top:22px;
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+            gap:20px;
         }
 
-        header::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
-            animation: shimmer 3s infinite;
+        .package-card{
+            background:var(--card);
+            border-radius:16px;
+            overflow:hidden;
+            box-shadow:var(--shadow);
+            display:flex;
+            flex-direction:column;
+            transition:transform var(--transition), box-shadow var(--transition);
+            min-height:300px;
         }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+        .package-card:hover{transform:translateY(-8px); box-shadow:0 20px 50px rgba(2,6,23,0.08)}
+        .package-header{
+            padding:22px;text-align:center;color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+            position:relative;
         }
-
-        .user-panel {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1.8rem;
-            margin: 2.5rem auto;
-            max-width: 1200px;
-            padding: 0 1.5rem;
+        .package-icon i{font-size:36px;opacity:0.95}
+        .package-title{font-weight:800;margin-top:12px;font-size:18px}
+        .package-body{padding:18px;display:flex;flex-direction:column;flex:1}
+        .package-price{font-weight:800;font-size:22px;color:var(--danger);text-align:center}
+        .price-period{font-size:13px;color:var(--muted);margin-top:6px;text-align:center}
+        .package-features{margin-top:14px;flex:1}
+        .feature-item{font-size:14px;color:#1f2937;margin:8px 0;padding-left:18px;position:relative}
+        .feature-item::before{content:"";position:absolute;left:0;top:8px;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.15)}
+        .package-footer{margin-top:18px}
+        .btn-buy{
+            width:100%;
+            padding:14px 18px;border-radius:0 0 16px 16px;border:none;
+            background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+            color:#fff;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;
         }
+        .btn-buy:hover{filter:brightness(.98);transform:translateY(-2px)}
 
-        .user-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 1.5rem 2.5rem;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            min-width: 300px;
+        /* Loading */
+        .loading-container{grid-column:1/-1;display:flex;align-items:center;justify-content:center;padding:36px}
+        .spinner{
+            width:56px;height:56px;border-radius:50%;border:6px solid rgba(15,23,42,0.06);border-top-color:var(--primary);
+            animation:spin 1s linear infinite;
         }
+        @keyframes spin{to{transform:rotate(360deg)}}
 
-        .user-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--gradient);
+        /* Notification */
+        .notification{
+            position:fixed;right:24px;top:24px;background:#fff;padding:14px 18px;border-radius:12px;box-shadow:0 18px 40px rgba(2,6,23,0.08);
+            display:flex;gap:12px;align-items:flex-start;transform:translateX(110%);transition:transform 360ms cubic-bezier(.2,.9,.25,1);
+            z-index:1200;max-width:380px;border-left:6px solid var(--success)
         }
+        .notification.show{transform:translateX(0)}
+        .notification .icon{font-size:22px;color:var(--success);flex-shrink:0}
+        .notification h4{margin:0;font-size:15px}
+        .notification p{margin:4px 0 0;color:var(--muted);font-size:13px}
 
-        .user-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-hover);
-        }
+        footer{padding:36px 18px;text-align:center;color:#6b7280;margin-top:40px;font-size:14px}
+        .footer-links{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+        .footer-links a{color:inherit;text-decoration:none;display:inline-flex;gap:8px;align-items:center}
 
-        .user-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-size: 1.5rem;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
-        }
-
-        .user-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-        }
-
-        .user-name {
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 1.2rem;
-        }
-
-        .user-balance {
-            font-size: 1.1rem;
-            color: var(--gray);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .balance-amount {
-            color: var(--success);
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 1.2rem;
-        }
-
-        .btn {
-            padding: 0.9rem 1.8rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .btn-primary {
-            background: var(--gradient);
-            color: var(--white);
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary) 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
-        }
-
-        .btn-secondary {
-            background: var(--white);
-            color: var(--dark);
-            border: 1px solid #e0e0e0;
-        }
-
-        .btn-secondary:hover {
-            background: #f0f0f0;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-
-        .shop-container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 1.5rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2.5rem;
-        }
-
-        .package-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .package-card:hover {
-            transform: translateY(-12px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .package-header {
-            background: var(--gradient);
-            color: var(--white);
-            padding: 1.8rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .package-header::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
-            animation: shimmer 3s infinite;
-        }
-
-        .package-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.8rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .package-icon {
-            font-size: 3.5rem;
-            margin: 1.2rem 0;
-            color: rgba(255,255,255,0.9);
-            position: relative;
-            z-index: 1;
-        }
-
-        .package-body {
-            padding: 2rem;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .package-price {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--danger);
-            text-align: center;
-            margin-bottom: 1.8rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .price-period {
-            font-size: 1rem;
-            color: var(--gray);
-            font-weight: 500;
-            margin-top: 0.5rem;
-        }
-
-        .package-features {
-            margin-bottom: 2rem;
-            flex: 1;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.8rem;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-            color: var(--dark);
-            position: relative;
-            padding-left: 1.5rem;
-        }
-
-        .feature-item::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0.6rem;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--accent);
-        }
-
-        .package-footer {
-            margin-top: auto;
-        }
-
-        .btn-buy {
-            width: 100%;
-            padding: 1.2rem;
-            background: var(--gradient);
-            color: var(--white);
-            border: none;
-            border-radius: 0 0 var(--radius) var(--radius);
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-buy:hover {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary) 100%);
-        }
-
-        .btn-buy i {
-            font-size: 1.2rem;
-            transition: var(--transition);
-        }
-
-        .btn-buy:hover i {
-            transform: translateX(5px);
-        }
-
-        .loading-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 300px;
-            grid-column: 1 / -1;
-        }
-
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 6px solid rgba(67, 97, 238, 0.2);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .notification {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            background: var(--white);
-            padding: 1.5rem 2rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-hover);
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            transform: translateX(200%);
-            transition: var(--transition);
-            z-index: 1000;
-            max-width: 400px;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification.success {
-            border-left: 5px solid var(--success);
-        }
-
-        .notification.error {
-            border-left: 5px solid var(--danger);
-        }
-
-        .notification-icon {
-            font-size: 2rem;
-            flex-shrink: 0;
-        }
-
-        .success .notification-icon {
-            color: var(--success);
-        }
-
-        .error .notification-icon {
-            color: var(--danger);
-        }
-
-        .notification-content h4 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .notification-content p {
-            font-size: 1rem;
-            color: var(--gray);
-        }
-
-        footer {
-            background: var(--dark);
-            color: var(--light);
-            text-align: center;
-            padding: 3rem 2rem;
-            margin-top: 5rem;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2.5rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-link {
-            color: var(--light);
-            text-decoration: none;
-            transition: var(--transition);
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .footer-link:hover {
-            color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        .footer-link i {
-            font-size: 1.1rem;
-        }
-
-        .copyright {
-            font-size: 1rem;
-            color: var(--gray);
-            margin-top: 1.5rem;
-        }
-
-        @media (max-width: 768px) {
-            header {
-                font-size: 1.6rem;
-                padding: 1.5rem;
-            }
-
-            .user-panel {
-                flex-direction: column;
-                gap: 1.5rem;
-                padding: 0 1rem;
-            }
-
-            .user-card {
-                width: 100%;
-                min-width: auto;
-                padding: 1.2rem 1.5rem;
-            }
-
-            .action-buttons {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .shop-container {
-                grid-template-columns: 1fr;
-                padding: 1rem;
-                gap: 2rem;
-            }
-
-            .package-card {
-                max-width: 400px;
-                margin: 0 auto;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 1.2rem;
-                align-items: center;
-            }
-
-            .notification {
-                top: 20px;
-                right: 20px;
-                left: 20px;
-                max-width: calc(100% - 40px);
-            }
+        /* Responsive */
+        @media(max-width:720px){
+            .user-panel{flex-direction:column;align-items:flex-start;gap:12px}
+            .action-buttons{width:100%;justify-content:space-between}
         }
     </style>
 </head>
 <body>
 
 <header>
-    <i class="fas fa-crown"></i> PREMIUM TOOLS & SERVICES
+    <div class="brand"><i class="fas fa-crown"></i> PREMIUM TOOLS &amp; SERVICES</div>
 </header>
 
-<div class="user-panel">
-    <div class="user-card">
-        <div class="user-avatar" id="user-avatar">U</div>
-        <div class="user-info">
-            <div class="user-name" id="username">Đang tải...</div>
-            <div class="user-balance">
-                <i class="fas fa-wallet"></i>
-                Số dư: <span class="balance-amount" id="balance">0</span> VND
+<main class="container">
+    <section class="user-panel" aria-label="Thông tin người dùng">
+        <div class="user-left">
+            <div class="user-avatar" id="user-avatar">U</div>
+            <div class="user-info">
+                <div class="name" id="username">Đang tải...</div>
+                <div class="balance" aria-live="polite">
+                    <i class="fas fa-wallet" style="color:var(--muted)"></i>
+                    <div style="display:inline-block">Số dư: <span class="amount" id="balance">0</span> VND</div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="action-buttons">
-        <button class="btn btn-primary" id="btn-deposit">
-            <i class="fas fa-coins"></i> Nạp tiền
-        </button>
-        <button class="btn btn-secondary" id="btn-logout">
-            <i class="fas fa-sign-out-alt"></i> Đăng xuất
-        </button>
-    </div>
-</div>
 
-<div class="shop-container" id="shop">
-    <div class="loading-container">
-        <div class="spinner"></div>
-    </div>
-</div>
+        <div class="action-buttons" role="group" aria-label="Thao tác người dùng">
+            <button class="btn btn-primary" id="btn-deposit"><i class="fas fa-coins"></i> Nạp tiền</button>
+            <button class="btn btn-secondary" id="btn-logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
+        </div>
+    </section>
 
-<div class="notification" id="notification">
-    <div class="notification-icon">
-        <i class="fas fa-check-circle"></i>
-    </div>
-    <div class="notification-content">
+    <section class="shop-container" id="shop" aria-label="Gói dịch vụ">
+        <div class="loading-container" id="loading">
+            <div class="spinner" role="status" aria-hidden="true"></div>
+        </div>
+    </section>
+</main>
+
+<!-- Notification -->
+<div class="notification" id="notification" role="status" aria-live="polite" aria-atomic="true">
+    <div class="icon"><i class="fas fa-check-circle"></i></div>
+    <div>
         <h4 id="notification-title">Thành công</h4>
         <p id="notification-message">Thao tác đã được thực hiện</p>
     </div>
 </div>
 
 <footer>
-    <div class="footer-content">
-        <div class="footer-links">
-            <a href="#" class="footer-link">
-                <i class="fas fa-file-contract"></i> Điều khoản dịch vụ
-            </a>
-            <a href="#" class="footer-link">
-                <i class="fas fa-shield-alt"></i> Chính sách bảo mật
-            </a>
-            <a href="#" class="footer-link">
-                <i class="fas fa-headset"></i> Hỗ trợ
-            </a>
-            <a href="#" class="footer-link">
-                <i class="fas fa-envelope"></i> Liên hệ
-            </a>
-        </div>
-        <div class="copyright">
-            &copy; 2025 Premium Tools & Services. All rights reserved.
-        </div>
+    <div class="footer-links">
+        <a href="#" class="footer-link"><i class="fas fa-file-contract"></i> Điều khoản dịch vụ</a>
+        <a href="#" class="footer-link"><i class="fas fa-shield-alt"></i> Chính sách bảo mật</a>
+        <a href="#" class="footer-link"><i class="fas fa-headset"></i> Hỗ trợ</a>
+        <a href="#" class="footer-link"><i class="fas fa-envelope"></i> Liên hệ</a>
     </div>
+    <div>&copy; 2025 Premium Tools &amp; Services. All rights reserved.</div>
 </footer>
 
 <script>
-    // Google Apps Script Web App URL - REPLACE WITH YOUR OWN
-    const API_URL = "https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec";
-    
-    // User data
-    let userData = {
-        name: "",
-        balance: 0,
-        avatar: "U"
-    };
+/*
+  shop.html (fixed)
+  - Sửa lỗi cú pháp
+  - Logic mua hàng: nếu đủ → thankyou.html, nếu thiếu → banking.html?amount=<need>
+  - Bỏ/soft-replace gói 'App Banking Ảo' thành 'Banking Demo (Chỉ demo)'
+  - Notification tiện dụng
+  - Giữ API_URL (thay bằng URL của bạn nếu cần)
+*/
 
-    // DOM elements
-    const shopContainer = document.getElementById('shop');
-    const usernameElement = document.getElementById('username');
-    const balanceElement = document.getElementById('balance');
-    const userAvatarElement = document.getElementById('user-avatar');
-    const btnDeposit = document.getElementById('btn-deposit');
-    const btnLogout = document.getElementById('btn-logout');
-    const notification = document.getElementById('notification');
+const API_URL = "https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec";
 
-    // Product data
-    const packages = [
-        {
-            name: "Gói Basic", 
-            icon: "fas fa-laptop-code",
-            price: 400000, 
-            code: "basic", 
-            period: "1 tháng",
-            features: [
-                "TOOL SEB bản cơ bản",
-                "Sử dụng 1 thiết bị",
-                "Hỗ trợ 24/7 qua chat",
-                "Cập nhật hàng tuần",
-                "Bảo hành 7 ngày"
-            ]
-        },
-        {
-            name: "Gói VIP1", 
-            icon: "fas fa-rocket",
-            price: 600000, 
-            code: "vip1", 
-            period: "3 tháng",
-            features: [
-                "TOOL EOS cao cấp",
-                "Sử dụng 1 thiết bị",
-                "Update miễn phí liên tục",
-                "Hỗ trợ từ xa",
-                "Bảo hành 30 ngày"
-            ]
-        },
-        {
-            name: "Gói VIP2", 
-            icon: "fas fa-bolt",
-            price: 800000, 
-            code: "vip2", 
-            period: "6 tháng",
-            features: [
-                "TOOL EOS + SEB PRO",
-                "Dùng được 1 kì học",
-                "Hỗ trợ từ xa 24/7",
-                "Ưu tiên cập nhật",
-                "Bảo hành 60 ngày"
-            ]
-        },
-        {
-            name: "Gói VIP3", 
-            icon: "fas fa-crown",
-            price: 3000000, 
-            code: "vip3", 
-            period: "4 năm",
-            features: [
-                "TOOL EOS + SEB PRO MAX",
-                "Dùng được 4 năm",
-                "Hỗ trợ VIP 24/7",
-                "Cập nhật real-time",
-                "Bảo hành trọn đời"
-            ]
-        },
-        {
-            name: "Gói Support", 
-            icon: "fas fa-hands-helping",
-            price: 50000, 
-            code: "support", 
-            period: "1 lần",
-            features: [
-                "Hỗ trợ kỹ thuật chuyên sâu",
-                "Cài đặt tool từ xa",
-                "Tư vấn tối ưu bảo mật",
-                "Fix lỗi nhanh chóng",
-                "Hướng dẫn chi tiết"
-            ]
-        },
-        {
-            name: "App Banking Ảo", 
-            icon: "fas fa-university",
-            price: 500000, 
-            code: "fakebill", 
-            period: "Vĩnh viễn",
-            features: [
-                "Fake bill chuyển khoản",
-                "Hỗ trợ 20+ ngân hàng",
-                "Giao diện giống thật 99%",
-                "Tùy chỉnh thông tin",
-                "Không lưu dữ liệu"
-            ]
-        },
-        {
-            name: "Gói Bảo Mật", 
-            icon: "fas fa-shield-alt",
-            price: 250000, 
-            code: "security", 
-            period: "6 tháng",
-            features: [
-                "Chống bị phát hiện tool",
-                "Ẩn IP và thông tin thiết bị",
-                "Cập nhật liên tục",
-                "Bảo vệ real-time",
-                "Hỗ trợ 24/7"
-            ]
+// DOM
+const shopContainer = document.getElementById('shop');
+const loadingEl = document.getElementById('loading');
+const usernameElement = document.getElementById('username');
+const balanceElement = document.getElementById('balance');
+const userAvatarElement = document.getElementById('user-avatar');
+const btnDeposit = document.getElementById('btn-deposit');
+const btnLogout = document.getElementById('btn-logout');
+
+const notification = document.getElementById('notification');
+const notificationTitle = document.getElementById('notification-title');
+const notificationMessage = document.getElementById('notification-message');
+const notificationIcon = notification.querySelector('.icon i');
+
+// User data (will be filled by loadUserData)
+let userData = { name: '', balance: 0, avatar: 'U' };
+
+// Product data (modified: removed illegal-sounding product; replaced with demo)
+const packages = [
+    {
+        name: "Gói Basic",
+        icon: "fas fa-laptop-code",
+        price: 400000,
+        code: "basic",
+        period: "1 tháng",
+        features: [
+            "TOOL SEB bản cơ bản",
+            "Sử dụng 1 thiết bị",
+            "Hỗ trợ 24/7 qua chat",
+            "Cập nhật hàng tuần",
+            "Bảo hành 7 ngày"
+        ]
+    },
+    {
+        name: "Gói VIP1",
+        icon: "fas fa-rocket",
+        price: 600000,
+        code: "vip1",
+        period: "3 tháng",
+        features: [
+            "TOOL EOS cao cấp",
+            "Sử dụng 1 thiết bị",
+            "Update miễn phí liên tục",
+            "Hỗ trợ từ xa",
+            "Bảo hành 30 ngày"
+        ]
+    },
+    {
+        name: "Gói VIP2",
+        icon: "fas fa-bolt",
+        price: 800000,
+        code: "vip2",
+        period: "6 tháng",
+        features: [
+            "TOOL EOS + SEB PRO",
+            "Dùng được 1 kì học",
+            "Hỗ trợ từ xa 24/7",
+            "Ưu tiên cập nhật",
+            "Bảo hành 60 ngày"
+        ]
+    },
+    {
+        name: "Gói VIP3",
+        icon: "fas fa-crown",
+        price: 3000000,
+        code: "vip3",
+        period: "4 năm",
+        features: [
+            "TOOL EOS + SEB PRO MAX",
+            "Dùng được 4 năm",
+            "Hỗ trợ VIP 24/7",
+            "Cập nhật real-time",
+            "Bảo hành trọn đời"
+        ]
+    },
+    {
+        name: "Gói Support",
+        icon: "fas fa-hands-helping",
+        price: 50000,
+        code: "support",
+        period: "1 lần",
+        features: [
+            "Hỗ trợ kỹ thuật chuyên sâu",
+            "Cài đặt tool từ xa",
+            "Tư vấn tối ưu bảo mật",
+            "Fix lỗi nhanh chóng",
+            "Hướng dẫn chi tiết"
+        ]
+    },
+    // Replaced risky product with a demo-only product
+    {
+        name: "Banking Demo (Chỉ demo)",
+        icon: "fas fa-university",
+        price: 50000,
+        code: "banking_demo",
+        period: "Vĩnh viễn (demo)",
+        features: [
+            "Giao diện giả lập cho mục đích học tập / demo",
+            "Không dùng cho giao dịch thực tế",
+            "Mô phỏng chuyển khoản - chỉ test",
+            "Không lưu thông tin nhạy cảm",
+            "Hỗ trợ kỹ thuật"
+        ]
+    },
+    {
+        name: "Gói Bảo Mật",
+        icon: "fas fa-shield-alt",
+        price: 250000,
+        code: "security",
+        period: "6 tháng",
+        features: [
+            "Chống bị phát hiện tool",
+            "Ẩn IP và thông tin thiết bị",
+            "Cập nhật liên tục",
+            "Bảo vệ real-time",
+            "Hỗ trợ 24/7"
+        ]
+    }
+];
+
+// ---------- Initialization ----------
+document.addEventListener('DOMContentLoaded', async () => {
+    // If user is not authenticated, checkAuth redirects to index
+    if (!await checkAuth()) return;
+
+    // Load user data and render
+    await loadUserData();
+    renderShop();
+    setupEventListeners();
+});
+
+// ---------- Auth & Data ----------
+async function checkAuth(){
+    const username = localStorage.getItem('username');
+    const token = localStorage.getItem('authToken');
+
+    if (!username || !token){
+        showNotification('error', 'Yêu cầu đăng nhập', 'Vui lòng đăng nhập để tiếp tục');
+        setTimeout(()=>{ window.location.href = 'index.html'; }, 1600);
+        return false;
+    }
+
+    try {
+        const resp = await fetch(`${API_URL}?action=verifyToken&username=${encodeURIComponent(username)}&token=${encodeURIComponent(token)}`, {cache:'no-store'});
+        const data = await resp.json();
+        if (!data.success) throw new Error('Token không hợp lệ');
+        return true;
+    } catch (err) {
+        console.error('Lỗi xác thực', err);
+        showNotification('error', 'Phiên đăng nhập hết hạn', 'Vui lòng đăng nhập lại');
+        setTimeout(()=>{ window.location.href = 'index.html'; }, 1600);
+        return false;
+    }
+}
+
+async function loadUserData(){
+    const username = localStorage.getItem('username') || 'Khách';
+    usernameElement.textContent = 'Đang tải...';
+    balanceElement.textContent = '0';
+
+    try {
+        const resp = await fetch(`${API_URL}?action=getUser&username=${encodeURIComponent(username)}`, {cache:'no-store'});
+        if (!resp.ok) throw new Error('Không thể kết nối đến server');
+        const data = await resp.json();
+
+        if (data.success){
+            userData = {
+                name: data.name || username,
+                balance: Number(data.balance) || 0,
+                avatar: (data.name ? data.name.charAt(0) : username.charAt(0)).toUpperCase()
+            };
+        } else {
+            // fallback to local
+            userData = { name: username, balance: 0, avatar: username.charAt(0).toUpperCase() };
+            console.warn('API trả về lỗi:', data.message);
         }
-    ];
+    } catch (err) {
+        console.error('Lỗi tải dữ liệu:', err);
+        userData = { name: username, balance: 0, avatar: username.charAt(0).toUpperCase() };
+        showNotification('error', 'Lỗi hệ thống', 'Không thể tải thông tin người dùng');
+    } finally {
+        updateUserUI();
+    }
+}
 
-    // Initialize the page
-    document.addEventListener('DOMContentLoaded', async () => {
-        // Check authentication
-        if (!await checkAuth()) {
-            return;
-        }
-        
-        // Load user data
-        await loadUserData();
-        
-        // Render shop
-        renderShop();
-        
-        // Setup event listeners
-        setupEventListeners();
+// ---------- UI Updates ----------
+function updateUserUI(){
+    usernameElement.textContent = userData.name;
+    balanceElement.textContent = userData.balance.toLocaleString('vi-VN');
+    userAvatarElement.textContent = userData.avatar;
+}
+
+// ---------- Render shop ----------
+function renderShop(){
+    // Remove loading
+    if (loadingEl) loadingEl.remove();
+
+    shopContainer.innerHTML = '';
+
+    if (!packages || packages.length === 0){
+        shopContainer.innerHTML = `
+            <div style="grid-column:1/-1;text-align:center;padding:36px;color:var(--muted)">
+                <i class="fas fa-box-open" style="font-size:40px;margin-bottom:10px;display:block"></i>
+                <div>Hiện không có sản phẩm nào</div>
+            </div>
+        `;
+        return;
+    }
+
+    packages.forEach(pkg => {
+        const featuresHtml = pkg.features.map(f => `<div class="feature-item">${escapeHtml(f)}</div>`).join('');
+        const card = document.createElement('div');
+        card.className = 'package-card';
+        card.innerHTML = `
+            <div class="package-header">
+                <div class="package-icon"><i class="${pkg.icon}"></i></div>
+                <div class="package-title">${escapeHtml(pkg.name)}</div>
+            </div>
+            <div class="package-body">
+                <div class="package-price">${pkg.price.toLocaleString('vi-VN')} VND</div>
+                <div class="price-period">${escapeHtml(pkg.period)}</div>
+                <div class="package-features">${featuresHtml}</div>
+                <div class="package-footer"><button class="btn-buy" data-price="${pkg.price}" data-package="${encodeURIComponent(pkg.code)}"><i class="fas fa-shopping-cart"></i> Mua ngay</button></div>
+            </div>
+        `;
+        shopContainer.appendChild(card);
     });
 
-    // Check if user is authenticated
-    async function checkAuth() {
-        const username = localStorage.getItem('username');
-        const token = localStorage.getItem('authToken');
-        
-        if (!username || !token) {
-            showNotification('error', 'Yêu cầu đăng nhập', 'Vui lòng đăng nhập để tiếp tục');
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
-            return false;
-        }
-        
-        try {
-            const response = await fetch(`${API_URL}?action=verifyToken&username=${encodeURIComponent(username)}&token=${encodeURIComponent(token)}`);
-            const data = await response.json();
-            
-            if (!data.success) {
-                throw new Error('Token không hợp lệ');
-            }
-            return true;
-        } catch (error) {
-            console.error('Lỗi xác thực:', error);
-            showNotification('error', 'Phiên đăng nhập hết hạn', 'Vui lòng đăng nhập lại');
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
-            return false;
-        }
+    // Attach listeners
+    document.querySelectorAll('.btn-buy').forEach(btn => btn.addEventListener('click', handleBuyClick));
+}
+
+// ---------- Buy logic ----------
+function handleBuyClick(e){
+    const btn = e.currentTarget;
+    const price = Number(btn.getAttribute('data-price') || 0);
+    const packageCode = decodeURIComponent(btn.getAttribute('data-package') || '');
+    const pkg = packages.find(p => p.code === packageCode);
+    const packageName = pkg ? pkg.name : 'sản phẩm';
+
+    // If user has enough balance -> redirect to thankyou (simulate purchase)
+    if (userData.balance >= price){
+        // you may want to call server to create order before redirecting — depends on your backend flow
+        showNotification('success', 'Giao dịch thành công', `Bạn đã mua ${packageName}`);
+        // Redirect with package info (and price)
+        setTimeout(()=> {
+            window.location.href = `thankyou.html?package=${encodeURIComponent(packageCode)}&price=${price}`;
+        }, 700);
+    } else {
+        const need = price - userData.balance;
+        showNotification('error', 'Thiếu số dư', `Bạn cần nạp thêm ${need.toLocaleString('vi-VN')} VND`);
+        // redirect to banking with amount needed
+        setTimeout(()=> {
+            window.location.href = `banking.html?package=${encodeURIComponent(packageCode)}&amount=${need}`;
+        }, 900);
+    }
+}
+
+// ---------- Notifications ----------
+let notifTimer = null;
+function showNotification(type='success', title='Thông báo', message=''){
+    // set border color & icon
+    notification.className = 'notification';
+    notification.classList.add('show');
+
+    if (type === 'success') {
+        notification.style.borderLeftColor = 'var(--success)';
+        notificationIcon.className = 'fas fa-check-circle';
+        notificationIcon.style.color = '';
+    } else {
+        notification.style.borderLeftColor = 'var(--danger)';
+        notificationIcon.className = 'fas fa-exclamation-circle';
+        notificationIcon.style.color = '';
     }
 
-    // Load user data from Google Apps Script
-    async function loadUserData() {
-        try {
-            const username = localStorage.getItem('username');
-            
-            // Show loading state
-            usernameElement.textContent = 'Đang tải...';
-            balanceElement.textContent = '0';
-            
-            // Fetch user data
-            const response = await fetch(`${API_URL}?action=getUser&username=${encodeURIComponent(username)}`);
-            
-            if (!response.ok) {
-                throw new Error('Không thể kết nối đến server');
-            }
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                userData = {
-                    name: data.name || username,
-                    balance: parseInt(data.balance) || 0,
-                    avatar: data.name ? data.name.charAt(0).toUpperCase() : username.charAt(0).toUpperCase()
-                };
-                
-                // Update UI
-                updateUserUI();
-            } else {
-                throw new Error(data.message || 'Không thể tải dữ liệu người dùng');
-            }
-        } catch (error) {
-            console.error('Lỗi tải dữ liệu:', error);
-            showNotification('error', 'Lỗi hệ thống', 'Không thể tải thông tin người dùng');
-            usernameElement.textContent = localStorage.getItem('username') || 'Khách';
-            balanceElement.textContent = '0';
-        }
-    }
+    notificationTitle.textContent = title;
+    notificationMessage.textContent = message;
 
-    // Update user UI elements
-    function updateUserUI() {
-        usernameElement.textContent = userData.name;
-        balanceElement.textContent = userData.balance.toLocaleString('vi-VN');
-        userAvatarElement.textContent = userData.avatar;
-    }
+    if (notifTimer) clearTimeout(notifTimer);
+    notifTimer = setTimeout(()=> {
+        notification.classList.remove('show');
+    }, 5000);
+}
 
-    // Render shop products
-    function renderShop() {
-        shopContainer.innerHTML = '';
-        
-        if (packages.length === 0) {
-            shopContainer.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
-                    <i class="fas fa-box-open" style="font-size: 3rem; color: var(--gray); margin-bottom: 1rem;"></i>
-                    <h3 style="color: var(--gray);">Hiện không có sản phẩm nào</h3>
-                </div>
-            `;
-            return;
-        }
-        
-        packages.forEach(pkg => {
-            const featuresHtml = pkg.features.map(feature => `
-                <div class="feature-item">
-                    <span>${feature}</span>
-                </div>
-            `).join('');
-            
-            const packageElement = document.createElement('div');
-            packageElement.className = 'package-card';
-            packageElement.innerHTML = `
-                <div class="package-header">
-                    <div class="package-icon">
-                        <i class="${pkg.icon}"></i>
-                    </div>
-                    <h3 class="package-title">${pkg.name}</h3>
-                </div>
-                <div class="package-body">
-                    <div class="package-price">
-                        ${pkg.price.toLocaleString('vi-VN')} VND
-                        <div class="price-period">${pkg.period}</div>
-                    </div>
-                    <div class="package-features">
-                        ${featuresHtml}
-                    </div>
-                    <div class="package-footer">
-                        <button class="btn-buy" data-price="${pkg.price}" data-package="${pkg.code}">
-                            <i class="fas fa-shopping-cart"></i> Mua ngay
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            shopContainer.appendChild(packageElement);
-        });
-        
-        // Add event listeners to buy buttons
-        document.querySelectorAll('.btn-buy').forEach(btn => {
-            btn.addEventListener('click', handleBuyClick);
-        });
-    }
+// ---------- Setup other event listeners ----------
+function setupEventListeners(){
+    btnDeposit.addEventListener('click', ()=> {
+        // go to banking page (without package)
+        window.location.href = 'banking.html';
+    });
 
-    // Handle buy button click
-    function handleBuyClick() {
-        const price = parseInt(this.getAttribute('data-price'));
-        const packageCode = this.getAttribute('data-package'));
-        const packageName = packages.find(pkg => pkg.code === packageCode)?.name || 'sản phẩm';
-        
-        // Redirect to banking page with package info
-        window.location.href = `banking.html?package=${encodeURIComponent(packageCode)}&amount=${price}`;
-    }
+    btnLogout.addEventListener('click', ()=> {
+        localStorage.removeItem('username');
+        localStorage.removeItem('authToken');
+        showNotification('success','Đăng xuất','Bạn đã đăng xuất thành công');
+        setTimeout(()=> window.location.href = 'index.html', 900);
+    });
+}
 
-    // Show notification
-    function showNotification(type, title, message) {
-        const notificationTitle = document.getElementById('notification-title');
-        const notificationMessage = document.getElementById('notification-message');
-        const notificationIcon = notification.querySelector('.notification-icon i');
-        
-        // Set content
-        notificationTitle.textContent = title;
-        notificationMessage.textContent = message;
-        
-        // Set style based on type
-        notification.className = 'notification';
-        notification.classList.add(type);
-        
-        // Set icon based on type
-        notificationIcon.className = type === 'success' 
-            ? 'fas fa-check-circle' 
-            : 'fas fa-exclamation-circle';
-        
-        // Show notification
-        notification.classList.add('show');
-        
-        // Hide after 5 seconds
-        setTimeout(() => {
-            notification.classList.remove('show');
-        }, 5000);
-    }
+// ---------- Utilities ----------
+function escapeHtml(str){
+    if (!str) return '';
+    return String(str)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'",'&#039;');
+}
 
-    // Setup event listeners
-    function setupEventListeners() {
-        // Deposit button
-        btnDeposit.addEventListener('click', () => {
-            window.location.href = 'banking.html';
-        });
-        
-        // Logout button
-        btnLogout.addEventListener('click', () => {
-            localStorage.removeItem('username');
-            localStorage.removeItem('authToken');
-            showNotification('success', 'Đăng xuất thành công', 'Bạn đã đăng xuất khỏi hệ thống');
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1500);
-        });
-    }
 </script>
 </body>
 </html>
