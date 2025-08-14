@@ -4,12 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>🛒 Premium Tools & Services</title>
-
-    <!-- Fonts & icons -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-
     <style>
         :root {
             --primary: #6c5ce7;
@@ -62,7 +59,6 @@
             line-height: 1.6;
         }
 
-        /* Header styles */
         header {
             padding: 24px 20px;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -101,14 +97,12 @@
             color: var(--gold);
         }
 
-        /* Main container */
         .container {
             max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px 80px;
         }
 
-        /* User panel */
         .user-panel {
             display: flex;
             gap: 18px;
@@ -192,7 +186,6 @@
             font-size: 18px;
         }
 
-        /* Action buttons */
         .action-buttons {
             display: flex;
             gap: 12px;
@@ -261,7 +254,6 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        /* Shop grid */
         .shop-container {
             margin-top: 30px;
             display: grid;
@@ -269,7 +261,6 @@
             gap: 24px;
         }
 
-        /* Package cards - Premium design */
         .package-card {
             background: var(--card);
             border-radius: var(--radius);
@@ -458,7 +449,6 @@
             transform: translateY(0);
         }
 
-        /* Popular badge */
         .popular-badge {
             position: absolute;
             top: 16px;
@@ -475,7 +465,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Loading overlay */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -512,7 +501,6 @@
             }
         }
 
-        /* Notification */
         .notification {
             position: fixed;
             right: 24px;
@@ -574,7 +562,6 @@
             color: var(--warning);
         }
 
-        /* Footer */
         footer {
             padding: 40px 20px;
             text-align: center;
@@ -605,7 +592,6 @@
             color: var(--primary);
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .user-panel {
                 flex-direction: column;
@@ -628,7 +614,6 @@
             }
         }
 
-        /* Animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -658,7 +643,7 @@
                 <div class="name" id="username">Khách</div>
                 <div class="balance" aria-live="polite">
                     <i class="fas fa-wallet" style="color:var(--muted)"></i>
-                    <div style="display:inline-block">Số dư: <span class="amount" id="balance">0</span> VND</div>
+                    <div style="display:inline-block">Số dư: <span class="amount" id="balance">0</span></div>
                 </div>
             </div>
         </div>
@@ -764,19 +749,20 @@ const loadingOverlay = document.getElementById('loading-overlay');
 let userData = {
     name: "Khách",
     balance: 0,
-    avatar: "K"
+    avatar: "K",
+    isLoggedIn: false
 };
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', () => {
-    loadUserData();
+    checkLoginStatus();
     updateUserUI();
     renderProducts();
     setupEventListeners();
 });
 
-// Load user data from localStorage
-function loadUserData() {
+// Kiểm tra trạng thái đăng nhập
+function checkLoginStatus() {
     const savedUser = localStorage.getItem('userData');
     if (savedUser) {
         try {
@@ -785,18 +771,19 @@ function loadUserData() {
                 userData = {
                     name: parsedData.name || "Khách",
                     balance: typeof parsedData.balance === 'number' ? parsedData.balance : 0,
-                    avatar: parsedData.avatar || getInitials(parsedData.name || "K")
+                    avatar: parsedData.avatar || getInitials(parsedData.name || "K"),
+                    isLoggedIn: true
                 };
             }
         } catch (e) {
             console.error("Error parsing user data:", e);
-            userData = { name: "Khách", balance: 0, avatar: "K" };
+            userData = { name: "Khách", balance: 0, avatar: "K", isLoggedIn: false };
         }
     }
-    saveUserData(); // Ensure data structure is correct
+    saveUserData();
 }
 
-// Save user data to localStorage
+// Lưu dữ liệu người dùng
 function saveUserData() {
     localStorage.setItem('userData', JSON.stringify({
         name: userData.name,
@@ -805,7 +792,7 @@ function saveUserData() {
     }));
 }
 
-// Helper function to get initials from name
+// Lấy chữ cái đầu từ tên
 function getInitials(name) {
     if (!name || typeof name !== 'string') return "K";
     return name.split(' ')
@@ -819,7 +806,7 @@ function getInitials(name) {
 // ========== UI FUNCTIONS ==========
 function updateUserUI() {
     usernameElement.textContent = userData.name;
-    balanceElement.textContent = formatCurrency(userData.balance);
+    balanceElement.textContent = userData.balance.toLocaleString('vi-VN'); // Chỉ hiển thị số
     userAvatarElement.textContent = userData.avatar;
 }
 
@@ -857,7 +844,6 @@ function renderProducts() {
         shopContainer.appendChild(productCard);
     });
     
-    // Add event listeners to all buy buttons
     document.querySelectorAll('.btn-buy').forEach(btn => {
         btn.addEventListener('click', handlePurchase);
     });
@@ -876,20 +862,17 @@ function handlePurchase(event) {
         return;
     }
 
-    // Kiểm tra đăng nhập
-    if (userData.name === "Khách") {
+    // Kiểm tra đăng nhập bằng isLoggedIn
+    if (!userData.isLoggedIn) {
         showNotification('warning', 'Yêu cầu đăng nhập', 'Vui lòng đăng nhập để mua gói dịch vụ');
         return;
     }
 
-    // Hiển thị xác nhận
     const isConfirmed = confirm(`Bạn có chắc chắn muốn mua gói "${productName}" với giá ${formatCurrency(productPrice)}?`);
     if (!isConfirmed) return;
 
-    // Hiển thị loading
     showLoading();
 
-    // Tạo thông tin đơn hàng
     const orderData = {
         orderId: 'DH' + Date.now().toString().slice(-8),
         product: {
@@ -906,10 +889,8 @@ function handlePurchase(event) {
         timestamp: new Date().toISOString()
     };
     
-    // Lưu vào localStorage
     localStorage.setItem('currentOrder', JSON.stringify(orderData));
     
-    // Chuyển hướng sau 1 giây để người dùng thấy hiệu ứng loading
     setTimeout(() => {
         window.location.href = 'banking.html';
     }, 1000);
@@ -918,33 +899,21 @@ function handlePurchase(event) {
 // ========== NOTIFICATION SYSTEM ==========
 let notifTimer = null;
 function showNotification(type = 'success', title = 'Thông báo', message = '') {
-    // Set notification style based on type
     notification.className = 'notification';
     notification.classList.add(type);
     
-    // Set icon based on type
     const icon = notification.querySelector('.icon i');
     switch(type) {
-        case 'success':
-            icon.className = 'fas fa-check-circle';
-            break;
-        case 'error':
-            icon.className = 'fas fa-exclamation-circle';
-            break;
-        case 'warning':
-            icon.className = 'fas fa-exclamation-triangle';
-            break;
-        default:
-            icon.className = 'fas fa-info-circle';
+        case 'success': icon.className = 'fas fa-check-circle'; break;
+        case 'error': icon.className = 'fas fa-exclamation-circle'; break;
+        case 'warning': icon.className = 'fas fa-exclamation-triangle'; break;
+        default: icon.className = 'fas fa-info-circle';
     }
     
     notificationTitle.textContent = title;
     notificationMessage.textContent = message;
-    
-    // Show notification
     notification.classList.add('show');
     
-    // Auto-hide after 5 seconds
     if (notifTimer) clearTimeout(notifTimer);
     notifTimer = setTimeout(() => {
         notification.classList.remove('show');
@@ -962,8 +931,12 @@ function hideLoading() {
 
 // ========== EVENT LISTENERS ==========
 function setupEventListeners() {
-    // Deposit button
     btnDeposit.addEventListener('click', () => {
+        if (!userData.isLoggedIn) {
+            showNotification('warning', 'Yêu cầu đăng nhập', 'Vui lòng đăng nhập để nạp tiền');
+            return;
+        }
+
         const orderData = {
             orderId: 'NAP' + Date.now().toString().slice(-6),
             product: {
@@ -987,14 +960,12 @@ function setupEventListeners() {
         }, 800);
     });
     
-    // Logout button
     btnLogout.addEventListener('click', () => {
         localStorage.removeItem('userData');
         localStorage.removeItem('currentOrder');
+        userData = { name: "Khách", balance: 0, avatar: "K", isLoggedIn: false };
+        updateUserUI();
         showNotification('success', 'Đăng xuất', 'Bạn đã đăng xuất thành công');
-        setTimeout(() => {
-            window.location.href = 'index.html';
-        }, 1000);
     });
 }
 
@@ -1002,18 +973,17 @@ function setupEventListeners() {
 function formatCurrency(amount) {
     return new Intl.NumberFormat('vi-VN', { 
         style: 'currency', 
-        currency: 'VND' 
-    }).format(amount);
+        currency: 'VND',
+        currencyDisplay: 'code'
+    }).format(amount).replace('VND', '').trim();
 }
 
 // ========== SECURITY ==========
-// Chặn chuột phải
 document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
     showNotification('error', 'Cảnh báo', 'Không được phép chuột phải!');
 });
 
-// Chặn F12, Ctrl+Shift+I, Ctrl+U
 document.addEventListener('keydown', function(e) {
     if (
         e.key === "F12" ||
