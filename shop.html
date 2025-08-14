@@ -210,6 +210,20 @@
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -218,8 +232,8 @@
             <div class="user-info">
                 <div class="user-avatar" id="user-avatar">K</div>
                 <div>
-                    <div class="name" id="username">Khách</div>
-                    <div class="balance">Số dư: <span class="balance-amount" id="balance">0₫</span></div>
+                    <div class="name" id="username">Đang tải...</div>
+                    <div class="balance">Số dư: <span class="balance-amount" id="balance"><span class="loading"></span></span></div>
                 </div>
             </div>
             <button class="btn btn-primary" id="btn-deposit">
@@ -237,11 +251,24 @@
     </div>
 
     <script>
+        // Configuration
+        const API_URL = 'https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec'; // Thay bằng URL API thực tế của bạn
+        const USER_ID = 'current_user_id'; // Hoặc lấy từ localStorage/sessionStorage
+
+        // DOM elements
+        const shopContainer = document.getElementById('shopContainer');
+        const usernameElement = document.getElementById('username');
+        const balanceElement = document.getElementById('balance');
+        const userAvatarElement = document.getElementById('user-avatar');
+        const btnDeposit = document.getElementById('btn-deposit');
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notification-message');
+
         // User data
-        const userData = {
-            name: "Người dùng",
-            balance: 500000, // 500,000₫
-            isLoggedIn: true
+        let userData = {
+            name: "Đang tải...",
+            balance: 0,
+            isLoggedIn: false
         };
 
         // Products data
@@ -287,26 +314,37 @@
             }
         ];
 
-        // DOM elements
-        const shopContainer = document.getElementById('shopContainer');
-        const usernameElement = document.getElementById('username');
-        const balanceElement = document.getElementById('balance');
-        const userAvatarElement = document.getElementById('user-avatar');
-        const btnDeposit = document.getElementById('btn-deposit');
-        const notification = document.getElementById('notification');
-        const notificationMessage = document.getElementById('notification-message');
+        // Generate random 4 digits
+        function generateRandom4Digits() {
+            return Math.floor(1000 + Math.random() * 9000);
+        }
 
-        // Initialize the page
-        function init() {
-            updateUserInfo();
-            renderProducts();
-            setupEventListeners();
+        // Fetch user data from API
+        async function fetchUserData() {
+            try {
+                const response = await fetch(`${API_URL}?userId=${USER_ID}`);
+                if (!response.ok) {
+                    throw new Error('Không thể lấy dữ liệu người dùng');
+                }
+                const data = await response.json();
+                
+                userData = {
+                    name: data.username || 'Khách',
+                    balance: data.balance || 0,
+                    isLoggedIn: data.isLoggedIn || false
+                };
+                
+                updateUserInfo();
+            } catch (error) {
+                console.error('Lỗi khi lấy dữ liệu người dùng:', error);
+                showNotification('Lỗi khi tải thông tin người dùng', 'error');
+            }
         }
 
         // Update user info display
         function updateUserInfo() {
             usernameElement.textContent = userData.name;
-            balanceElement.textContent = userData.balance.toLocaleString('vi-VN') + '₫';
+            balanceElement.innerHTML = userData.balance.toLocaleString('vi-VN') + '₫';
             userAvatarElement.textContent = userData.name.charAt(0).toUpperCase();
         }
 
@@ -314,7 +352,7 @@
         function renderProducts() {
             shopContainer.innerHTML = '';
             
-            products.forEach((product, index) => {
+            products.forEach((product) => {
                 const card = document.createElement('div');
                 card.className = 'package-card';
                 
@@ -353,6 +391,8 @@
             const productId = button.getAttribute('data-id');
             const productName = button.getAttribute('data-name');
             const productPrice = parseInt(button.getAttribute('data-price'));
+            const randomDigits = generateRandom4Digits();
+            const transferContent = `${productId}_${randomDigits}`;
             
             if (!userData.isLoggedIn) {
                 showNotification('Vui lòng đăng nhập để mua hàng', 'warning');
@@ -365,7 +405,6 @@
             } else {
                 // Not enough balance
                 const amountNeeded = productPrice - userData.balance;
-                const transferContent = `NAP${productId}`;
                 
                 // Save transaction info
                 localStorage.setItem('bankingInfo', JSON.stringify({
@@ -419,11 +458,18 @@
                 localStorage.setItem('bankingInfo', JSON.stringify({
                     amount: 0, // Let user enter amount
                     productName: 'Nạp tiền',
-                    transferContent: 'NAPTIEN'
+                    transferContent: `NAP_${generateRandom4Digits()}`
                 }));
                 
                 window.open('banking.html', '_blank');
             });
+        }
+
+        // Initialize the page
+        async function init() {
+            renderProducts();
+            setupEventListeners();
+            await fetchUserData();
         }
 
         // Initialize when page loads
