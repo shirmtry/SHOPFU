@@ -815,5 +815,24 @@ function formatCurrency(amount) {
     return amount.toLocaleString('vi-VN') + ' VND';
 }
 </script>
+    <script>
+// Chặn chuột phải
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    alert("🚫 Không được phép chuột phải!");
+});
+
+// Chặn F12, Ctrl+Shift+I, Ctrl+U
+document.addEventListener('keydown', function(e) {
+    if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) ||
+        (e.ctrlKey && e.key === 'U')
+    ) {
+        e.preventDefault();
+        alert("🚫 Không được phép xem code!");
+    }
+});
+</script>
 </body>
 </html>
