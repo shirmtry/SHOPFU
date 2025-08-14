@@ -53,22 +53,6 @@
     overflow: hidden;
   }
 
-  header::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
-    animation: shimmer 3s infinite;
-  }
-
-  @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
-
   .user-panel {
     display: flex;
     justify-content: center;
@@ -202,31 +186,16 @@
     overflow: hidden;
   }
 
-  .package-header::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
-    animation: shimmer 3s infinite;
-  }
-
   .package-title {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.3rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    position: relative;
-    z-index: 1;
   }
 
   .package-icon {
     font-size: 3rem;
     margin: 1rem 0;
-    position: relative;
-    z-index: 1;
     color: rgba(255,255,255,0.9);
   }
 
@@ -441,9 +410,7 @@
 <body>
 
 <header>
-  <div class="header-content">
-    <i class="fas fa-crown"></i> PREMIUM TOOLS & SERVICES
-  </div>
+  <i class="fas fa-crown"></i> PREMIUM TOOLS & SERVICES
 </header>
 
 <div class="user-panel">
@@ -495,20 +462,26 @@
 </footer>
 
 <script>
-  // Enhanced security - disable right click and text selection
-  document.addEventListener('contextmenu', e => {
-    e.preventDefault();
-    showNotification('error', 'Thao tác bị hạn chế', 'Vui lòng không sử dụng chuột phải trên trang web này');
-  });
-  
-  document.addEventListener('selectstart', e => {
-    e.preventDefault();
-  });
-
-  // Mock API URL - replace with your actual API endpoint
+  // Google Apps Script Web App URL - REPLACE WITH YOUR OWN
   const API_URL = "https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec";
   
-  // Sample product data
+  // User data
+  let userData = {
+    name: "",
+    balance: 0,
+    avatar: "U"
+  };
+
+  // DOM elements
+  const shopContainer = document.getElementById('shop');
+  const usernameElement = document.getElementById('username');
+  const balanceElement = document.getElementById('balance');
+  const userAvatarElement = document.getElementById('user-avatar');
+  const btnDeposit = document.getElementById('btn-deposit');
+  const btnLogout = document.getElementById('btn-logout');
+  const notification = document.getElementById('notification');
+
+  // Product data
   const packages = [
     {
       name: "Gói Basic", 
@@ -607,38 +580,8 @@
         "Bảo vệ real-time",
         "Hỗ trợ 24/7"
       ]
-    },
-    {
-      name: "Gói Đào Tạo", 
-      icon: "fas fa-graduation-cap",
-      price: 1000000, 
-      code: "training", 
-      period: "Vĩnh viễn",
-      features: [
-        "Khóa học sử dụng tool",
-        "Kỹ thuật nâng cao",
-        "Tài liệu độc quyền",
-        "Hỗ trợ 1-1",
-        "Cập nhật trọn đời"
-      ]
     }
   ];
-
-  // User data
-  let userData = {
-    name: "",
-    balance: 0,
-    avatar: "U"
-  };
-
-  // DOM elements
-  const shopContainer = document.getElementById('shop');
-  const usernameElement = document.getElementById('username');
-  const balanceElement = document.getElementById('balance');
-  const userAvatarElement = document.getElementById('user-avatar');
-  const btnDeposit = document.getElementById('btn-deposit');
-  const btnLogout = document.getElementById('btn-logout');
-  const notification = document.getElementById('notification');
 
   // Initialize the page
   document.addEventListener('DOMContentLoaded', async () => {
@@ -657,56 +600,56 @@
 
   // Check if user is authenticated
   async function checkAuth() {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      redirectToLogin();
-      return;
+    const username = localStorage.getItem('username');
+    if (!username) {
+      showNotification('error', 'Lỗi đăng nhập', 'Vui lòng đăng nhập để tiếp tục');
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 1500);
+      return false;
     }
-    
-    // Here you would typically verify the token with your backend
-    // For demo purposes, we'll just check if it exists
     return true;
   }
 
-  // Redirect to login page
-  function redirectToLogin() {
-    window.location.href = 'login.html';
-  }
-
-  // Load user data from API
+  // Load user data from Google Apps Script
   async function loadUserData() {
     try {
+      const username = localStorage.getItem('username');
+      if (!username) {
+        await checkAuth();
+        return;
+      }
+      
       // Show loading state
       usernameElement.textContent = 'Đang tải...';
       balanceElement.textContent = '0';
       
-      // In a real app, you would fetch this from your API
-      // const response = await fetch(`${API_URL}/user`, {
-      //   headers: {
-      //     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-      //   }
-      // });
-      // const data = await response.json();
+      // Fetch user data from Google Apps Script
+      const response = await fetch(`${API_URL}?action=getUser&username=${encodeURIComponent(username)}`);
       
-      // Mock data for demo
-      const mockData = {
-        name: "Nguyễn Văn A",
-        balance: 1250000,
-        avatar: "N"
-      };
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       
-      userData = {
-        name: mockData.name,
-        balance: mockData.balance,
-        avatar: mockData.avatar
-      };
+      const data = await response.json();
       
-      // Update UI
-      updateUserUI();
-      
+      if (data.success) {
+        userData = {
+          name: data.name || username,
+          balance: parseInt(data.balance) || 0,
+          avatar: data.name ? data.name.charAt(0).toUpperCase() : username.charAt(0).toUpperCase()
+        };
+        
+        // Update UI
+        updateUserUI();
+      } else {
+        throw new Error(data.message || 'Failed to load user data');
+      }
     } catch (error) {
       console.error('Failed to load user data:', error);
       showNotification('error', 'Lỗi', 'Không thể tải thông tin người dùng');
+      usernameElement.textContent = localStorage.getItem('username') || 'Khách';
+      balanceElement.textContent = '0';
     }
   }
 
@@ -774,41 +717,49 @@
   }
 
   // Handle buy button click
-  function handleBuyClick() {
+  async function handleBuyClick() {
     const price = parseInt(this.getAttribute('data-price'));
-    const packageCode = this.getAttribute('data-package'));
+    const packageCode = this.getAttribute('data-package');
     const packageName = packages.find(pkg => pkg.code === packageCode)?.name || 'sản phẩm';
     
     if (userData.balance >= price) {
-      // Process purchase
-      userData.balance -= price;
-      updateUserUI();
-      
-      showNotification('success', 'Mua thành công', `Bạn đã mua ${packageName} với giá ${price.toLocaleString('vi-VN')} VND`);
-      
-      // In a real app, you would send this to your backend
-      // await fetch(`${API_URL}/purchase`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-      //   },
-      //   body: JSON.stringify({
-      //     package: packageCode,
-      //     price: price
-      //   })
-      // });
-      
+      try {
+        // Process purchase via Google Apps Script
+        const username = localStorage.getItem('username');
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `action=purchase&username=${encodeURIComponent(username)}&package=${encodeURIComponent(packageCode)}&amount=${price}`
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          // Update local balance
+          userData.balance -= price;
+          updateUserUI();
+          
+          showNotification('success', 'Mua thành công', `Bạn đã mua ${packageName} với giá ${price.toLocaleString('vi-VN')} VND`);
+          
+          // Redirect to thank you page
+          setTimeout(() => {
+            window.location.href = `thankyou.html?package=${packageCode}`;
+          }, 2000);
+        } else {
+          throw new Error(data.message || 'Purchase failed');
+        }
+      } catch (error) {
+        console.error('Purchase error:', error);
+        showNotification('error', 'Lỗi', 'Không thể hoàn tất giao dịch');
+      }
     } else {
       const needed = price - userData.balance;
       showNotification('error', 'Số dư không đủ', `Bạn cần nạp thêm ${needed.toLocaleString('vi-VN')} VND để mua gói này`);
       
       // Focus on deposit button
       btnDeposit.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      btnDeposit.classList.add('pulse');
-      setTimeout(() => {
-        btnDeposit.classList.remove('pulse');
-      }, 2000);
     }
   }
 
@@ -851,8 +802,9 @@
     
     // Logout button
     btnLogout.addEventListener('click', () => {
+      localStorage.removeItem('username');
       localStorage.removeItem('authToken');
-      redirectToLogin();
+      window.location.href = 'login.html';
     });
   }
 </script>
