@@ -6,165 +6,487 @@
     <title>🛒 Premium Tools & Services</title>
 
     <!-- Fonts & icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        :root{
+        :root {
             --primary: #2b6ef6;
             --primary-dark: #244fd6;
+            --primary-light: rgba(43, 110, 246, 0.1);
             --muted: #6c757d;
+            --muted-light: rgba(108, 117, 125, 0.15);
             --bg: #f4f7fb;
             --card: #ffffff;
             --success: #16a34a;
+            --success-light: rgba(22, 163, 74, 0.1);
             --danger: #ef4444;
+            --danger-light: rgba(239, 68, 68, 0.1);
+            --warning: #f59e0b;
             --radius: 14px;
+            --radius-sm: 8px;
             --shadow: 0 10px 30px rgba(18, 38, 63, 0.07);
+            --shadow-hover: 0 20px 50px rgba(2, 6, 23, 0.12);
             --glass: rgba(255,255,255,0.6);
             --transition: 260ms cubic-bezier(.2,.9,.3,1);
         }
 
-        *{box-sizing:border-box}
-        html,body{height:100%}
-        body{
-            margin:0;
-            min-height:100%;
-            font-family:'Poppins',system-ui,Arial;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html, body {
+            height: 100%;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            margin: 0;
+            min-height: 100%;
+            font-family: 'Poppins', system-ui, Arial;
             background:
                 radial-gradient(1200px 400px at -10% -10%, rgba(43,110,246,0.06), transparent 12%),
                 radial-gradient(800px 300px at 110% 110%, rgba(63,55,201,0.04), transparent 10%),
                 var(--bg);
-            color:#111827;
-            -webkit-font-smoothing:antialiased;
-            -moz-osx-font-smoothing:grayscale;
+            color: #111827;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.5;
         }
 
-        header{
-            padding:28px 20px;
-            background: linear-gradient(135deg,var(--primary),var(--primary-dark));
-            color:#fff;
-            text-align:center;
-            font-family:'Montserrat',sans-serif;
-            font-weight:700;
-            font-size:20px;
-            border-bottom-left-radius:18px;
-            border-bottom-right-radius:18px;
-            box-shadow:var(--shadow);
-            position:relative;
-            overflow:hidden;
+        /* Header styles */
+        header {
+            padding: 28px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            border-bottom-left-radius: 18px;
+            border-bottom-right-radius: 18px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
         }
-        header .brand{
-            display:inline-flex;
-            gap:12px;
-            align-items:center;
+        
+        header .brand {
+            display: inline-flex;
+            gap: 12px;
+            align-items: center;
         }
-        header .brand i{font-size:22px; opacity:0.95}
+        
+        header .brand i {
+            font-size: 22px;
+            opacity: 0.95;
+        }
 
-        .container{
-            max-width:1200px;
-            margin:28px auto;
-            padding:0 18px 80px;
+        /* Main container */
+        .container {
+            max-width: 1200px;
+            margin: 28px auto;
+            padding: 0 18px 80px;
         }
 
-        .user-panel{
-            display:flex;
-            gap:18px;
-            align-items:center;
-            justify-content:space-between;
-            background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5));
-            padding:18px;
-            border-radius:12px;
-            box-shadow:var(--shadow);
+        /* User panel */
+        .user-panel {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5));
+            padding: 18px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
             backdrop-filter: blur(6px);
         }
-        .user-left{display:flex;align-items:center;gap:14px}
-        .user-avatar{
-            width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;
-            font-weight:700;color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-            box-shadow:0 6px 18px rgba(43,110,246,0.18); font-size:20px;
+        
+        .user-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
-        .user-info .name{font-weight:700;font-size:16px}
-        .user-info .balance{color:var(--muted);margin-top:4px;display:flex;gap:8px;align-items:center}
-        .user-info .balance .amount{color:var(--success);font-weight:700}
+        
+        .user-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 6px 18px rgba(43, 110, 246, 0.18);
+            font-size: 20px;
+        }
+        
+        .user-info .name {
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .user-info .balance {
+            color: var(--muted);
+            margin-top: 4px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .user-info .balance .amount {
+            color: var(--success);
+            font-weight: 700;
+        }
 
-        .action-buttons{display:flex;gap:12px}
-        .btn{
-            padding:10px 16px;border-radius:999px;border:none;cursor:pointer;font-weight:600;
-            box-shadow:0 6px 18px rgba(15,23,42,0.06);
-            transition:transform var(--transition), box-shadow var(--transition);
-            display:inline-flex;gap:10px;align-items:center;
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
         }
-        .btn:active{transform:translateY(1px)}
-        .btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff}
-        .btn-secondary{background:#fff;color:#111;border:1px solid rgba(15,23,42,0.06)}
+        
+        .btn {
+            padding: 10px 16px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+            transition: all var(--transition);
+            display: inline-flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 8px 24px rgba(43, 110, 246, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #fff;
+            color: #111;
+            border: 1px solid rgba(15, 23, 42, 0.06);
+        }
+        
+        .btn-secondary:hover {
+            background: #f8fafc;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
+        }
 
         /* Shop grid */
-        .shop-container{
-            margin-top:22px;
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-            gap:20px;
+        .shop-container {
+            margin-top: 22px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
         }
 
-        .package-card{
-            background:var(--card);
-            border-radius:16px;
-            overflow:hidden;
-            box-shadow:var(--shadow);
-            display:flex;
-            flex-direction:column;
-            transition:transform var(--transition), box-shadow var(--transition);
-            min-height:300px;
+        /* Package cards - Enhanced design */
+        .package-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition);
+            min-height: 340px;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            position: relative;
         }
-        .package-card:hover{transform:translateY(-8px); box-shadow:0 20px 50px rgba(2,6,23,0.08)}
-        .package-header{
-            padding:22px;text-align:center;color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-            position:relative;
+        
+        .package-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
         }
-        .package-icon i{font-size:36px;opacity:0.95}
-        .package-title{font-weight:800;margin-top:12px;font-size:18px}
-        .package-body{padding:18px;display:flex;flex-direction:column;flex:1}
-        .package-price{font-weight:800;font-size:22px;color:var(--danger);text-align:center}
-        .price-period{font-size:13px;color:var(--muted);margin-top:6px;text-align:center}
-        .package-features{margin-top:14px;flex:1}
-        .feature-item{font-size:14px;color:#1f2937;margin:8px 0;padding-left:18px;position:relative}
-        .feature-item::before{content:"";position:absolute;left:0;top:8px;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.15)}
-        .package-footer{margin-top:18px}
-        .btn-buy{
-            width:100%;
-            padding:14px 18px;border-radius:0 0 16px 16px;border:none;
-            background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-            color:#fff;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;
+        
+        .package-header {
+            padding: 22px;
+            text-align: center;
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            position: relative;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-        .btn-buy:hover{filter:brightness(.98);transform:translateY(-2px)}
+        
+        .package-header::after {
+            content: "";
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: var(--card);
+            transform: skewY(-3deg);
+            transform-origin: bottom left;
+            z-index: 1;
+        }
+        
+        .package-icon i {
+            font-size: 36px;
+            opacity: 0.95;
+            background: rgba(255, 255, 255, 0.15);
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-bottom: 12px;
+        }
+        
+        .package-title {
+            font-weight: 800;
+            margin-top: 8px;
+            font-size: 18px;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .package-body {
+            padding: 24px 18px 18px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .package-price {
+            font-weight: 800;
+            font-size: 22px;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 4px;
+        }
+        
+        .price-period {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 0;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        
+        .package-features {
+            margin-top: 8px;
+            flex: 1;
+            padding: 0 8px;
+        }
+        
+        .feature-item {
+            font-size: 14px;
+            color: #1f2937;
+            margin: 10px 0;
+            padding-left: 22px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .feature-item::before {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--success);
+            font-size: 12px;
+        }
+        
+        .package-footer {
+            margin-top: 18px;
+        }
+        
+        .btn-buy {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all var(--transition);
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .btn-buy:hover {
+            filter: brightness(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(43, 110, 246, 0.3);
+        }
+        
+        .btn-buy:active {
+            transform: translateY(0);
+        }
+
+        /* Popular badge */
+        .popular-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #fff;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 3;
+        }
 
         /* Loading */
-        .loading-container{grid-column:1/-1;display:flex;align-items:center;justify-content:center;padding:36px}
-        .spinner{
-            width:56px;height:56px;border-radius:50%;border:6px solid rgba(15,23,42,0.06);border-top-color:var(--primary);
-            animation:spin 1s linear infinite;
+        .loading-container {
+            grid-column: 1/-1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 36px;
         }
-        @keyframes spin{to{transform:rotate(360deg)}}
+        
+        .spinner {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 6px solid rgba(15, 23, 42, 0.06);
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         /* Notification */
-        .notification{
-            position:fixed;right:24px;top:24px;background:#fff;padding:14px 18px;border-radius:12px;box-shadow:0 18px 40px rgba(2,6,23,0.08);
-            display:flex;gap:12px;align-items:flex-start;transform:translateX(110%);transition:transform 360ms cubic-bezier(.2,.9,.25,1);
-            z-index:1200;max-width:380px;border-left:6px solid var(--success)
+        .notification {
+            position: fixed;
+            right: 24px;
+            top: 24px;
+            background: #fff;
+            padding: 14px 18px;
+            border-radius: 12px;
+            box-shadow: 0 18px 40px rgba(2, 6, 23, 0.08);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            transform: translateX(110%);
+            transition: transform 360ms cubic-bezier(.2,.9,.25,1);
+            z-index: 1200;
+            max-width: 380px;
+            border-left: 6px solid var(--success);
+            opacity: 0;
         }
-        .notification.show{transform:translateX(0)}
-        .notification .icon{font-size:22px;color:var(--success);flex-shrink:0}
-        .notification h4{margin:0;font-size:15px}
-        .notification p{margin:4px 0 0;color:var(--muted);font-size:13px}
+        
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .notification .icon {
+            font-size: 22px;
+            color: var(--success);
+            flex-shrink: 0;
+        }
+        
+        .notification h4 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .notification p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+        
+        .notification.error {
+            border-left-color: var(--danger);
+        }
+        
+        .notification.error .icon {
+            color: var(--danger);
+        }
+        
+        .notification.warning {
+            border-left-color: var(--warning);
+        }
+        
+        .notification.warning .icon {
+            color: var(--warning);
+        }
 
-        footer{padding:36px 18px;text-align:center;color:#6b7280;margin-top:40px;font-size:14px}
-        .footer-links{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
-        .footer-links a{color:inherit;text-decoration:none;display:inline-flex;gap:8px;align-items:center}
+        /* Footer */
+        footer {
+            padding: 36px 18px;
+            text-align: center;
+            color: #6b7280;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        
+        .footer-links a {
+            color: inherit;
+            text-decoration: none;
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
 
         /* Responsive */
-        @media(max-width:720px){
-            .user-panel{flex-direction:column;align-items:flex-start;gap:12px}
-            .action-buttons{width:100%;justify-content:space-between}
+        @media (max-width: 720px) {
+            .user-panel {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .package-card {
+                min-height: 320px;
+            }
         }
     </style>
 </head>
@@ -221,19 +543,19 @@
 
 <script>
 /*
-  shop.html (fixed)
-  Key fixes:
-  - Added fallback when API fails to load
-  - Improved error handling for API calls
-  - Added local storage fallback for user data
-  - Fixed authentication flow
+  shop.html - Fixed and Enhanced Version
+  Key improvements:
+  1. Fixed authentication issues (won't redirect unnecessarily)
+  2. Enhanced UI design for product cards
+  3. Better error handling and user feedback
+  4. Improved visual hierarchy and interactions
 */
 
-// Use a fallback API URL if the primary fails
+// API Configuration
 const API_URL = "https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec";
-const FALLBACK_API_URL = ""; // Add your fallback API URL here if needed
+const FALLBACK_API_URL = ""; // Add your fallback API if needed
 
-// DOM elements
+// DOM Elements
 const shopContainer = document.getElementById('shop');
 const loadingEl = document.getElementById('loading');
 const usernameElement = document.getElementById('username');
@@ -241,7 +563,6 @@ const balanceElement = document.getElementById('balance');
 const userAvatarElement = document.getElementById('user-avatar');
 const btnDeposit = document.getElementById('btn-deposit');
 const btnLogout = document.getElementById('btn-logout');
-
 const notification = document.getElementById('notification');
 const notificationTitle = document.getElementById('notification-title');
 const notificationMessage = document.getElementById('notification-message');
@@ -254,7 +575,7 @@ let userData = {
     avatar: (localStorage.getItem('username') ? localStorage.getItem('username').charAt(0) : 'K').toUpperCase() 
 };
 
-// Product data (safe versions)
+// Enhanced Product Data with popular flag
 const packages = [
     {
         name: "Gói Basic",
@@ -282,7 +603,8 @@ const packages = [
             "Update miễn phí liên tục",
             "Hỗ trợ từ xa",
             "Bảo hành 30 ngày"
-        ]
+        ],
+        popular: true
     },
     {
         name: "Gói VIP2",
@@ -310,7 +632,8 @@ const packages = [
             "Hỗ trợ VIP 24/7",
             "Cập nhật real-time",
             "Bảo hành trọn đời"
-        ]
+        ],
+        popular: true
     },
     {
         name: "Gói Support",
@@ -327,15 +650,15 @@ const packages = [
         ]
     },
     {
-        name: "Banking Demo (Chỉ demo)",
+        name: "Banking Demo",
         icon: "fas fa-university",
         price: 50000,
         code: "banking_demo",
         period: "Vĩnh viễn (demo)",
         features: [
-            "Giao diện giả lập cho mục đích học tập / demo",
-            "Không dùng cho giao dịch thực tế",
-            "Mô phỏng chuyển khoản - chỉ test",
+            "Giao diện giả lập học tập/demo",
+            "Không dùng cho giao dịch thực",
+            "Mô phỏng chuyển khoản test",
             "Không lưu thông tin nhạy cảm",
             "Hỗ trợ kỹ thuật"
         ]
@@ -361,28 +684,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     // First update UI with local data
     updateUserUI();
     
-    // Then check auth and load data
-    const authValid = await checkAuth();
-    if (!authValid) return;
+    // Then check auth (won't redirect on failure)
+    await checkAuth();
     
+    // Load user data and render shop
     await loadUserData();
     renderShop();
     setupEventListeners();
 });
 
 // ---------- Auth & Data ----------
-async function checkAuth(){
+async function checkAuth() {
     const username = localStorage.getItem('username');
     const token = localStorage.getItem('authToken');
 
-    if (!username || !token){
+    if (!username || !token) {
         showNotification('error', 'Yêu cầu đăng nhập', 'Vui lòng đăng nhập để tiếp tục');
-        setTimeout(()=>{ window.location.href = 'index.html'; }, 1600);
+        setTimeout(() => { window.location.href = 'index.html'; }, 1600);
         return false;
     }
 
     try {
-        // Try primary API first
         const resp = await fetchWithTimeout(`${API_URL}?action=verifyToken&username=${encodeURIComponent(username)}&token=${encodeURIComponent(token)}`, {
             cache: 'no-store',
             timeout: 5000
@@ -405,9 +727,9 @@ async function checkAuth(){
         return true;
     } catch (err) {
         console.error('Lỗi xác thực', err);
-        // Allow user to continue with local data if API fails
-        showNotification('warning', 'Cảnh báo kết nối', 'Không thể kết nối đến server, sử dụng dữ liệu tạm');
-        return true; // Changed to true to allow proceeding with local data
+        // Continue with local data but show warning
+        showNotification('warning', 'Cảnh báo kết nối', 'Không thể xác thực với server, sử dụng dữ liệu tạm');
+        return true; // Changed to true to allow proceeding
     }
 }
 
@@ -423,7 +745,7 @@ function fetchWithTimeout(url, options = {}) {
     ]);
 }
 
-async function loadUserData(){
+async function loadUserData() {
     const username = localStorage.getItem('username') || 'Khách';
     
     try {
@@ -435,7 +757,7 @@ async function loadUserData(){
         if (!resp.ok) throw new Error('Không thể kết nối đến server');
         const data = await resp.json();
 
-        if (data.success){
+        if (data.success) {
             userData = {
                 name: data.name || username,
                 balance: Number(data.balance) || 0,
@@ -457,20 +779,20 @@ async function loadUserData(){
 }
 
 // ---------- UI Updates ----------
-function updateUserUI(){
+function updateUserUI() {
     usernameElement.textContent = userData.name;
     balanceElement.textContent = userData.balance.toLocaleString('vi-VN');
     userAvatarElement.textContent = userData.avatar;
 }
 
-// ---------- Render shop ----------
-function renderShop(){
+// ---------- Render shop with enhanced cards ----------
+function renderShop() {
     // Remove loading
     if (loadingEl) loadingEl.remove();
 
     shopContainer.innerHTML = '';
 
-    if (!packages || packages.length === 0){
+    if (!packages || packages.length === 0) {
         shopContainer.innerHTML = `
             <div style="grid-column:1/-1;text-align:center;padding:36px;color:var(--muted)">
                 <i class="fas fa-box-open" style="font-size:40px;margin-bottom:10px;display:block"></i>
@@ -484,8 +806,15 @@ function renderShop(){
         const featuresHtml = pkg.features.map(f => `<div class="feature-item">${escapeHtml(f)}</div>`).join('');
         const card = document.createElement('div');
         card.className = 'package-card';
+        
+        // Add popular badge if marked
+        const popularBadge = pkg.popular 
+            ? `<div class="popular-badge"><i class="fas fa-star"></i> Phổ biến</div>` 
+            : '';
+        
         card.innerHTML = `
             <div class="package-header">
+                ${popularBadge}
                 <div class="package-icon"><i class="${pkg.icon}"></i></div>
                 <div class="package-title">${escapeHtml(pkg.name)}</div>
             </div>
@@ -493,94 +822,108 @@ function renderShop(){
                 <div class="package-price">${pkg.price.toLocaleString('vi-VN')} VND</div>
                 <div class="price-period">${escapeHtml(pkg.period)}</div>
                 <div class="package-features">${featuresHtml}</div>
-                <div class="package-footer"><button class="btn-buy" data-price="${pkg.price}" data-package="${encodeURIComponent(pkg.code)}"><i class="fas fa-shopping-cart"></i> Mua ngay</button></div>
+                <div class="package-footer">
+                    <button class="btn-buy" data-price="${pkg.price}" data-package="${encodeURIComponent(pkg.code)}">
+                        <i class="fas fa-shopping-cart"></i> Mua ngay
+                    </button>
+                </div>
             </div>
         `;
         shopContainer.appendChild(card);
     });
 
-    // Attach listeners
-    document.querySelectorAll('.btn-buy').forEach(btn => btn.addEventListener('click', handleBuyClick));
+    // Attach listeners to all buy buttons
+    document.querySelectorAll('.btn-buy').forEach(btn => {
+        btn.addEventListener('click', handleBuyClick);
+    });
 }
 
 // ---------- Buy logic ----------
-function handleBuyClick(e){
+function handleBuyClick(e) {
     const btn = e.currentTarget;
     const price = Number(btn.getAttribute('data-price') || 0);
     const packageCode = decodeURIComponent(btn.getAttribute('data-package') || '');
     const pkg = packages.find(p => p.code === packageCode);
     const packageName = pkg ? pkg.name : 'sản phẩm';
 
-    // If user has enough balance -> redirect to thankyou (simulate purchase)
-    if (userData.balance >= price){
+    // If user has enough balance
+    if (userData.balance >= price) {
         showNotification('success', 'Giao dịch thành công', `Bạn đã mua ${packageName}`);
-        // In a real app, you would call an API to process the purchase here
-        setTimeout(()=> {
+        
+        // Simulate purchase (in real app, call API here)
+        setTimeout(() => {
             window.location.href = `thankyou.html?package=${encodeURIComponent(packageCode)}&price=${price}`;
         }, 700);
     } else {
         const need = price - userData.balance;
         showNotification('error', 'Thiếu số dư', `Bạn cần nạp thêm ${need.toLocaleString('vi-VN')} VND`);
-        setTimeout(()=> {
+        setTimeout(() => {
             window.location.href = `banking.html?package=${encodeURIComponent(packageCode)}&amount=${need}`;
         }, 900);
     }
 }
 
-// ---------- Notifications ----------
+// ---------- Notification system ----------
 let notifTimer = null;
-function showNotification(type='success', title='Thông báo', message=''){
-    // set border color & icon
+function showNotification(type = 'success', title = 'Thông báo', message = '') {
+    // Reset notification
     notification.className = 'notification';
-    notification.classList.add('show');
-
-    if (type === 'success') {
-        notification.style.borderLeftColor = 'var(--success)';
-        notificationIcon.className = 'fas fa-check-circle';
-        notificationIcon.style.color = '';
-    } else if (type === 'error') {
-        notification.style.borderLeftColor = 'var(--danger)';
-        notificationIcon.className = 'fas fa-exclamation-circle';
-        notificationIcon.style.color = '';
-    } else if (type === 'warning') {
-        notification.style.borderLeftColor = 'orange';
-        notificationIcon.className = 'fas fa-exclamation-triangle';
-        notificationIcon.style.color = 'orange';
+    notification.classList.add(type);
+    
+    // Set icon based on type
+    switch (type) {
+        case 'success':
+            notificationIcon.className = 'fas fa-check-circle';
+            break;
+        case 'error':
+            notificationIcon.className = 'fas fa-exclamation-circle';
+            break;
+        case 'warning':
+            notificationIcon.className = 'fas fa-exclamation-triangle';
+            break;
+        default:
+            notificationIcon.className = 'fas fa-info-circle';
     }
 
     notificationTitle.textContent = title;
     notificationMessage.textContent = message;
 
+    // Show notification
+    notification.classList.add('show');
+
+    // Auto-hide after 5 seconds
     if (notifTimer) clearTimeout(notifTimer);
-    notifTimer = setTimeout(()=> {
+    notifTimer = setTimeout(() => {
         notification.classList.remove('show');
     }, 5000);
 }
 
-// ---------- Setup other event listeners ----------
-function setupEventListeners(){
-    btnDeposit.addEventListener('click', ()=> {
+// ---------- Setup event listeners ----------
+function setupEventListeners() {
+    // Deposit button
+    btnDeposit.addEventListener('click', () => {
         window.location.href = 'banking.html';
     });
 
-    btnLogout.addEventListener('click', ()=> {
+    // Logout button
+    btnLogout.addEventListener('click', () => {
         localStorage.removeItem('username');
         localStorage.removeItem('authToken');
         localStorage.removeItem('balance');
-        showNotification('success','Đăng xuất','Bạn đã đăng xuất thành công');
-        setTimeout(()=> window.location.href = 'index.html', 900);
+        showNotification('success', 'Đăng xuất', 'Bạn đã đăng xuất thành công');
+        setTimeout(() => window.location.href = 'index.html', 900);
     });
 }
 
 // ---------- Utilities ----------
-function escapeHtml(str){
+function escapeHtml(str) {
     if (!str) return '';
     return String(str)
-        .replaceAll('&','&amp;')
-        .replaceAll('<','&lt;')
-        .replaceAll('>','&gt;')
-        .replaceAll('"','&quot;')
-        .replaceAll("'",'&#039;');
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
 }
 </script>
 </body>
