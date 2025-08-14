@@ -586,7 +586,9 @@
   // Initialize the page
   document.addEventListener('DOMContentLoaded', async () => {
     // Check authentication
-    await checkAuth();
+    if (!await checkAuth()) {
+      return;
+    }
     
     // Load user data
     await loadUserData();
@@ -602,29 +604,45 @@
   async function checkAuth() {
     const username = localStorage.getItem('username');
     if (!username) {
-      showNotification('error', 'Lỗi đăng nhập', 'Vui lòng đăng nhập để tiếp tục');
+      showNotification('error', 'Vui lòng đăng nhập', 'Bạn cần đăng nhập để truy cập trang này');
       setTimeout(() => {
-        window.location.href = 'login.html';
-      }, 1500);
+        window.location.href = 'index.html';
+      }, 2000);
       return false;
     }
-    return true;
+    
+    // Verify token with server
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) throw new Error('No token found');
+      
+      const response = await fetch(`${API_URL}?action=verifyToken&username=${encodeURIComponent(username)}&token=${encodeURIComponent(token)}`);
+      const data = await response.json();
+      
+      if (!data.success) {
+        throw new Error('Invalid token');
+      }
+      return true;
+    } catch (error) {
+      console.error('Authentication error:', error);
+      showNotification('error', 'Phiên đăng nhập hết hạn', 'Vui lòng đăng nhập lại');
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 2000);
+      return false;
+    }
   }
 
   // Load user data from Google Apps Script
   async function loadUserData() {
     try {
       const username = localStorage.getItem('username');
-      if (!username) {
-        await checkAuth();
-        return;
-      }
       
       // Show loading state
       usernameElement.textContent = 'Đang tải...';
       balanceElement.textContent = '0';
       
-      // Fetch user data from Google Apps Script
+      // Fetch user data
       const response = await fetch(`${API_URL}?action=getUser&username=${encodeURIComponent(username)}`);
       
       if (!response.ok) {
@@ -647,7 +665,7 @@
       }
     } catch (error) {
       console.error('Failed to load user data:', error);
-      showNotification('error', 'Lỗi', 'Không thể tải thông tin người dùng');
+      showNotification('error', 'Lỗi tải dữ liệu', 'Không thể tải thông tin người dùng');
       usernameElement.textContent = localStorage.getItem('username') || 'Khách';
       balanceElement.textContent = '0';
     }
@@ -719,48 +737,11 @@
   // Handle buy button click
   async function handleBuyClick() {
     const price = parseInt(this.getAttribute('data-price'));
-    const packageCode = this.getAttribute('data-package');
+    const packageCode = this.getAttribute('data-package'));
     const packageName = packages.find(pkg => pkg.code === packageCode)?.name || 'sản phẩm';
     
-    if (userData.balance >= price) {
-      try {
-        // Process purchase via Google Apps Script
-        const username = localStorage.getItem('username');
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: `action=purchase&username=${encodeURIComponent(username)}&package=${encodeURIComponent(packageCode)}&amount=${price}`
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-          // Update local balance
-          userData.balance -= price;
-          updateUserUI();
-          
-          showNotification('success', 'Mua thành công', `Bạn đã mua ${packageName} với giá ${price.toLocaleString('vi-VN')} VND`);
-          
-          // Redirect to thank you page
-          setTimeout(() => {
-            window.location.href = `thankyou.html?package=${packageCode}`;
-          }, 2000);
-        } else {
-          throw new Error(data.message || 'Purchase failed');
-        }
-      } catch (error) {
-        console.error('Purchase error:', error);
-        showNotification('error', 'Lỗi', 'Không thể hoàn tất giao dịch');
-      }
-    } else {
-      const needed = price - userData.balance;
-      showNotification('error', 'Số dư không đủ', `Bạn cần nạp thêm ${needed.toLocaleString('vi-VN')} VND để mua gói này`);
-      
-      // Focus on deposit button
-      btnDeposit.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    // Always redirect to deposit page with package info
+    window.location.href = `deposit.html?package=${encodeURIComponent(packageCode)}&amount=${price}`;
   }
 
   // Show notification
@@ -778,11 +759,9 @@
     notification.classList.add(type);
     
     // Set icon based on type
-    if (type === 'success') {
-      notificationIcon.className = 'fas fa-check-circle';
-    } else {
-      notificationIcon.className = 'fas fa-exclamation-circle';
-    }
+    notificationIcon.className = type === 'success' 
+      ? 'fas fa-check-circle' 
+      : 'fas fa-exclamation-circle';
     
     // Show notification
     notification.classList.add('show');
@@ -804,7 +783,7 @@
     btnLogout.addEventListener('click', () => {
       localStorage.removeItem('username');
       localStorage.removeItem('authToken');
-      window.location.href = 'login.html';
+      window.location.href = 'index.html';
     });
   }
 </script>
