@@ -431,6 +431,27 @@
             return Math.floor(1000 + Math.random() * 9000);
         }
 
+        // Process payment and redirect to banking
+        function processPayment(product) {
+            const randomDigits = generateRandom4Digits();
+            const transferContent = `${product.id}_${randomDigits}`;
+            
+            const bankingInfo = {
+                amount: product.price,
+                productName: product.name,
+                transferContent: transferContent,
+                username: userData.name,
+                currentBalance: userData.balance,
+                productId: product.id,
+                productPrice: product.price,
+                productPeriod: product.period || ''
+            };
+            
+            console.log('Banking info:', bankingInfo); // Debug log
+            localStorage.setItem('bankingInfo', JSON.stringify(bankingInfo));
+            window.location.href = 'banking.html';
+        }
+
         // Fetch user data from API
         async function fetchUserData() {
             try {
@@ -506,7 +527,11 @@
                                 <div class="feature-item">${feature}</div>
                             `).join('')}
                         </div>
-                        <button class="btn-buy" data-id="${product.id}" data-price="${product.price}" data-name="${product.name}">
+                        <button class="btn-buy" 
+                                data-id="${product.id}" 
+                                data-price="${product.price}" 
+                                data-name="${product.name}"
+                                data-period="${product.period}">
                             <i class="fas fa-shopping-cart"></i> MUA NGAY
                         </button>
                     </div>
@@ -521,23 +546,6 @@
             });
         }
 
-        // Process payment and redirect to banking
-        function processPayment(product) {
-            const randomDigits = generateRandom4Digits();
-            const transferContent = `${product.id}_${randomDigits}`;
-            
-            const bankingInfo = {
-                amount: product.price,
-                productName: product.name,
-                transferContent: transferContent,
-                username: userData.name,
-                currentBalance: userData.balance
-            };
-            
-            localStorage.setItem('bankingInfo', JSON.stringify(bankingInfo));
-            window.location.href = 'banking.html';
-        }
-
         // Handle buy button click
         function handleBuyClick(event) {
             if (!userData.isLoggedIn) {
@@ -548,11 +556,19 @@
             
             const button = event.currentTarget;
             const productId = button.getAttribute('data-id');
-            const product = products.find(p => p.id === productId);
+            const productPrice = parseInt(button.getAttribute('data-price'));
+            const productName = button.getAttribute('data-name');
+            const productPeriod = button.getAttribute('data-period');
             
-            if (product) {
-                processPayment(product);
-            }
+            const product = {
+                id: productId,
+                name: productName,
+                price: productPrice,
+                period: productPeriod
+            };
+            
+            console.log('Selected product:', product); // Debug log
+            processPayment(product);
         }
 
         // Show notification
