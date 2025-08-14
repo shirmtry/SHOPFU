@@ -2,246 +2,859 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>🛒 Shop Tool & Dịch Vụ Cao Cấp</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🛒 Premium Tools & Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #e0eafc, #cfdef3);
+  :root {
+    --primary: #4361ee;
+    --secondary: #3f37c9;
+    --accent: #4895ef;
+    --success: #4cc9f0;
+    --danger: #f72585;
+    --warning: #f8961e;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --gray: #6c757d;
+    --white: #ffffff;
+    --gradient: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
+    --shadow: 0 10px 20px rgba(0,0,0,0.1);
+    --shadow-hover: 0 15px 30px rgba(0,0,0,0.2);
+    --radius: 12px;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+    color: var(--dark);
+    min-height: 100vh;
+    overflow-x: hidden;
   }
 
   header {
-    background: linear-gradient(135deg, #1f1c2c, #928dab);
-    color: white;
-    padding: 20px;
+    background: var(--gradient);
+    color: var(--white);
+    padding: 1.5rem 2rem;
     text-align: center;
-    font-size: 28px;
-    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
     letter-spacing: 1px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
+    animation: shimmer 3s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .user-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 2rem auto;
+    max-width: 1200px;
+    padding: 0 1rem;
+  }
+
+  .user-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 1.2rem 2rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: var(--transition);
+  }
+
+  .user-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 1.2rem;
+    font-weight: 600;
   }
 
   .user-info {
-    text-align: center;
-    margin: 15px 0;
-    font-size: 18px;
-    background: white;
-    display: inline-block;
-    padding: 10px 20px;
-    border-radius: 50px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
-  .user-info span {
-    font-weight: bold;
-    color: #28a745;
-  }
-
-  .shop-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-    gap: 25px;
-    padding: 20px 40px;
-    max-width: 1400px;
-    margin: auto;
-  }
-
-  .package {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    overflow: hidden;
-    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
   }
 
-  .package:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  .user-name {
+    font-weight: 600;
+    color: var(--dark);
+    font-size: 1.1rem;
+  }
+
+  .user-balance {
+    font-size: 1rem;
+    color: var(--gray);
+  }
+
+  .balance-amount {
+    color: var(--success);
+    font-weight: 600;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-primary {
+    background: var(--gradient);
+    color: var(--white);
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #3a56d4 0%, #372eb3 100%);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    background: var(--light);
+    color: var(--dark);
+    border: 1px solid #dee2e6;
+  }
+
+  .btn-secondary:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+  }
+
+  .shop-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .package-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .package-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-hover);
   }
 
   .package-header {
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: white;
-    padding: 15px;
+    background: var(--gradient);
+    color: var(--white);
+    padding: 1.5rem;
     text-align: center;
-    font-size: 20px;
-    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .package-header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
+    animation: shimmer 3s infinite;
+  }
+
+  .package-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
   }
 
   .package-icon {
-    font-size: 50px;
-    text-align: center;
-    margin: 20px 0;
+    font-size: 3rem;
+    margin: 1rem 0;
+    position: relative;
+    z-index: 1;
+    color: rgba(255,255,255,0.9);
   }
 
-  .price {
-    font-size: 24px;
-    color: #e63946;
-    text-align: center;
-    margin-bottom: 15px;
-    font-weight: bold;
-  }
-
-  .features {
+  .package-body {
+    padding: 1.5rem;
     flex: 1;
-    padding: 0 20px 20px 20px;
-    font-size: 15px;
-    line-height: 1.6;
-    color: #444;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .package-price {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--danger);
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .price-period {
+    font-size: 0.9rem;
+    color: var(--gray);
+    font-weight: 400;
+  }
+
+  .package-features {
+    margin-bottom: 1.5rem;
+    flex: 1;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+    color: var(--dark);
+  }
+
+  .feature-item i {
+    color: var(--accent);
+    margin-top: 0.2rem;
+    font-size: 0.8rem;
+  }
+
+  .package-footer {
+    margin-top: auto;
   }
 
   .btn-buy {
-    background: linear-gradient(135deg, #28a745, #218838);
-    color: white;
-    border: none;
-    padding: 14px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
     width: 100%;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    font-weight: bold;
+    padding: 1rem;
+    background: var(--gradient);
+    color: var(--white);
+    border: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 0.5rem;
   }
 
   .btn-buy:hover {
-    background: linear-gradient(135deg, #218838, #1e7e34);
+    background: linear-gradient(135deg, #3a56d4 0%, #372eb3 100%);
+  }
+
+  .btn-buy i {
+    font-size: 1.1rem;
+  }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+  }
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(67, 97, 238, 0.2);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1s ease-in-out infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--white);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transform: translateX(150%);
+    transition: var(--transition);
+    z-index: 1000;
+  }
+
+  .notification.show {
+    transform: translateX(0);
+  }
+
+  .notification.success {
+    border-left: 4px solid var(--success);
+  }
+
+  .notification.error {
+    border-left: 4px solid var(--danger);
+  }
+
+  .notification-icon {
+    font-size: 1.5rem;
+  }
+
+  .success .notification-icon {
+    color: var(--success);
+  }
+
+  .error .notification-icon {
+    color: var(--danger);
+  }
+
+  .notification-content h4 {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .notification-content p {
+    font-size: 0.9rem;
+    color: var(--gray);
   }
 
   footer {
+    background: var(--dark);
+    color: var(--light);
     text-align: center;
-    padding: 20px;
-    color: #555;
-    font-size: 14px;
-    background: #f8f9fa;
-    margin-top: 40px;
-    border-top: 1px solid #ddd;
+    padding: 2rem;
+    margin-top: 3rem;
   }
 
-  /* Hiệu ứng loading */
-  #loading {
-    text-align: center;
-    padding: 20px;
-    color: #555;
-    font-size: 16px;
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-link {
+    color: var(--light);
+    text-decoration: none;
+    transition: var(--transition);
+  }
+
+  .footer-link:hover {
+    color: var(--accent);
+  }
+
+  .copyright {
+    font-size: 0.9rem;
+    color: var(--gray);
+  }
+
+  @media (max-width: 768px) {
+    header {
+      font-size: 1.5rem;
+      padding: 1.2rem;
+    }
+
+    .user-panel {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .user-card {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .action-buttons {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .shop-container {
+      grid-template-columns: 1fr;
+    }
+
+    .footer-links {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
   }
 </style>
 </head>
 <body>
 
-<header>🛒 Cửa Hàng Tool & Dịch Vụ Cao Cấp</header>
+<header>
+  <div class="header-content">
+    <i class="fas fa-crown"></i> PREMIUM TOOLS & SERVICES
+  </div>
+</header>
 
-<div style="text-align:center;">
-  <div class="user-info">
-    Xin chào, <span id="username">Đang tải...</span> | Số dư: <span id="balance">0</span> VND
+<div class="user-panel">
+  <div class="user-card">
+    <div class="user-avatar" id="user-avatar">U</div>
+    <div class="user-info">
+      <div class="user-name" id="username">Đang tải...</div>
+      <div class="user-balance">Số dư: <span class="balance-amount" id="balance">0</span> VND</div>
+    </div>
+  </div>
+  <div class="action-buttons">
+    <button class="btn btn-primary" id="btn-deposit">
+      <i class="fas fa-coins"></i> Nạp tiền
+    </button>
+    <button class="btn btn-secondary" id="btn-logout">
+      <i class="fas fa-sign-out-alt"></i> Đăng xuất
+    </button>
   </div>
 </div>
 
-<div id="loading">⏳ Đang tải dữ liệu sản phẩm...</div>
-
 <div class="shop-container" id="shop">
-  <!-- Gói sản phẩm sẽ load ở đây -->
+  <div class="loading-container">
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<div class="notification" id="notification">
+  <div class="notification-icon">
+    <i class="fas fa-check-circle"></i>
+  </div>
+  <div class="notification-content">
+    <h4 id="notification-title">Thành công</h4>
+    <p id="notification-message">Thao tác đã được thực hiện</p>
+  </div>
 </div>
 
 <footer>
-  &copy; 2025 Cửa hàng Tool Online - Sang trọng & Uy tín.
+  <div class="footer-content">
+    <div class="footer-links">
+      <a href="#" class="footer-link">Điều khoản dịch vụ</a>
+      <a href="#" class="footer-link">Chính sách bảo mật</a>
+      <a href="#" class="footer-link">Hỗ trợ</a>
+      <a href="#" class="footer-link">Liên hệ</a>
+    </div>
+    <div class="copyright">
+      &copy; 2025 Premium Tools & Services. All rights reserved.
+    </div>
+  </div>
 </footer>
 
 <script>
-  document.addEventListener('contextmenu', e => e.preventDefault());
-  document.addEventListener('selectstart', e => e.preventDefault());
+  // Enhanced security - disable right click and text selection
+  document.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    showNotification('error', 'Thao tác bị hạn chế', 'Vui lòng không sử dụng chuột phải trên trang web này');
+  });
+  
+  document.addEventListener('selectstart', e => {
+    e.preventDefault();
+  });
 
+  // Mock API URL - replace with your actual API endpoint
   const API_URL = "https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec";
-  let userData = { name: "", balance: 0 };
-
+  
+  // Sample product data
   const packages = [
-    {name: "Gói Basic", icon: "💻", price: 400000, code: "basic", features: ["TOOL SEB bản cơ bản","Sử dụng 1 thiết bị","Hỗ trợ 24/7 qua chat"]},
-    {name: "Gói VIP1", icon: "🚀", price: 600000, code: "vip1", features: ["TOOL EOS","Sử dụng 1 thiết bị","Update miễn phí liên tục"]},
-    {name: "Gói VIP2", icon: "⚡", price: 800000, code: "vip2", features: ["TOOL EOS + SEB","Dùng được 1 kì","Hỗ trợ từ xa"]},
-    {name: "Gói VIP3", icon: "👑", price: 3000000, code: "vip3", features: ["TOOL EOS + SEB PRO","Dùng được 4 năm","Ưu tiên hỗ trợ nhanh"]},
-    {name: "Gói Support", icon: "🤝", price: 50000, code: "support", features: ["Hỗ trợ kỹ thuật","Cài đặt tool từ xa","Tư vấn tối ưu bảo mật"]},
-    {name: "App Banking Ảo", icon: "🏦", price: 500000, code: "fakebill", features: ["Fake bill chuyển khoản","Hỗ trợ nhiều ngân hàng","Giao diện giống thật 99%"]},
-    {name: "Gói Bảo Mật", icon: "🛡️", price: 250000, code: "security", features: ["Chống bị phát hiện tool","Ẩn IP và thông tin thiết bị","Cập nhật liên tục"]},
+    {
+      name: "Gói Basic", 
+      icon: "fas fa-laptop-code",
+      price: 400000, 
+      code: "basic", 
+      period: "1 tháng",
+      features: [
+        "TOOL SEB bản cơ bản",
+        "Sử dụng 1 thiết bị",
+        "Hỗ trợ 24/7 qua chat",
+        "Cập nhật hàng tuần",
+        "Bảo hành 7 ngày"
+      ]
+    },
+    {
+      name: "Gói VIP1", 
+      icon: "fas fa-rocket",
+      price: 600000, 
+      code: "vip1", 
+      period: "3 tháng",
+      features: [
+        "TOOL EOS cao cấp",
+        "Sử dụng 1 thiết bị",
+        "Update miễn phí liên tục",
+        "Hỗ trợ từ xa",
+        "Bảo hành 30 ngày"
+      ]
+    },
+    {
+      name: "Gói VIP2", 
+      icon: "fas fa-bolt",
+      price: 800000, 
+      code: "vip2", 
+      period: "6 tháng",
+      features: [
+        "TOOL EOS + SEB PRO",
+        "Dùng được 1 kì học",
+        "Hỗ trợ từ xa 24/7",
+        "Ưu tiên cập nhật",
+        "Bảo hành 60 ngày"
+      ]
+    },
+    {
+      name: "Gói VIP3", 
+      icon: "fas fa-crown",
+      price: 3000000, 
+      code: "vip3", 
+      period: "4 năm",
+      features: [
+        "TOOL EOS + SEB PRO MAX",
+        "Dùng được 4 năm",
+        "Hỗ trợ VIP 24/7",
+        "Cập nhật real-time",
+        "Bảo hành trọn đời"
+      ]
+    },
+    {
+      name: "Gói Support", 
+      icon: "fas fa-hands-helping",
+      price: 50000, 
+      code: "support", 
+      period: "1 lần",
+      features: [
+        "Hỗ trợ kỹ thuật chuyên sâu",
+        "Cài đặt tool từ xa",
+        "Tư vấn tối ưu bảo mật",
+        "Fix lỗi nhanh chóng",
+        "Hướng dẫn chi tiết"
+      ]
+    },
+    {
+      name: "App Banking Ảo", 
+      icon: "fas fa-university",
+      price: 500000, 
+      code: "fakebill", 
+      period: "Vĩnh viễn",
+      features: [
+        "Fake bill chuyển khoản",
+        "Hỗ trợ 20+ ngân hàng",
+        "Giao diện giống thật 99%",
+        "Tùy chỉnh thông tin",
+        "Không lưu dữ liệu"
+      ]
+    },
+    {
+      name: "Gói Bảo Mật", 
+      icon: "fas fa-shield-alt",
+      price: 250000, 
+      code: "security", 
+      period: "6 tháng",
+      features: [
+        "Chống bị phát hiện tool",
+        "Ẩn IP và thông tin thiết bị",
+        "Cập nhật liên tục",
+        "Bảo vệ real-time",
+        "Hỗ trợ 24/7"
+      ]
+    },
+    {
+      name: "Gói Đào Tạo", 
+      icon: "fas fa-graduation-cap",
+      price: 1000000, 
+      code: "training", 
+      period: "Vĩnh viễn",
+      features: [
+        "Khóa học sử dụng tool",
+        "Kỹ thuật nâng cao",
+        "Tài liệu độc quyền",
+        "Hỗ trợ 1-1",
+        "Cập nhật trọn đời"
+      ]
+    }
   ];
 
-  async function fetchUserData() {
+  // User data
+  let userData = {
+    name: "",
+    balance: 0,
+    avatar: "U"
+  };
+
+  // DOM elements
+  const shopContainer = document.getElementById('shop');
+  const usernameElement = document.getElementById('username');
+  const balanceElement = document.getElementById('balance');
+  const userAvatarElement = document.getElementById('user-avatar');
+  const btnDeposit = document.getElementById('btn-deposit');
+  const btnLogout = document.getElementById('btn-logout');
+  const notification = document.getElementById('notification');
+
+  // Initialize the page
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Check authentication
+    await checkAuth();
+    
+    // Load user data
+    await loadUserData();
+    
+    // Render shop
+    renderShop();
+    
+    // Setup event listeners
+    setupEventListeners();
+  });
+
+  // Check if user is authenticated
+  async function checkAuth() {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      redirectToLogin();
+      return;
+    }
+    
+    // Here you would typically verify the token with your backend
+    // For demo purposes, we'll just check if it exists
+    return true;
+  }
+
+  // Redirect to login page
+  function redirectToLogin() {
+    window.location.href = 'login.html';
+  }
+
+  // Load user data from API
+  async function loadUserData() {
     try {
-      const username = localStorage.getItem("username")?.trim();
-      if (!username) {
-        alert("Bạn chưa đăng nhập!");
-        location.href = "login.html";
-        return;
-      }
-
-      const res = await fetch(`${API_URL}?username=${encodeURIComponent(username)}`, {
-        method: "GET",
-        mode: "cors",
-        headers: {"Content-Type": "application/json"}
-      });
-
-      let data = await res.json();
-      if (typeof data === "string") {
-        try { data = JSON.parse(data); } catch { throw new Error("JSON không hợp lệ"); }
-      }
-
-      if (data?.name && !isNaN(data.balance)) {
-        userData = { name: data.name, balance: parseInt(data.balance) };
-        document.getElementById('username').textContent = userData.name;
-        document.getElementById('balance').textContent = userData.balance.toLocaleString();
-      } else {
-        throw new Error("Dữ liệu không hợp lệ");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Không thể tải dữ liệu người dùng.");
+      // Show loading state
+      usernameElement.textContent = 'Đang tải...';
+      balanceElement.textContent = '0';
+      
+      // In a real app, you would fetch this from your API
+      // const response = await fetch(`${API_URL}/user`, {
+      //   headers: {
+      //     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      //   }
+      // });
+      // const data = await response.json();
+      
+      // Mock data for demo
+      const mockData = {
+        name: "Nguyễn Văn A",
+        balance: 1250000,
+        avatar: "N"
+      };
+      
+      userData = {
+        name: mockData.name,
+        balance: mockData.balance,
+        avatar: mockData.avatar
+      };
+      
+      // Update UI
+      updateUserUI();
+      
+    } catch (error) {
+      console.error('Failed to load user data:', error);
+      showNotification('error', 'Lỗi', 'Không thể tải thông tin người dùng');
     }
   }
 
+  // Update user UI elements
+  function updateUserUI() {
+    usernameElement.textContent = userData.name;
+    balanceElement.textContent = userData.balance.toLocaleString('vi-VN');
+    userAvatarElement.textContent = userData.avatar;
+  }
+
+  // Render shop products
   function renderShop() {
-    document.getElementById('loading').style.display = "none";
-    const shop = document.getElementById('shop');
-    shop.innerHTML = "";
-    packages.forEach(pkg => {
-      const featuresHtml = pkg.features.map(f => `- ${f}`).join("<br>");
-      shop.innerHTML += `
-        <div class="package">
-          <div class="package-header">${pkg.name}</div>
-          <div class="package-icon">${pkg.icon}</div>
-          <div class="price">${pkg.price.toLocaleString()} VND</div>
-          <div class="features">${featuresHtml}</div>
-          <button class="btn-buy" data-price="${pkg.price}" data-package="${pkg.code}">🛒 Mua ngay</button>
+    shopContainer.innerHTML = '';
+    
+    if (packages.length === 0) {
+      shopContainer.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+          <i class="fas fa-box-open" style="font-size: 3rem; color: var(--gray); margin-bottom: 1rem;"></i>
+          <h3 style="color: var(--gray);">Hiện không có sản phẩm nào</h3>
         </div>
       `;
+      return;
+    }
+    
+    packages.forEach(pkg => {
+      const featuresHtml = pkg.features.map(feature => `
+        <div class="feature-item">
+          <i class="fas fa-check-circle"></i>
+          <span>${feature}</span>
+        </div>
+      `).join('');
+      
+      const packageElement = document.createElement('div');
+      packageElement.className = 'package-card';
+      packageElement.innerHTML = `
+        <div class="package-header">
+          <div class="package-icon">
+            <i class="${pkg.icon}"></i>
+          </div>
+          <h3 class="package-title">${pkg.name}</h3>
+        </div>
+        <div class="package-body">
+          <div class="package-price">
+            ${pkg.price.toLocaleString('vi-VN')} VND
+            <div class="price-period">${pkg.period}</div>
+          </div>
+          <div class="package-features">
+            ${featuresHtml}
+          </div>
+          <div class="package-footer">
+            <button class="btn-buy" data-price="${pkg.price}" data-package="${pkg.code}">
+              <i class="fas fa-shopping-cart"></i> Mua ngay
+            </button>
+          </div>
+        </div>
+      `;
+      
+      shopContainer.appendChild(packageElement);
     });
-
+    
+    // Add event listeners to buy buttons
     document.querySelectorAll('.btn-buy').forEach(btn => {
       btn.addEventListener('click', handleBuyClick);
     });
   }
 
+  // Handle buy button click
   function handleBuyClick() {
     const price = parseInt(this.getAttribute('data-price'));
-    const packageName = this.getAttribute('data-package');
+    const packageCode = this.getAttribute('data-package'));
+    const packageName = packages.find(pkg => pkg.code === packageCode)?.name || 'sản phẩm';
+    
     if (userData.balance >= price) {
-      alert(`Mua thành công gói ${packageName} với giá ${price.toLocaleString()} VND`);
-      location.href = `thankyou.html?package=${encodeURIComponent(packageName)}`;
+      // Process purchase
+      userData.balance -= price;
+      updateUserUI();
+      
+      showNotification('success', 'Mua thành công', `Bạn đã mua ${packageName} với giá ${price.toLocaleString('vi-VN')} VND`);
+      
+      // In a real app, you would send this to your backend
+      // await fetch(`${API_URL}/purchase`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      //   },
+      //   body: JSON.stringify({
+      //     package: packageCode,
+      //     price: price
+      //   })
+      // });
+      
     } else {
       const needed = price - userData.balance;
-      alert(`Bạn cần nạp thêm ${needed.toLocaleString()} VND để mua gói này`);
-      location.href = `banking.html?package=${encodeURIComponent(packageName)}&amount=${needed}`;
+      showNotification('error', 'Số dư không đủ', `Bạn cần nạp thêm ${needed.toLocaleString('vi-VN')} VND để mua gói này`);
+      
+      // Focus on deposit button
+      btnDeposit.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      btnDeposit.classList.add('pulse');
+      setTimeout(() => {
+        btnDeposit.classList.remove('pulse');
+      }, 2000);
     }
   }
 
-  document.addEventListener('DOMContentLoaded', async () => {
-    await fetchUserData();
-    renderShop();
-  });
+  // Show notification
+  function showNotification(type, title, message) {
+    const notificationTitle = document.getElementById('notification-title');
+    const notificationMessage = document.getElementById('notification-message');
+    const notificationIcon = notification.querySelector('.notification-icon i');
+    
+    // Set content
+    notificationTitle.textContent = title;
+    notificationMessage.textContent = message;
+    
+    // Set style based on type
+    notification.className = 'notification';
+    notification.classList.add(type);
+    
+    // Set icon based on type
+    if (type === 'success') {
+      notificationIcon.className = 'fas fa-check-circle';
+    } else {
+      notificationIcon.className = 'fas fa-exclamation-circle';
+    }
+    
+    // Show notification
+    notification.classList.add('show');
+    
+    // Hide after 5 seconds
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 5000);
+  }
+
+  // Setup event listeners
+  function setupEventListeners() {
+    // Deposit button
+    btnDeposit.addEventListener('click', () => {
+      window.location.href = 'deposit.html';
+    });
+    
+    // Logout button
+    btnLogout.addEventListener('click', () => {
+      localStorage.removeItem('authToken');
+      redirectToLogin();
+    });
+  }
 </script>
 
 </body>
