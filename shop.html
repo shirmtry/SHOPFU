@@ -297,7 +297,7 @@
         let userData = {
             name: localStorage.getItem('username') || "Khách",
             balance: parseInt(localStorage.getItem('balance')) || 0,
-            isLoggedIn: localStorage.getItem('isLoggedIn') === 'true' || false
+            isLoggedIn: localStorage.getItem('isLoggedIn') === 'true'
         };
 
         // Products data
@@ -443,8 +443,8 @@
 
         // Handle buy button click
         function handleBuyClick(event) {
-            // Kiểm tra đăng nhập từ localStorage
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            // Kiểm tra đăng nhập từ cả localStorage và biến userData
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' && userData.isLoggedIn;
             
             if (!isLoggedIn) {
                 showNotification('Vui lòng đăng nhập để mua hàng', 'warning');
@@ -487,8 +487,8 @@
         // Setup event listeners
         function setupEventListeners() {
             btnDeposit.addEventListener('click', () => {
-                // Kiểm tra đăng nhập từ localStorage
-                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                // Kiểm tra đăng nhập từ cả localStorage và biến userData
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' && userData.isLoggedIn;
                 
                 if (!isLoggedIn) {
                     showNotification('Vui lòng đăng nhập để nạp tiền', 'warning');
@@ -508,8 +508,25 @@
             });
         }
 
+        // Check login status
+        function checkLoginStatus() {
+            // Kiểm tra cả localStorage và biến userData
+            const storedLogin = localStorage.getItem('isLoggedIn') === 'true';
+            const actualLogin = userData.isLoggedIn;
+            
+            // Nếu có sự không đồng bộ, ưu tiên giá trị từ localStorage
+            if (storedLogin !== actualLogin) {
+                userData.isLoggedIn = storedLogin;
+            }
+            
+            return userData.isLoggedIn;
+        }
+
         // Initialize the page
         async function init() {
+            // Kiểm tra trạng thái đăng nhập trước
+            checkLoginStatus();
+            
             // Cập nhật giao diện ngay với dữ liệu hiện có
             updateUserInfo();
             renderProducts();
@@ -521,6 +538,9 @@
             } catch (e) {
                 console.log('Không thể kết nối đến server, sử dụng dữ liệu local');
             }
+            
+            // Kiểm tra lại sau khi fetch dữ liệu
+            checkLoginStatus();
         }
 
         // Initialize when page loads
