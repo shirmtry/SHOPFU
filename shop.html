@@ -187,6 +187,11 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-buy:hover {
+            background: var(--primary-dark);
         }
 
         .notification {
@@ -194,11 +199,13 @@
             top: 20px;
             right: 20px;
             background: var(--card);
-            padding: 15px;
+            padding: 15px 25px;
             border-radius: 8px;
             box-shadow: var(--shadow);
             display: none;
             border-left: 4px solid var(--success);
+            z-index: 1000;
+            max-width: 350px;
         }
 
         .notification.show {
@@ -223,6 +230,59 @@
 
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--card);
+            padding: 30px;
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--gold);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .modal-btn-confirm {
+            background: var(--success);
+            color: white;
+        }
+
+        .modal-btn-cancel {
+            background: var(--danger);
+            color: white;
         }
     </style>
 </head>
@@ -250,6 +310,17 @@
         <div id="notification-message">Thông báo</div>
     </div>
 
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-title" id="modalTitle">Xác nhận thanh toán</div>
+            <div id="modalMessage">Bạn có muốn mua gói này không?</div>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-confirm" id="confirmPayment">Xác nhận</button>
+                <button class="modal-btn modal-btn-cancel" id="cancelPayment">Hủy bỏ</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Configuration
         const API_URL = 'https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec'; // Thay bằng URL API thực tế của bạn
@@ -263,6 +334,11 @@
         const btnDeposit = document.getElementById('btn-deposit');
         const notification = document.getElementById('notification');
         const notificationMessage = document.getElementById('notification-message');
+        const paymentModal = document.getElementById('paymentModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const confirmPaymentBtn = document.getElementById('confirmPayment');
+        const cancelPaymentBtn = document.getElementById('cancelPayment');
 
         // User data
         let userData = {
@@ -270,6 +346,9 @@
             balance: 0,
             isLoggedIn: false
         };
+
+        // Current selected product
+        let currentProduct = null;
 
         // Products data
         const products = [
@@ -338,6 +417,14 @@
             } catch (error) {
                 console.error('Lỗi khi lấy dữ liệu người dùng:', error);
                 showNotification('Lỗi khi tải thông tin người dùng', 'error');
+                
+                // Fallback data
+                userData = {
+                    name: "Khách",
+                    balance: 0,
+                    isLoggedIn: false
+                };
+                updateUserInfo();
             }
         }
 
@@ -385,38 +472,87 @@
             });
         }
 
+        // Show payment modal
+        function showPaymentModal(product) {
+            currentProduct = product;
+            modalTitle.textContent = `Mua ${product.name}`;
+            
+            if (userData.balance >= product.price) {
+                modalMessage.innerHTML = `
+                    Bạn có chắc muốn mua <strong>${product.name}</strong> với giá <strong>${product.price.toLocaleString('vi-VN')}₫</strong>?
+                    <br>Số dư sau khi mua: <strong>${(userData.balance - product.price).toLocaleString('vi-VN')}₫</strong>
+                `;
+            } else {
+                const needed = product.price - userData.balance;
+                modalMessage.innerHTML = `
+                    <div style="color: var(--warning); margin-bottom: 10px;">
+                        <i class="fas fa-exclamation-triangle"></i> Số dư không đủ!
+                    </div>
+                    Bạn cần thêm <strong>${needed.toLocaleString('vi-VN')}₫</strong> để mua <strong>${product.name}</strong>.
+                    <br>Bạn có muốn nạp tiền ngay bây giờ?
+                `;
+            }
+            
+            paymentModal.style.display = 'flex';
+        }
+
+        // Hide payment modal
+        function hidePaymentModal() {
+            paymentModal.style.display = 'none';
+            currentProduct = null;
+        }
+
+        // Process payment
+        function processPayment() {
+            if (!currentProduct) return;
+            
+            if (userData.balance >= currentProduct.price) {
+                // Simulate API call for payment
+                setTimeout(() => {
+                    userData.balance -= currentProduct.price;
+                    updateUserInfo();
+                    showNotification(`Mua thành công gói ${currentProduct.name}`, 'success');
+                    
+                    // Redirect to thank you page
+                    window.location.href = `thankyou.html?product=${currentProduct.id}`;
+                }, 1000);
+            } else {
+                // Not enough balance - prepare for deposit
+                const needed = currentProduct.price - userData.balance;
+                const randomDigits = generateRandom4Digits();
+                const transferContent = `${currentProduct.id}_${randomDigits}`;
+                
+                // Save transaction info
+                localStorage.setItem('bankingInfo', JSON.stringify({
+                    amount: needed,
+                    productName: currentProduct.name,
+                    transferContent: transferContent,
+                    fullPrice: currentProduct.price
+                }));
+                
+                // Open banking page
+                window.open('banking.html', '_blank');
+                showNotification(`Vui lòng nạp thêm ${needed.toLocaleString('vi-VN')}₫`, 'warning');
+            }
+            
+            hidePaymentModal();
+        }
+
         // Handle buy button click
         function handleBuyClick(event) {
             const button = event.currentTarget;
             const productId = button.getAttribute('data-id');
             const productName = button.getAttribute('data-name');
             const productPrice = parseInt(button.getAttribute('data-price'));
-            const randomDigits = generateRandom4Digits();
-            const transferContent = `${productId}_${randomDigits}`;
             
             if (!userData.isLoggedIn) {
                 showNotification('Vui lòng đăng nhập để mua hàng', 'warning');
                 return;
             }
             
-            if (userData.balance >= productPrice) {
-                // Enough balance
-                window.location.href = `thankyou.html?product=${productId}`;
-            } else {
-                // Not enough balance
-                const amountNeeded = productPrice - userData.balance;
-                
-                // Save transaction info
-                localStorage.setItem('bankingInfo', JSON.stringify({
-                    amount: amountNeeded,
-                    productName: productName,
-                    transferContent: transferContent,
-                    fullPrice: productPrice
-                }));
-                
-                // Open banking page
-                window.open('banking.html', '_blank');
-                showNotification(`Bạn cần nạp thêm ${amountNeeded.toLocaleString('vi-VN')}₫`, 'warning');
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                showPaymentModal(product);
             }
         }
 
@@ -438,7 +574,7 @@
                     break;
             }
             
-            notificationMessage.textContent = message;
+            notificationMessage.innerHTML = message;
             
             // Hide after 3 seconds
             setTimeout(() => {
@@ -448,6 +584,7 @@
 
         // Setup event listeners
         function setupEventListeners() {
+            // Deposit button
             btnDeposit.addEventListener('click', () => {
                 if (!userData.isLoggedIn) {
                     showNotification('Vui lòng đăng nhập để nạp tiền', 'warning');
@@ -462,6 +599,17 @@
                 }));
                 
                 window.open('banking.html', '_blank');
+            });
+            
+            // Modal buttons
+            confirmPaymentBtn.addEventListener('click', processPayment);
+            cancelPaymentBtn.addEventListener('click', hidePaymentModal);
+            
+            // Close modal when clicking outside
+            paymentModal.addEventListener('click', (e) => {
+                if (e.target === paymentModal) {
+                    hidePaymentModal();
+                }
             });
         }
 
