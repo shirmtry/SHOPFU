@@ -669,23 +669,36 @@ let userData = {
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', () => {
-    // Load user data from localStorage if available
-    const savedUser = localStorage.getItem('userData');
-    if (savedUser) {
-        userData = JSON.parse(savedUser);
-    } else {
-        // Set default user data
+    // Check URL parameters for user data
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get('name');
+    const balance = urlParams.get('balance');
+    
+    if (name && balance) {
         userData = {
-            name: "Khách",
-            balance: 0,
-            avatar: "K"
+            name: decodeURIComponent(name),
+            balance: parseInt(balance),
+            avatar: getInitials(decodeURIComponent(name))
         };
+        // Store in localStorage
+        localStorage.setItem('userData', JSON.stringify(userData));
+    } else {
+        // Load from localStorage if available
+        const savedUser = localStorage.getItem('userData');
+        if (savedUser) {
+            userData = JSON.parse(savedUser);
+        }
     }
     
     updateUserUI();
     renderProducts();
     setupEventListeners();
 });
+
+// Helper function to get initials from name
+function getInitials(name) {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+}
 
 // ========== UI FUNCTIONS ==========
 function updateUserUI() {
@@ -748,8 +761,8 @@ function handlePurchase(event) {
         price: product.price
     }));
     
-    // Redirect to banking page
-    window.location.href = `banking.html?product=${productId}&amount=${productPrice}`;
+    // Redirect to banking page with user data
+    window.location.href = `banking.html?product=${productId}&amount=${productPrice}&name=${encodeURIComponent(userData.name)}&balance=${userData.balance}`;
 }
 
 // ========== NOTIFICATION SYSTEM ==========
@@ -797,7 +810,7 @@ function setupEventListeners() {
             name: 'Nạp tiền',
             price: 0
         }));
-        window.location.href = 'banking.html';
+        window.location.href = `banking.html?name=${encodeURIComponent(userData.name)}&balance=${userData.balance}`;
     });
     
     // Logout button
@@ -815,7 +828,7 @@ function formatCurrency(amount) {
     return amount.toLocaleString('vi-VN') + ' VND';
 }
 </script>
-    <script>
+<script>
 // Chặn chuột phải
 document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
