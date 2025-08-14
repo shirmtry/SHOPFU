@@ -501,7 +501,7 @@
         <div class="user-left">
             <div class="user-avatar" id="user-avatar">U</div>
             <div class="user-info">
-                <div class="name" id="username">Đang tải...</div>
+                <div class="name" id="username">Khách</div>
                 <div class="balance" aria-live="polite">
                     <i class="fas fa-wallet" style="color:var(--muted)"></i>
                     <div style="display:inline-block">Số dư: <span class="amount" id="balance">0</span> VND</div>
@@ -516,9 +516,7 @@
     </section>
 
     <section class="shop-container" id="shop" aria-label="Gói dịch vụ">
-        <div class="loading-container" id="loading">
-            <div class="spinner" role="status" aria-hidden="true"></div>
-        </div>
+        <!-- Products will be loaded here by JavaScript -->
     </section>
 </main>
 
@@ -542,46 +540,13 @@
 </footer>
 
 <script>
-/*
-  shop.html - Fixed and Enhanced Version
-  Key improvements:
-  1. Fixed authentication issues (won't redirect unnecessarily)
-  2. Enhanced UI design for product cards
-  3. Better error handling and user feedback
-  4. Improved visual hierarchy and interactions
-*/
-
-// API Configuration
-const API_URL = "https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec";
-const FALLBACK_API_URL = ""; // Add your fallback API if needed
-
-// DOM Elements
-const shopContainer = document.getElementById('shop');
-const loadingEl = document.getElementById('loading');
-const usernameElement = document.getElementById('username');
-const balanceElement = document.getElementById('balance');
-const userAvatarElement = document.getElementById('user-avatar');
-const btnDeposit = document.getElementById('btn-deposit');
-const btnLogout = document.getElementById('btn-logout');
-const notification = document.getElementById('notification');
-const notificationTitle = document.getElementById('notification-title');
-const notificationMessage = document.getElementById('notification-message');
-const notificationIcon = notification.querySelector('.icon i');
-
-// User data with local storage fallback
-let userData = { 
-    name: localStorage.getItem('username') || 'Khách', 
-    balance: Number(localStorage.getItem('balance')) || 0, 
-    avatar: (localStorage.getItem('username') ? localStorage.getItem('username').charAt(0) : 'K').toUpperCase() 
-};
-
-// Enhanced Product Data with popular flag
-const packages = [
+// ========== CONFIGURATION ==========
+const products = [
     {
+        id: "basic",
         name: "Gói Basic",
         icon: "fas fa-laptop-code",
         price: 400000,
-        code: "basic",
         period: "1 tháng",
         features: [
             "TOOL SEB bản cơ bản",
@@ -589,13 +554,14 @@ const packages = [
             "Hỗ trợ 24/7 qua chat",
             "Cập nhật hàng tuần",
             "Bảo hành 7 ngày"
-        ]
+        ],
+        popular: false
     },
     {
+        id: "vip1",
         name: "Gói VIP1",
         icon: "fas fa-rocket",
         price: 600000,
-        code: "vip1",
         period: "3 tháng",
         features: [
             "TOOL EOS cao cấp",
@@ -607,10 +573,10 @@ const packages = [
         popular: true
     },
     {
+        id: "vip2",
         name: "Gói VIP2",
         icon: "fas fa-bolt",
         price: 800000,
-        code: "vip2",
         period: "6 tháng",
         features: [
             "TOOL EOS + SEB PRO",
@@ -618,13 +584,14 @@ const packages = [
             "Hỗ trợ từ xa 24/7",
             "Ưu tiên cập nhật",
             "Bảo hành 60 ngày"
-        ]
+        ],
+        popular: false
     },
     {
+        id: "vip3",
         name: "Gói VIP3",
         icon: "fas fa-crown",
         price: 3000000,
-        code: "vip3",
         period: "4 năm",
         features: [
             "TOOL EOS + SEB PRO MAX",
@@ -636,10 +603,10 @@ const packages = [
         popular: true
     },
     {
+        id: "support",
         name: "Gói Support",
         icon: "fas fa-hands-helping",
         price: 50000,
-        code: "support",
         period: "1 lần",
         features: [
             "Hỗ trợ kỹ thuật chuyên sâu",
@@ -647,13 +614,14 @@ const packages = [
             "Tư vấn tối ưu bảo mật",
             "Fix lỗi nhanh chóng",
             "Hướng dẫn chi tiết"
-        ]
+        ],
+        popular: false
     },
     {
+        id: "banking_demo",
         name: "Banking Demo",
         icon: "fas fa-university",
         price: 50000,
-        code: "banking_demo",
         period: "Vĩnh viễn (demo)",
         features: [
             "Giao diện giả lập học tập/demo",
@@ -661,13 +629,14 @@ const packages = [
             "Mô phỏng chuyển khoản test",
             "Không lưu thông tin nhạy cảm",
             "Hỗ trợ kỹ thuật"
-        ]
+        ],
+        popular: false
     },
     {
+        id: "security",
         name: "Gói Bảo Mật",
         icon: "fas fa-shield-alt",
         price: 250000,
-        code: "security",
         period: "6 tháng",
         features: [
             "Chống bị phát hiện tool",
@@ -675,222 +644,143 @@ const packages = [
             "Cập nhật liên tục",
             "Bảo vệ real-time",
             "Hỗ trợ 24/7"
-        ]
+        ],
+        popular: false
     }
 ];
 
-// ---------- Initialization ----------
-document.addEventListener('DOMContentLoaded', async () => {
-    // First update UI with local data
+// ========== DOM ELEMENTS ==========
+const shopContainer = document.getElementById('shop');
+const usernameElement = document.getElementById('username');
+const balanceElement = document.getElementById('balance');
+const userAvatarElement = document.getElementById('user-avatar');
+const btnDeposit = document.getElementById('btn-deposit');
+const btnLogout = document.getElementById('btn-logout');
+const notification = document.getElementById('notification');
+const notificationTitle = document.getElementById('notification-title');
+const notificationMessage = document.getElementById('notification-message');
+
+// ========== USER DATA ==========
+let userData = {
+    name: "Người Dùng",
+    balance: 0,
+    avatar: "N"
+};
+
+// ========== INITIALIZATION ==========
+document.addEventListener('DOMContentLoaded', () => {
+    // Load user data from localStorage if available
+    const savedUser = localStorage.getItem('userData');
+    if (savedUser) {
+        userData = JSON.parse(savedUser);
+    } else {
+        // Set default user data
+        userData = {
+            name: "Khách",
+            balance: 0,
+            avatar: "K"
+        };
+    }
+    
     updateUserUI();
-    
-    // Then check auth (won't redirect on failure)
-    await checkAuth();
-    
-    // Load user data and render shop
-    await loadUserData();
-    renderShop();
+    renderProducts();
     setupEventListeners();
 });
 
-// ---------- Auth & Data ----------
-async function checkAuth() {
-    const username = localStorage.getItem('username');
-    const token = localStorage.getItem('authToken');
-
-    if (!username || !token) {
-        showNotification('error', 'Yêu cầu đăng nhập', 'Vui lòng đăng nhập để tiếp tục');
-        setTimeout(() => { window.location.href = 'index.html'; }, 1600);
-        return false;
-    }
-
-    try {
-        const resp = await fetchWithTimeout(`${API_URL}?action=verifyToken&username=${encodeURIComponent(username)}&token=${encodeURIComponent(token)}`, {
-            cache: 'no-store',
-            timeout: 5000
-        });
-        
-        const data = await resp.json();
-        if (!data.success) {
-            // If primary API fails, try fallback if available
-            if (FALLBACK_API_URL) {
-                const fallbackResp = await fetchWithTimeout(`${FALLBACK_API_URL}?action=verifyToken&username=${encodeURIComponent(username)}&token=${encodeURIComponent(token)}`, {
-                    cache: 'no-store',
-                    timeout: 5000
-                });
-                const fallbackData = await fallbackResp.json();
-                if (!fallbackData.success) throw new Error('Token không hợp lệ');
-                return true;
-            }
-            throw new Error('Token không hợp lệ');
-        }
-        return true;
-    } catch (err) {
-        console.error('Lỗi xác thực', err);
-        // Continue with local data but show warning
-        showNotification('warning', 'Cảnh báo kết nối', 'Không thể xác thực với server, sử dụng dữ liệu tạm');
-        return true; // Changed to true to allow proceeding
-    }
-}
-
-// Helper function for fetch with timeout
-function fetchWithTimeout(url, options = {}) {
-    const { timeout = 8000, ...fetchOptions } = options;
-    
-    return Promise.race([
-        fetch(url, fetchOptions),
-        new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('Request timeout')), timeout)
-        )
-    ]);
-}
-
-async function loadUserData() {
-    const username = localStorage.getItem('username') || 'Khách';
-    
-    try {
-        const resp = await fetchWithTimeout(`${API_URL}?action=getUser&username=${encodeURIComponent(username)}`, {
-            cache: 'no-store',
-            timeout: 5000
-        });
-        
-        if (!resp.ok) throw new Error('Không thể kết nối đến server');
-        const data = await resp.json();
-
-        if (data.success) {
-            userData = {
-                name: data.name || username,
-                balance: Number(data.balance) || 0,
-                avatar: (data.name ? data.name.charAt(0) : username.charAt(0)).toUpperCase()
-            };
-            // Save to local storage as fallback
-            localStorage.setItem('balance', userData.balance);
-        } else {
-            // Use local data if API fails
-            console.warn('API trả về lỗi:', data.message);
-        }
-    } catch (err) {
-        console.error('Lỗi tải dữ liệu:', err);
-        // Use local data if API fails
-        showNotification('warning', 'Cảnh báo kết nối', 'Không thể tải dữ liệu mới, sử dụng dữ liệu tạm');
-    } finally {
-        updateUserUI();
-    }
-}
-
-// ---------- UI Updates ----------
+// ========== UI FUNCTIONS ==========
 function updateUserUI() {
     usernameElement.textContent = userData.name;
     balanceElement.textContent = userData.balance.toLocaleString('vi-VN');
     userAvatarElement.textContent = userData.avatar;
 }
 
-// ---------- Render shop with enhanced cards ----------
-function renderShop() {
-    // Remove loading
-    if (loadingEl) loadingEl.remove();
-
+function renderProducts() {
     shopContainer.innerHTML = '';
-
-    if (!packages || packages.length === 0) {
-        shopContainer.innerHTML = `
-            <div style="grid-column:1/-1;text-align:center;padding:36px;color:var(--muted)">
-                <i class="fas fa-box-open" style="font-size:40px;margin-bottom:10px;display:block"></i>
-                <div>Hiện không có sản phẩm nào</div>
-            </div>
-        `;
-        return;
-    }
-
-    packages.forEach(pkg => {
-        const featuresHtml = pkg.features.map(f => `<div class="feature-item">${escapeHtml(f)}</div>`).join('');
-        const card = document.createElement('div');
-        card.className = 'package-card';
+    
+    products.forEach(product => {
+        const featuresHtml = product.features.map(feature => 
+            `<div class="feature-item">${feature}</div>`
+        ).join('');
         
-        // Add popular badge if marked
-        const popularBadge = pkg.popular 
-            ? `<div class="popular-badge"><i class="fas fa-star"></i> Phổ biến</div>` 
-            : '';
+        const popularBadge = product.popular ? 
+            `<div class="popular-badge"><i class="fas fa-star"></i> Phổ biến</div>` : '';
         
-        card.innerHTML = `
+        const productCard = document.createElement('div');
+        productCard.className = 'package-card';
+        productCard.innerHTML = `
             <div class="package-header">
                 ${popularBadge}
-                <div class="package-icon"><i class="${pkg.icon}"></i></div>
-                <div class="package-title">${escapeHtml(pkg.name)}</div>
+                <div class="package-icon"><i class="${product.icon}"></i></div>
+                <div class="package-title">${product.name}</div>
             </div>
             <div class="package-body">
-                <div class="package-price">${pkg.price.toLocaleString('vi-VN')} VND</div>
-                <div class="price-period">${escapeHtml(pkg.period)}</div>
+                <div class="package-price">${product.price.toLocaleString('vi-VN')} VND</div>
+                <div class="price-period">${product.period}</div>
                 <div class="package-features">${featuresHtml}</div>
                 <div class="package-footer">
-                    <button class="btn-buy" data-price="${pkg.price}" data-package="${encodeURIComponent(pkg.code)}">
+                    <button class="btn-buy" data-id="${product.id}" data-price="${product.price}">
                         <i class="fas fa-shopping-cart"></i> Mua ngay
                     </button>
                 </div>
             </div>
         `;
-        shopContainer.appendChild(card);
-    });
-
-    // Attach listeners to all buy buttons
-    document.querySelectorAll('.btn-buy').forEach(btn => {
-        btn.addEventListener('click', handleBuyClick);
-    });
-}
-
-// ---------- Buy logic ----------
-function handleBuyClick(e) {
-    const btn = e.currentTarget;
-    const price = Number(btn.getAttribute('data-price') || 0);
-    const packageCode = decodeURIComponent(btn.getAttribute('data-package') || '');
-    const pkg = packages.find(p => p.code === packageCode);
-    const packageName = pkg ? pkg.name : 'sản phẩm';
-
-    // If user has enough balance
-    if (userData.balance >= price) {
-        showNotification('success', 'Giao dịch thành công', `Bạn đã mua ${packageName}`);
         
-        // Simulate purchase (in real app, call API here)
-        setTimeout(() => {
-            window.location.href = `thankyou.html?package=${encodeURIComponent(packageCode)}&price=${price}`;
-        }, 700);
-    } else {
-        const need = price - userData.balance;
-        showNotification('error', 'Thiếu số dư', `Bạn cần nạp thêm ${need.toLocaleString('vi-VN')} VND`);
-        setTimeout(() => {
-            window.location.href = `banking.html?package=${encodeURIComponent(packageCode)}&amount=${need}`;
-        }, 900);
-    }
+        shopContainer.appendChild(productCard);
+    });
+    
+    // Add event listeners to all buy buttons
+    document.querySelectorAll('.btn-buy').forEach(btn => {
+        btn.addEventListener('click', handlePurchase);
+    });
 }
 
-// ---------- Notification system ----------
+// ========== PURCHASE HANDLING ==========
+function handlePurchase(event) {
+    const button = event.currentTarget;
+    const productId = button.getAttribute('data-id');
+    const productPrice = parseInt(button.getAttribute('data-price'));
+    const product = products.find(p => p.id === productId);
+    
+    // Save selected product to localStorage
+    localStorage.setItem('selectedProduct', JSON.stringify({
+        id: product.id,
+        name: product.name,
+        price: product.price
+    }));
+    
+    // Redirect to banking page
+    window.location.href = `banking.html?product=${productId}&amount=${productPrice}`;
+}
+
+// ========== NOTIFICATION SYSTEM ==========
 let notifTimer = null;
 function showNotification(type = 'success', title = 'Thông báo', message = '') {
-    // Reset notification
+    // Set notification style based on type
     notification.className = 'notification';
     notification.classList.add(type);
     
     // Set icon based on type
-    switch (type) {
+    const icon = notification.querySelector('.icon i');
+    switch(type) {
         case 'success':
-            notificationIcon.className = 'fas fa-check-circle';
+            icon.className = 'fas fa-check-circle';
             break;
         case 'error':
-            notificationIcon.className = 'fas fa-exclamation-circle';
+            icon.className = 'fas fa-exclamation-circle';
             break;
         case 'warning':
-            notificationIcon.className = 'fas fa-exclamation-triangle';
+            icon.className = 'fas fa-exclamation-triangle';
             break;
         default:
-            notificationIcon.className = 'fas fa-info-circle';
+            icon.className = 'fas fa-info-circle';
     }
-
+    
     notificationTitle.textContent = title;
     notificationMessage.textContent = message;
-
+    
     // Show notification
     notification.classList.add('show');
-
+    
     // Auto-hide after 5 seconds
     if (notifTimer) clearTimeout(notifTimer);
     notifTimer = setTimeout(() => {
@@ -898,32 +788,31 @@ function showNotification(type = 'success', title = 'Thông báo', message = '')
     }, 5000);
 }
 
-// ---------- Setup event listeners ----------
+// ========== EVENT LISTENERS ==========
 function setupEventListeners() {
     // Deposit button
     btnDeposit.addEventListener('click', () => {
+        localStorage.setItem('selectedProduct', JSON.stringify({
+            id: 'deposit',
+            name: 'Nạp tiền',
+            price: 0
+        }));
         window.location.href = 'banking.html';
     });
-
+    
     // Logout button
     btnLogout.addEventListener('click', () => {
-        localStorage.removeItem('username');
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('balance');
+        localStorage.removeItem('userData');
         showNotification('success', 'Đăng xuất', 'Bạn đã đăng xuất thành công');
-        setTimeout(() => window.location.href = 'index.html', 900);
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1000);
     });
 }
 
-// ---------- Utilities ----------
-function escapeHtml(str) {
-    if (!str) return '';
-    return String(str)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
+// ========== UTILITY FUNCTIONS ==========
+function formatCurrency(amount) {
+    return amount.toLocaleString('vi-VN') + ' VND';
 }
 </script>
 </body>
