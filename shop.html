@@ -499,7 +499,7 @@
 <main class="container">
     <section class="user-panel" aria-label="Thông tin người dùng">
         <div class="user-left">
-            <div class="user-avatar" id="user-avatar">U</div>
+            <div class="user-avatar" id="user-avatar">K</div>
             <div class="user-info">
                 <div class="name" id="username">Khách</div>
                 <div class="balance" aria-live="polite">
@@ -662,48 +662,64 @@ const notificationMessage = document.getElementById('notification-message');
 
 // ========== USER DATA ==========
 let userData = {
-    name: "Người Dùng",
+    name: "Khách",
     balance: 0,
-    avatar: "N"
+    avatar: "K"
 };
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', () => {
-    // Check URL parameters for user data
-    const urlParams = new URLSearchParams(window.location.search);
-    const name = urlParams.get('name');
-    const balance = urlParams.get('balance');
-    
-    if (name && balance) {
-        userData = {
-            name: decodeURIComponent(name),
-            balance: parseInt(balance),
-            avatar: getInitials(decodeURIComponent(name))
-        };
-        // Store in localStorage
-        localStorage.setItem('userData', JSON.stringify(userData));
-    } else {
-        // Load from localStorage if available
-        const savedUser = localStorage.getItem('userData');
-        if (savedUser) {
-            userData = JSON.parse(savedUser);
-        }
-    }
-    
+    loadUserData();
     updateUserUI();
     renderProducts();
     setupEventListeners();
 });
 
+// Load user data from localStorage
+function loadUserData() {
+    const savedUser = localStorage.getItem('userData');
+    if (savedUser) {
+        try {
+            const parsedData = JSON.parse(savedUser);
+            if (parsedData && typeof parsedData === 'object') {
+                userData = {
+                    name: parsedData.name || "Khách",
+                    balance: typeof parsedData.balance === 'number' ? parsedData.balance : 0,
+                    avatar: parsedData.avatar || getInitials(parsedData.name || "K")
+                };
+            }
+        } catch (e) {
+            console.error("Error parsing user data:", e);
+            userData = { name: "Khách", balance: 0, avatar: "K" };
+        }
+    }
+    saveUserData(); // Ensure data structure is correct
+}
+
+// Save user data to localStorage
+function saveUserData() {
+    localStorage.setItem('userData', JSON.stringify({
+        name: userData.name,
+        balance: userData.balance,
+        avatar: getInitials(userData.name)
+    }));
+}
+
 // Helper function to get initials from name
 function getInitials(name) {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    if (!name || typeof name !== 'string') return "K";
+    return name.split(' ')
+               .filter(n => n.length > 0)
+               .map(n => n[0])
+               .join('')
+               .toUpperCase()
+               .substr(0, 2);
 }
 
 // ========== UI FUNCTIONS ==========
 function updateUserUI() {
     usernameElement.textContent = userData.name;
-    balanceElement.textContent = userData.balance.toLocaleString('vi-VN');
+    balanceElement.textContent = userData.balance.toLocaleString('vi-VN') + ' VND';
     userAvatarElement.textContent = userData.avatar;
 }
 
@@ -754,15 +770,22 @@ function handlePurchase(event) {
     const productPrice = parseInt(button.getAttribute('data-price'));
     const product = products.find(p => p.id === productId);
     
+    if (!product) {
+        showNotification('error', 'Lỗi', 'Không tìm thấy thông tin gói dịch vụ');
+        return;
+    }
+
     // Save selected product to localStorage
     localStorage.setItem('selectedProduct', JSON.stringify({
         id: product.id,
         name: product.name,
-        price: product.price
+        price: product.price,
+        period: product.period,
+        icon: product.icon
     }));
     
-    // Redirect to banking page with user data
-    window.location.href = `banking.html?product=${productId}&amount=${productPrice}&name=${encodeURIComponent(userData.name)}&balance=${userData.balance}`;
+    // Redirect to banking page
+    window.location.href = 'banking.html';
 }
 
 // ========== NOTIFICATION SYSTEM ==========
@@ -808,14 +831,17 @@ function setupEventListeners() {
         localStorage.setItem('selectedProduct', JSON.stringify({
             id: 'deposit',
             name: 'Nạp tiền',
-            price: 0
+            price: 0,
+            period: 'N/A',
+            icon: 'fas fa-coins'
         }));
-        window.location.href = `banking.html?name=${encodeURIComponent(userData.name)}&balance=${userData.balance}`;
+        window.location.href = 'banking.html';
     });
     
     // Logout button
     btnLogout.addEventListener('click', () => {
         localStorage.removeItem('userData');
+        localStorage.removeItem('selectedProduct');
         showNotification('success', 'Đăng xuất', 'Bạn đã đăng xuất thành công');
         setTimeout(() => {
             window.location.href = 'index.html';
