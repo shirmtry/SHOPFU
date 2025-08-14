@@ -383,44 +383,96 @@
             isLoggedIn: localStorage.getItem('isLoggedIn') === 'true'
         };
 
-        // Products data
+        // Products data - Updated to match banking.html packages
         const products = [
             {
-                id: "VIP1",
-                name: "GÓI VIP1",
-                icon: "fas fa-crown",
+                id: "basic",
+                name: "Gói Basic (TOOL SEB)",
+                icon: "fas fa-star",
                 price: 500000,
                 period: "1 Tháng",
                 features: [
-                    "Quyền lợi cao cấp 1",
+                    "Tính năng cơ bản",
                     "Hỗ trợ 24/7",
                     "Cập nhật thường xuyên"
                 ],
                 popular: false
             },
             {
-                id: "VIP2",
-                name: "GÓI VIP2",
-                icon: "fas fa-gem",
+                id: "vip1",
+                name: "Gói VIP1 (TOOL EOS)",
+                icon: "fas fa-crown",
                 price: 1000000,
-                period: "2 Tháng",
+                period: "1 Tháng",
                 features: [
-                    "Tất cả quyền lợi VIP1",
-                    "Thêm tính năng đặc biệt",
+                    "Tất cả tính năng Basic",
+                    "Thêm tính năng EOS",
                     "Ưu tiên hỗ trợ"
                 ],
                 popular: true
             },
             {
-                id: "VIP3",
-                name: "GÓI VIP3",
-                icon: "fas fa-star",
+                id: "vip2",
+                name: "Gói VIP2 (TOOL EOS + SEB)",
+                icon: "fas fa-gem",
                 price: 1500000,
+                period: "2 Tháng",
+                features: [
+                    "Tất cả tính năng VIP1",
+                    "Tính năng SEB Pro",
+                    "Hỗ trợ nhanh"
+                ],
+                popular: false
+            },
+            {
+                id: "vip3",
+                name: "Gói VIP3 (TOOL EOS + SEB PRO)",
+                icon: "fas fa-diamond",
+                price: 2000000,
                 period: "3 Tháng",
                 features: [
-                    "Tất cả quyền lợi VIP2",
+                    "Tất cả tính năng VIP2",
                     "Tính năng độc quyền",
                     "Hỗ trợ VIP riêng"
+                ],
+                popular: false
+            },
+            {
+                id: "Support",
+                name: "Gói Hỗ trợ",
+                icon: "fas fa-headset",
+                price: 300000,
+                period: "1 Tháng",
+                features: [
+                    "Hỗ trợ chuyên sâu",
+                    "Tư vấn 1-1",
+                    "Giải quyết vấn đề nhanh"
+                ],
+                popular: false
+            },
+            {
+                id: "FakeBill",
+                name: "App Banking ảo",
+                icon: "fas fa-mobile-screen",
+                price: 500000,
+                period: "Vĩnh viễn",
+                features: [
+                    "Tạo banking ảo",
+                    "Tùy chỉnh số dư",
+                    "Hỗ trợ cài đặt"
+                ],
+                popular: false
+            },
+            {
+                id: "Security",
+                name: "Gói Bảo mật",
+                icon: "fas fa-shield-halved",
+                price: 400000,
+                period: "1 Tháng",
+                features: [
+                    "Bảo vệ tài khoản",
+                    "Chống theo dõi",
+                    "Ẩn danh trực tuyến"
                 ],
                 popular: false
             }
@@ -438,6 +490,7 @@
             
             const bankingInfo = {
                 amount: product.price,
+                package: product.id,
                 productName: product.name,
                 transferContent: transferContent,
                 username: userData.name,
@@ -447,9 +500,11 @@
                 productPeriod: product.period || ''
             };
             
-            console.log('Banking info:', bankingInfo); // Debug log
+            console.log('Banking info:', bankingInfo);
             localStorage.setItem('bankingInfo', JSON.stringify(bankingInfo));
-            window.location.href = 'banking.html';
+            
+            // Redirect to banking with query parameters
+            window.location.href = `banking.html?amount=${product.price}&package=${product.id}`;
         }
 
         // Fetch user data from API
@@ -567,7 +622,7 @@
                 period: productPeriod
             };
             
-            console.log('Selected product:', product); // Debug log
+            console.log('Selected product:', product);
             processPayment(product);
         }
 
@@ -602,10 +657,7 @@
 
         // Handle login
         async function handleLogin(username, password) {
-            // Simulate login - replace with actual API call
             try {
-                // In a real app, you would call your login API here
-                // For demo purposes, we'll simulate a successful login
                 userData = {
                     name: username,
                     balance: userData.balance,
@@ -620,7 +672,6 @@
                 toggleLoginModal(false);
                 showNotification('Đăng nhập thành công!', 'success');
                 
-                // Fetch updated user data
                 await fetchUserData();
                 
                 return true;
@@ -683,6 +734,7 @@
                 
                 const bankingInfo = {
                     amount: 0,
+                    package: "deposit",
                     productName: 'Nạp tiền',
                     transferContent: `NAP_${generateRandom4Digits()}`,
                     username: userData.name,
@@ -690,7 +742,7 @@
                 };
                 
                 localStorage.setItem('bankingInfo', JSON.stringify(bankingInfo));
-                window.location.href = 'banking.html';
+                window.location.href = 'banking.html?amount=0&package=deposit';
             });
             
             // Logout button
