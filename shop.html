@@ -104,9 +104,24 @@
             color: white;
         }
 
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #c0392b);
+            color: white;
+        }
+
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(214, 48, 49, 0.4);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
         }
 
         .shop-container {
@@ -237,6 +252,41 @@
             transform: translateX(0);
         }
 
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+        }
+
+        .login-content {
+            background: var(--card);
+            width: 90%;
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 25px;
+            border-radius: var(--radius);
+        }
+
+        .login-title {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            margin-bottom: 15px;
+        }
+
         @media (max-width: 768px) {
             .user-panel {
                 flex-direction: column;
@@ -247,6 +297,11 @@
             .user-info {
                 flex-direction: column;
                 text-align: center;
+            }
+            
+            .auth-buttons {
+                flex-direction: column;
+                width: 100%;
             }
             
             .shop-container {
@@ -265,13 +320,36 @@
                     <div class="balance">Số dư: <span class="balance-amount" id="balance">0đ</span></div>
                 </div>
             </div>
-            <button class="btn btn-primary" id="btn-deposit">
-                <i class="fas fa-coins"></i> Nạp tiền
-            </button>
+            <div class="auth-buttons">
+                <button class="btn btn-primary" id="btn-login" style="display: none;">
+                    <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                </button>
+                <button class="btn btn-primary" id="btn-deposit">
+                    <i class="fas fa-coins"></i> Nạp tiền
+                </button>
+                <button class="btn btn-danger" id="btn-logout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </button>
+            </div>
         </div>
 
         <div class="shop-container" id="shopContainer">
             <!-- Products will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-content">
+            <h2 class="login-title">Đăng nhập</h2>
+            <input type="text" id="login-username" class="login-input" placeholder="Tên đăng nhập">
+            <input type="password" id="login-password" class="login-input" placeholder="Mật khẩu">
+            <button class="btn btn-primary" id="btn-login-submit" style="width: 100%;">
+                <i class="fas fa-sign-in-alt"></i> Đăng nhập
+            </button>
+            <button class="btn btn-danger" id="btn-login-cancel" style="width: 100%; margin-top: 10px;">
+                <i class="fas fa-times"></i> Hủy bỏ
+            </button>
         </div>
     </div>
 
@@ -290,10 +368,15 @@
         const balanceElement = document.getElementById('balance');
         const userAvatarElement = document.getElementById('user-avatar');
         const btnDeposit = document.getElementById('btn-deposit');
+        const btnLogin = document.getElementById('btn-login');
+        const btnLogout = document.getElementById('btn-logout');
+        const loginModal = document.getElementById('loginModal');
+        const btnLoginSubmit = document.getElementById('btn-login-submit');
+        const btnLoginCancel = document.getElementById('btn-login-cancel');
         const notification = document.getElementById('notification');
         const notificationMessage = document.getElementById('notification-message');
 
-        // User data - Khởi tạo từ localStorage ngay từ đầu
+        // User data
         let userData = {
             name: localStorage.getItem('username') || "Khách",
             balance: parseInt(localStorage.getItem('balance')) || 0,
@@ -366,12 +449,13 @@
                         isLoggedIn: data.data.isLoggedIn !== undefined ? data.data.isLoggedIn : userData.isLoggedIn
                     };
                     
-                    // Cập nhật localStorage
+                    // Update localStorage
                     localStorage.setItem('isLoggedIn', userData.isLoggedIn);
                     localStorage.setItem('username', userData.name);
                     localStorage.setItem('balance', userData.balance);
                     
                     updateUserInfo();
+                    updateAuthUI();
                     return true;
                 }
             } catch (error) {
@@ -385,6 +469,19 @@
             usernameElement.textContent = userData.name;
             balanceElement.textContent = userData.balance.toLocaleString('vi-VN') + 'đ';
             userAvatarElement.textContent = userData.name.charAt(0).toUpperCase();
+        }
+
+        // Update authentication UI
+        function updateAuthUI() {
+            if (userData.isLoggedIn) {
+                btnLogin.style.display = 'none';
+                btnDeposit.style.display = 'flex';
+                btnLogout.style.display = 'flex';
+            } else {
+                btnLogin.style.display = 'flex';
+                btnDeposit.style.display = 'none';
+                btnLogout.style.display = 'none';
+            }
         }
 
         // Render products
@@ -443,11 +540,9 @@
 
         // Handle buy button click
         function handleBuyClick(event) {
-            // Kiểm tra đăng nhập từ cả localStorage và biến userData
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' && userData.isLoggedIn;
-            
-            if (!isLoggedIn) {
+            if (!userData.isLoggedIn) {
                 showNotification('Vui lòng đăng nhập để mua hàng', 'warning');
+                toggleLoginModal(true);
                 return;
             }
             
@@ -484,14 +579,89 @@
             }, 3000);
         }
 
+        // Toggle login modal
+        function toggleLoginModal(show) {
+            loginModal.style.display = show ? 'block' : 'none';
+        }
+
+        // Handle login
+        async function handleLogin(username, password) {
+            // Simulate login - replace with actual API call
+            try {
+                // In a real app, you would call your login API here
+                // For demo purposes, we'll simulate a successful login
+                userData = {
+                    name: username,
+                    balance: userData.balance,
+                    isLoggedIn: true
+                };
+                
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('username', username);
+                
+                updateUserInfo();
+                updateAuthUI();
+                toggleLoginModal(false);
+                showNotification('Đăng nhập thành công!', 'success');
+                
+                // Fetch updated user data
+                await fetchUserData();
+                
+                return true;
+            } catch (error) {
+                console.error('Login error:', error);
+                showNotification('Đăng nhập thất bại. Vui lòng thử lại.', 'error');
+                return false;
+            }
+        }
+
+        // Handle logout
+        function handleLogout() {
+            userData = {
+                name: "Khách",
+                balance: 0,
+                isLoggedIn: false
+            };
+            
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            localStorage.removeItem('balance');
+            
+            updateUserInfo();
+            updateAuthUI();
+            showNotification('Đã đăng xuất', 'success');
+        }
+
         // Setup event listeners
         function setupEventListeners() {
-            btnDeposit.addEventListener('click', () => {
-                // Kiểm tra đăng nhập từ cả localStorage và biến userData
-                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' && userData.isLoggedIn;
+            // Login button
+            btnLogin.addEventListener('click', () => {
+                toggleLoginModal(true);
+            });
+            
+            // Login submit
+            btnLoginSubmit.addEventListener('click', async () => {
+                const username = document.getElementById('login-username').value;
+                const password = document.getElementById('login-password').value;
                 
-                if (!isLoggedIn) {
+                if (!username || !password) {
+                    showNotification('Vui lòng nhập đầy đủ thông tin', 'warning');
+                    return;
+                }
+                
+                await handleLogin(username, password);
+            });
+            
+            // Login cancel
+            btnLoginCancel.addEventListener('click', () => {
+                toggleLoginModal(false);
+            });
+            
+            // Deposit button
+            btnDeposit.addEventListener('click', () => {
+                if (!userData.isLoggedIn) {
                     showNotification('Vui lòng đăng nhập để nạp tiền', 'warning');
+                    toggleLoginModal(true);
                     return;
                 }
                 
@@ -506,41 +676,27 @@
                 localStorage.setItem('bankingInfo', JSON.stringify(bankingInfo));
                 window.location.href = 'banking.html';
             });
-        }
-
-        // Check login status
-        function checkLoginStatus() {
-            // Kiểm tra cả localStorage và biến userData
-            const storedLogin = localStorage.getItem('isLoggedIn') === 'true';
-            const actualLogin = userData.isLoggedIn;
             
-            // Nếu có sự không đồng bộ, ưu tiên giá trị từ localStorage
-            if (storedLogin !== actualLogin) {
-                userData.isLoggedIn = storedLogin;
-            }
-            
-            return userData.isLoggedIn;
+            // Logout button
+            btnLogout.addEventListener('click', () => {
+                handleLogout();
+            });
         }
 
         // Initialize the page
         async function init() {
-            // Kiểm tra trạng thái đăng nhập trước
-            checkLoginStatus();
-            
-            // Cập nhật giao diện ngay với dữ liệu hiện có
+            updateAuthUI();
             updateUserInfo();
             renderProducts();
             setupEventListeners();
             
-            // Thử lấy dữ liệu mới từ API
-            try {
-                await fetchUserData();
-            } catch (e) {
-                console.log('Không thể kết nối đến server, sử dụng dữ liệu local');
+            if (userData.isLoggedIn) {
+                try {
+                    await fetchUserData();
+                } catch (e) {
+                    console.log('Không thể kết nối đến server, sử dụng dữ liệu local');
+                }
             }
-            
-            // Kiểm tra lại sau khi fetch dữ liệu
-            checkLoginStatus();
         }
 
         // Initialize when page loads
