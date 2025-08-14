@@ -307,12 +307,6 @@
             background: var(--accent);
         }
 
-        .feature-item i {
-            color: var(--accent);
-            margin-top: 0.2rem;
-            font-size: 0.9rem;
-        }
-
         .package-footer {
             margin-top: auto;
         }
@@ -336,25 +330,8 @@
             overflow: hidden;
         }
 
-        .btn-buy::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
-            animation: shimmer 3s infinite;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
         .btn-buy:hover {
             background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary) 100%);
-        }
-
-        .btn-buy:hover::after {
-            opacity: 1;
         }
 
         .btn-buy i {
@@ -364,27 +341,6 @@
 
         .btn-buy:hover i {
             transform: translateX(5px);
-        }
-
-        .loading-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 300px;
-            grid-column: 1 / -1;
-        }
-
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 6px solid rgba(67, 97, 238, 0.2);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
         }
 
         .notification {
@@ -550,10 +506,10 @@
     <div class="user-card">
         <div class="user-avatar" id="user-avatar">U</div>
         <div class="user-info">
-            <div class="user-name" id="username">Đang tải...</div>
+            <div class="user-name" id="username">Nguyễn Văn A</div>
             <div class="user-balance">
                 <i class="fas fa-wallet"></i>
-                Số dư: <span class="balance-amount" id="balance">0</span> VND
+                Số dư: <span class="balance-amount" id="balance">1,250,000</span> VND
             </div>
         </div>
     </div>
@@ -568,9 +524,82 @@
 </div>
 
 <div class="shop-container" id="shop">
-    <div class="loading-container">
-        <div class="spinner"></div>
+    <!-- Packages will be loaded here instantly -->
+    <div class="package-card">
+        <div class="package-header">
+            <div class="package-icon">
+                <i class="fas fa-laptop-code"></i>
+            </div>
+            <h3 class="package-title">Gói Basic</h3>
+        </div>
+        <div class="package-body">
+            <div class="package-price">
+                400,000 VND
+                <div class="price-period">1 tháng</div>
+            </div>
+            <div class="package-features">
+                <div class="feature-item">
+                    <span>TOOL SEB bản cơ bản</span>
+                </div>
+                <div class="feature-item">
+                    <span>Sử dụng 1 thiết bị</span>
+                </div>
+                <div class="feature-item">
+                    <span>Hỗ trợ 24/7 qua chat</span>
+                </div>
+                <div class="feature-item">
+                    <span>Cập nhật hàng tuần</span>
+                </div>
+                <div class="feature-item">
+                    <span>Bảo hành 7 ngày</span>
+                </div>
+            </div>
+            <div class="package-footer">
+                <button class="btn-buy" data-price="400000" data-package="basic">
+                    <i class="fas fa-shopping-cart"></i> Mua ngay
+                </button>
+            </div>
+        </div>
     </div>
+
+    <div class="package-card">
+        <div class="package-header">
+            <div class="package-icon">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <h3 class="package-title">Gói VIP1</h3>
+        </div>
+        <div class="package-body">
+            <div class="package-price">
+                600,000 VND
+                <div class="price-period">3 tháng</div>
+            </div>
+            <div class="package-features">
+                <div class="feature-item">
+                    <span>TOOL EOS cao cấp</span>
+                </div>
+                <div class="feature-item">
+                    <span>Sử dụng 1 thiết bị</span>
+                </div>
+                <div class="feature-item">
+                    <span>Update miễn phí liên tục</span>
+                </div>
+                <div class="feature-item">
+                    <span>Hỗ trợ từ xa</span>
+                </div>
+                <div class="feature-item">
+                    <span>Bảo hành 30 ngày</span>
+                </div>
+            </div>
+            <div class="package-footer">
+                <button class="btn-buy" data-price="600000" data-package="vip1">
+                    <i class="fas fa-shopping-cart"></i> Mua ngay
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- More packages can be added here -->
 </div>
 
 <div class="notification" id="notification">
@@ -606,329 +635,47 @@
 </footer>
 
 <script>
-    // Google Apps Script Web App URL - REPLACE WITH YOUR OWN
-    const API_URL = "https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec";
-    
-    // User data
-    let userData = {
-        name: "",
-        balance: 0,
-        avatar: "U"
-    };
-
-    // DOM elements
-    const shopContainer = document.getElementById('shop');
-    const usernameElement = document.getElementById('username');
-    const balanceElement = document.getElementById('balance');
-    const userAvatarElement = document.getElementById('user-avatar');
-    const btnDeposit = document.getElementById('btn-deposit');
-    const btnLogout = document.getElementById('btn-logout');
-    const notification = document.getElementById('notification');
-
-    // Product data
-    const packages = [
-        {
-            name: "Gói Basic", 
-            icon: "fas fa-laptop-code",
-            price: 400000, 
-            code: "basic", 
-            period: "1 tháng",
-            features: [
-                "TOOL SEB bản cơ bản",
-                "Sử dụng 1 thiết bị",
-                "Hỗ trợ 24/7 qua chat",
-                "Cập nhật hàng tuần",
-                "Bảo hành 7 ngày"
-            ]
-        },
-        {
-            name: "Gói VIP1", 
-            icon: "fas fa-rocket",
-            price: 600000, 
-            code: "vip1", 
-            period: "3 tháng",
-            features: [
-                "TOOL EOS cao cấp",
-                "Sử dụng 1 thiết bị",
-                "Update miễn phí liên tục",
-                "Hỗ trợ từ xa",
-                "Bảo hành 30 ngày"
-            ]
-        },
-        {
-            name: "Gói VIP2", 
-            icon: "fas fa-bolt",
-            price: 800000, 
-            code: "vip2", 
-            period: "6 tháng",
-            features: [
-                "TOOL EOS + SEB PRO",
-                "Dùng được 1 kì học",
-                "Hỗ trợ từ xa 24/7",
-                "Ưu tiên cập nhật",
-                "Bảo hành 60 ngày"
-            ]
-        },
-        {
-            name: "Gói VIP3", 
-            icon: "fas fa-crown",
-            price: 3000000, 
-            code: "vip3", 
-            period: "4 năm",
-            features: [
-                "TOOL EOS + SEB PRO MAX",
-                "Dùng được 4 năm",
-                "Hỗ trợ VIP 24/7",
-                "Cập nhật real-time",
-                "Bảo hành trọn đời"
-            ]
-        },
-        {
-            name: "Gói Support", 
-            icon: "fas fa-hands-helping",
-            price: 50000, 
-            code: "support", 
-            period: "1 lần",
-            features: [
-                "Hỗ trợ kỹ thuật chuyên sâu",
-                "Cài đặt tool từ xa",
-                "Tư vấn tối ưu bảo mật",
-                "Fix lỗi nhanh chóng",
-                "Hướng dẫn chi tiết"
-            ]
-        },
-        {
-            name: "App Banking Ảo", 
-            icon: "fas fa-university",
-            price: 500000, 
-            code: "fakebill", 
-            period: "Vĩnh viễn",
-            features: [
-                "Fake bill chuyển khoản",
-                "Hỗ trợ 20+ ngân hàng",
-                "Giao diện giống thật 99%",
-                "Tùy chỉnh thông tin",
-                "Không lưu dữ liệu"
-            ]
-        },
-        {
-            name: "Gói Bảo Mật", 
-            icon: "fas fa-shield-alt",
-            price: 250000, 
-            code: "security", 
-            period: "6 tháng",
-            features: [
-                "Chống bị phát hiện tool",
-                "Ẩn IP và thông tin thiết bị",
-                "Cập nhật liên tục",
-                "Bảo vệ real-time",
-                "Hỗ trợ 24/7"
-            ]
-        }
-    ];
-
-    // Initialize the page
-    document.addEventListener('DOMContentLoaded', async () => {
-        // Check authentication
-        if (!await checkAuth()) {
-            return;
-        }
-        
-        // Load user data
-        await loadUserData();
-        
-        // Render shop
-        renderShop();
-        
-        // Setup event listeners
-        setupEventListeners();
+    // Handle buy button click
+    document.querySelectorAll('.btn-buy').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const price = this.getAttribute('data-price');
+            const packageCode = this.getAttribute('data-package');
+            window.location.href = `deposit.html?package=${packageCode}&amount=${price}`;
+        });
     });
 
-    // Check if user is authenticated
-    async function checkAuth() {
-        const username = localStorage.getItem('username');
-        const token = localStorage.getItem('authToken');
-        
-        if (!username || !token) {
-            showNotification('error', 'Yêu cầu đăng nhập', 'Vui lòng đăng nhập để tiếp tục');
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
-            return false;
-        }
-        
-        try {
-            const response = await fetch(`${API_URL}?action=verifyToken&username=${encodeURIComponent(username)}&token=${encodeURIComponent(token)}`);
-            const data = await response.json();
-            
-            if (!data.success) {
-                throw new Error('Token không hợp lệ');
-            }
-            return true;
-        } catch (error) {
-            console.error('Lỗi xác thực:', error);
-            showNotification('error', 'Phiên đăng nhập hết hạn', 'Vui lòng đăng nhập lại');
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
-            return false;
-        }
-    }
+    // Logout functionality
+    document.getElementById('btn-logout').addEventListener('click', function() {
+        localStorage.removeItem('username');
+        localStorage.removeItem('authToken');
+        showNotification('success', 'Đăng xuất thành công', 'Bạn đã đăng xuất khỏi hệ thống');
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1500);
+    });
 
-    // Load user data from Google Apps Script
-    async function loadUserData() {
-        try {
-            const username = localStorage.getItem('username');
-            
-            // Show loading state
-            usernameElement.textContent = 'Đang tải...';
-            balanceElement.textContent = '0';
-            
-            // Fetch user data
-            const response = await fetch(`${API_URL}?action=getUser&username=${encodeURIComponent(username)}`);
-            
-            if (!response.ok) {
-                throw new Error('Không thể kết nối đến server');
-            }
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                userData = {
-                    name: data.name || username,
-                    balance: parseInt(data.balance) || 0,
-                    avatar: data.name ? data.name.charAt(0).toUpperCase() : username.charAt(0).toUpperCase()
-                };
-                
-                // Update UI
-                updateUserUI();
-            } else {
-                throw new Error(data.message || 'Không thể tải dữ liệu người dùng');
-            }
-        } catch (error) {
-            console.error('Lỗi tải dữ liệu:', error);
-            showNotification('error', 'Lỗi hệ thống', 'Không thể tải thông tin người dùng');
-            usernameElement.textContent = localStorage.getItem('username') || 'Khách';
-            balanceElement.textContent = '0';
-        }
-    }
-
-    // Update user UI elements
-    function updateUserUI() {
-        usernameElement.textContent = userData.name;
-        balanceElement.textContent = userData.balance.toLocaleString('vi-VN');
-        userAvatarElement.textContent = userData.avatar;
-    }
-
-    // Render shop products
-    function renderShop() {
-        shopContainer.innerHTML = '';
-        
-        if (packages.length === 0) {
-            shopContainer.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
-                    <i class="fas fa-box-open" style="font-size: 3rem; color: var(--gray); margin-bottom: 1rem;"></i>
-                    <h3 style="color: var(--gray);">Hiện không có sản phẩm nào</h3>
-                </div>
-            `;
-            return;
-        }
-        
-        packages.forEach(pkg => {
-            const featuresHtml = pkg.features.map(feature => `
-                <div class="feature-item">
-                    <span>${feature}</span>
-                </div>
-            `).join('');
-            
-            const packageElement = document.createElement('div');
-            packageElement.className = 'package-card';
-            packageElement.innerHTML = `
-                <div class="package-header">
-                    <div class="package-icon">
-                        <i class="${pkg.icon}"></i>
-                    </div>
-                    <h3 class="package-title">${pkg.name}</h3>
-                </div>
-                <div class="package-body">
-                    <div class="package-price">
-                        ${pkg.price.toLocaleString('vi-VN')} VND
-                        <div class="price-period">${pkg.period}</div>
-                    </div>
-                    <div class="package-features">
-                        ${featuresHtml}
-                    </div>
-                    <div class="package-footer">
-                        <button class="btn-buy" data-price="${pkg.price}" data-package="${pkg.code}">
-                            <i class="fas fa-shopping-cart"></i> Mua ngay
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            shopContainer.appendChild(packageElement);
-        });
-        
-        // Add event listeners to buy buttons
-        document.querySelectorAll('.btn-buy').forEach(btn => {
-            btn.addEventListener('click', handleBuyClick);
-        });
-    }
-
-    // Handle buy button click
-    function handleBuyClick() {
-        const price = parseInt(this.getAttribute('data-price'));
-        const packageCode = this.getAttribute('data-package'));
-        const packageName = packages.find(pkg => pkg.code === packageCode)?.name || 'sản phẩm';
-        
-        // Redirect to deposit page with package info
-        window.location.href = `deposit.html?package=${encodeURIComponent(packageCode)}&amount=${price}`;
-    }
-
-    // Show notification
+    // Show notification function
     function showNotification(type, title, message) {
+        const notification = document.getElementById('notification');
         const notificationTitle = document.getElementById('notification-title');
         const notificationMessage = document.getElementById('notification-message');
         const notificationIcon = notification.querySelector('.notification-icon i');
         
-        // Set content
         notificationTitle.textContent = title;
         notificationMessage.textContent = message;
         
-        // Set style based on type
         notification.className = 'notification';
         notification.classList.add(type);
         
-        // Set icon based on type
         notificationIcon.className = type === 'success' 
             ? 'fas fa-check-circle' 
             : 'fas fa-exclamation-circle';
         
-        // Show notification
         notification.classList.add('show');
         
-        // Hide after 5 seconds
         setTimeout(() => {
             notification.classList.remove('show');
         }, 5000);
-    }
-
-    // Setup event listeners
-    function setupEventListeners() {
-        // Deposit button
-        btnDeposit.addEventListener('click', () => {
-            window.location.href = 'deposit.html';
-        });
-        
-        // Logout button
-        btnLogout.addEventListener('click', () => {
-            localStorage.removeItem('username');
-            localStorage.removeItem('authToken');
-            showNotification('success', 'Đăng xuất thành công', 'Bạn đã đăng xuất khỏi hệ thống');
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1500);
-        });
     }
 </script>
 </body>
