@@ -324,7 +324,7 @@
     <script>
         // Configuration
         const API_URL = 'https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec'; // Thay bằng URL API thực tế của bạn
-        const USER_ID = 'current_user_id'; // Hoặc lấy từ localStorage/sessionStorage
+        const USER_ID = localStorage.getItem('userId') || 'current_user_id';
 
         // DOM elements
         const shopContainer = document.getElementById('shopContainer');
@@ -414,6 +414,7 @@
                 };
                 
                 updateUserInfo();
+                return true;
             } catch (error) {
                 console.error('Lỗi khi lấy dữ liệu người dùng:', error);
                 showNotification('Lỗi khi tải thông tin người dùng', 'error');
@@ -425,6 +426,7 @@
                     isLoggedIn: false
                 };
                 updateUserInfo();
+                return false;
             }
         }
 
@@ -539,11 +541,18 @@
         }
 
         // Handle buy button click
-        function handleBuyClick(event) {
+        async function handleBuyClick(event) {
             const button = event.currentTarget;
             const productId = button.getAttribute('data-id');
             const productName = button.getAttribute('data-name');
             const productPrice = parseInt(button.getAttribute('data-price'));
+            
+            // Refresh user data before purchase
+            const success = await fetchUserData();
+            if (!success) {
+                showNotification('Không thể kiểm tra thông tin tài khoản', 'error');
+                return;
+            }
             
             if (!userData.isLoggedIn) {
                 showNotification('Vui lòng đăng nhập để mua hàng', 'warning');
@@ -585,7 +594,14 @@
         // Setup event listeners
         function setupEventListeners() {
             // Deposit button
-            btnDeposit.addEventListener('click', () => {
+            btnDeposit.addEventListener('click', async () => {
+                // Refresh user data first
+                const success = await fetchUserData();
+                if (!success) {
+                    showNotification('Không thể kiểm tra thông tin tài khoản', 'error');
+                    return;
+                }
+                
                 if (!userData.isLoggedIn) {
                     showNotification('Vui lòng đăng nhập để nạp tiền', 'warning');
                     return;
