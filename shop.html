@@ -322,9 +322,12 @@
     </div>
 
     <script>
-        // Configuration
-        const API_URL = 'https://script.google.com/macros/s/AKfycby-wQER7OQWR2WYTRqwjhHXa7IrrW8V8IqhPBe3eJMpguEor1myIwoXs0HSIeDFt1elEg/exec'; // Thay bằng URL API thực tế của bạn
-        const USER_ID = localStorage.getItem('userId') || 'current_user_id';
+        // Lấy thông tin user từ localStorage sau khi đăng nhập
+        const userInfo = JSON.parse(localStorage.getItem('userInfo')) || {
+            username: "Khách",
+            balance: 0,
+            isLoggedIn: false
+        };
 
         // DOM elements
         const shopContainer = document.getElementById('shopContainer');
@@ -339,13 +342,6 @@
         const modalMessage = document.getElementById('modalMessage');
         const confirmPaymentBtn = document.getElementById('confirmPayment');
         const cancelPaymentBtn = document.getElementById('cancelPayment');
-
-        // User data
-        let userData = {
-            name: "Đang tải...",
-            balance: 0,
-            isLoggedIn: false
-        };
 
         // Current selected product
         let currentProduct = null;
@@ -398,43 +394,11 @@
             return Math.floor(1000 + Math.random() * 9000);
         }
 
-        // Fetch user data from API
-        async function fetchUserData() {
-            try {
-                const response = await fetch(`${API_URL}?userId=${USER_ID}`);
-                if (!response.ok) {
-                    throw new Error('Không thể lấy dữ liệu người dùng');
-                }
-                const data = await response.json();
-                
-                userData = {
-                    name: data.username || 'Khách',
-                    balance: data.balance || 0,
-                    isLoggedIn: data.isLoggedIn || false
-                };
-                
-                updateUserInfo();
-                return true;
-            } catch (error) {
-                console.error('Lỗi khi lấy dữ liệu người dùng:', error);
-                showNotification('Lỗi khi tải thông tin người dùng', 'error');
-                
-                // Fallback data
-                userData = {
-                    name: "Khách",
-                    balance: 0,
-                    isLoggedIn: false
-                };
-                updateUserInfo();
-                return false;
-            }
-        }
-
         // Update user info display
         function updateUserInfo() {
-            usernameElement.textContent = userData.name;
-            balanceElement.innerHTML = userData.balance.toLocaleString('vi-VN') + '₫';
-            userAvatarElement.textContent = userData.name.charAt(0).toUpperCase();
+            usernameElement.textContent = userInfo.username;
+            balanceElement.innerHTML = userInfo.balance.toLocaleString('vi-VN') + 'đ';
+            userAvatarElement.textContent = userInfo.username.charAt(0).toUpperCase();
         }
 
         // Render products
@@ -452,7 +416,7 @@
                         <div class="package-title">${product.name}</div>
                     </div>
                     <div class="package-body">
-                        <div class="package-price">${product.price.toLocaleString('vi-VN')}₫</div>
+                        <div class="package-price">${product.price.toLocaleString('vi-VN')}đ</div>
                         <div class="price-period">${product.period}</div>
                         <div class="package-features">
                             ${product.features.map(feature => `
@@ -479,18 +443,18 @@
             currentProduct = product;
             modalTitle.textContent = `Mua ${product.name}`;
             
-            if (userData.balance >= product.price) {
+            if (userInfo.balance >= product.price) {
                 modalMessage.innerHTML = `
-                    Bạn có chắc muốn mua <strong>${product.name}</strong> với giá <strong>${product.price.toLocaleString('vi-VN')}₫</strong>?
-                    <br>Số dư sau khi mua: <strong>${(userData.balance - product.price).toLocaleString('vi-VN')}₫</strong>
+                    Bạn có chắc muốn mua <strong>${product.name}</strong> với giá <strong>${product.price.toLocaleString('vi-VN')}đ</strong>?
+                    <br>Số dư sau khi mua: <strong>${(userInfo.balance - product.price).toLocaleString('vi-VN')}đ</strong>
                 `;
             } else {
-                const needed = product.price - userData.balance;
+                const needed = product.price - userInfo.balance;
                 modalMessage.innerHTML = `
                     <div style="color: var(--warning); margin-bottom: 10px;">
                         <i class="fas fa-exclamation-triangle"></i> Số dư không đủ!
                     </div>
-                    Bạn cần thêm <strong>${needed.toLocaleString('vi-VN')}₫</strong> để mua <strong>${product.name}</strong>.
+                    Bạn cần thêm <strong>${needed.toLocaleString('vi-VN')}đ</strong> để mua <strong>${product.name}</strong>.
                     <br>Bạn có muốn nạp tiền ngay bây giờ?
                 `;
             }
@@ -508,10 +472,11 @@
         function processPayment() {
             if (!currentProduct) return;
             
-            if (userData.balance >= currentProduct.price) {
-                // Simulate API call for payment
+            if (userInfo.balance >= currentProduct.price) {
+                // Simulate payment processing
                 setTimeout(() => {
-                    userData.balance -= currentProduct.price;
+                    userInfo.balance -= currentProduct.price;
+                    localStorage.setItem('userInfo', JSON.stringify(userInfo));
                     updateUserInfo();
                     showNotification(`Mua thành công gói ${currentProduct.name}`, 'success');
                     
@@ -520,7 +485,7 @@
                 }, 1000);
             } else {
                 // Not enough balance - prepare for deposit
-                const needed = currentProduct.price - userData.balance;
+                const needed = currentProduct.price - userInfo.balance;
                 const randomDigits = generateRandom4Digits();
                 const transferContent = `${currentProduct.id}_${randomDigits}`;
                 
@@ -534,27 +499,20 @@
                 
                 // Open banking page
                 window.open('banking.html', '_blank');
-                showNotification(`Vui lòng nạp thêm ${needed.toLocaleString('vi-VN')}₫`, 'warning');
+                showNotification(`Vui lòng nạp thêm ${needed.toLocaleString('vi-VN')}đ`, 'warning');
             }
             
             hidePaymentModal();
         }
 
         // Handle buy button click
-        async function handleBuyClick(event) {
+        function handleBuyClick(event) {
             const button = event.currentTarget;
             const productId = button.getAttribute('data-id');
             const productName = button.getAttribute('data-name');
             const productPrice = parseInt(button.getAttribute('data-price'));
             
-            // Refresh user data before purchase
-            const success = await fetchUserData();
-            if (!success) {
-                showNotification('Không thể kiểm tra thông tin tài khoản', 'error');
-                return;
-            }
-            
-            if (!userData.isLoggedIn) {
+            if (!userInfo.isLoggedIn) {
                 showNotification('Vui lòng đăng nhập để mua hàng', 'warning');
                 return;
             }
@@ -594,15 +552,8 @@
         // Setup event listeners
         function setupEventListeners() {
             // Deposit button
-            btnDeposit.addEventListener('click', async () => {
-                // Refresh user data first
-                const success = await fetchUserData();
-                if (!success) {
-                    showNotification('Không thể kiểm tra thông tin tài khoản', 'error');
-                    return;
-                }
-                
-                if (!userData.isLoggedIn) {
+            btnDeposit.addEventListener('click', () => {
+                if (!userInfo.isLoggedIn) {
                     showNotification('Vui lòng đăng nhập để nạp tiền', 'warning');
                     return;
                 }
@@ -630,10 +581,10 @@
         }
 
         // Initialize the page
-        async function init() {
+        function init() {
+            updateUserInfo();
             renderProducts();
             setupEventListeners();
-            await fetchUserData();
         }
 
         // Initialize when page loads
