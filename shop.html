@@ -293,11 +293,11 @@
         const notification = document.getElementById('notification');
         const notificationMessage = document.getElementById('notification-message');
 
-        // User data
+        // User data - Khởi tạo từ localStorage ngay từ đầu
         let userData = {
-            name: "Khách",
-            balance: 0,
-            isLoggedIn: false
+            name: localStorage.getItem('username') || "Khách",
+            balance: parseInt(localStorage.getItem('balance')) || 0,
+            isLoggedIn: localStorage.getItem('isLoggedIn') === 'true' || false
         };
 
         // Products data
@@ -361,56 +361,29 @@
                 
                 if (data && data.status === "success") {
                     userData = {
-                        name: data.data.username || 'Khách',
-                        balance: parseInt(data.data.balance) || 0,
-                        isLoggedIn: data.data.isLoggedIn || false
+                        name: data.data.username || userData.name,
+                        balance: parseInt(data.data.balance) || userData.balance,
+                        isLoggedIn: data.data.isLoggedIn !== undefined ? data.data.isLoggedIn : userData.isLoggedIn
                     };
                     
-                    // Lưu trạng thái đăng nhập vào localStorage
+                    // Cập nhật localStorage
                     localStorage.setItem('isLoggedIn', userData.isLoggedIn);
                     localStorage.setItem('username', userData.name);
                     localStorage.setItem('balance', userData.balance);
                     
                     updateUserInfo();
                     return true;
-                } else {
-                    // Nếu API trả về lỗi, sử dụng dữ liệu từ localStorage
-                    const storedLogin = localStorage.getItem('isLoggedIn');
-                    const storedUsername = localStorage.getItem('username');
-                    const storedBalance = localStorage.getItem('balance');
-                    
-                    userData = {
-                        name: storedUsername || 'Khách',
-                        balance: parseInt(storedBalance) || 0,
-                        isLoggedIn: storedLogin === 'true'
-                    };
-                    
-                    updateUserInfo();
-                    return true;
                 }
             } catch (error) {
                 console.error('Lỗi khi lấy dữ liệu người dùng:', error);
-                
-                // Sử dụng dữ liệu từ localStorage nếu API fail
-                const storedLogin = localStorage.getItem('isLoggedIn');
-                const storedUsername = localStorage.getItem('username');
-                const storedBalance = localStorage.getItem('balance');
-                
-                userData = {
-                    name: storedUsername || 'Khách',
-                    balance: parseInt(storedBalance) || 0,
-                    isLoggedIn: storedLogin === 'true'
-                };
-                
-                updateUserInfo();
-                return true;
+                return false;
             }
         }
 
         // Update user info display
         function updateUserInfo() {
             usernameElement.textContent = userData.name;
-            balanceElement.innerHTML = userData.balance.toLocaleString('vi-VN') + 'đ';
+            balanceElement.textContent = userData.balance.toLocaleString('vi-VN') + 'đ';
             userAvatarElement.textContent = userData.name.charAt(0).toUpperCase();
         }
 
@@ -469,9 +442,11 @@
         }
 
         // Handle buy button click
-        async function handleBuyClick(event) {
-            // Kiểm tra đăng nhập trước
-            if (!userData.isLoggedIn) {
+        function handleBuyClick(event) {
+            // Kiểm tra đăng nhập từ localStorage
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            if (!isLoggedIn) {
                 showNotification('Vui lòng đăng nhập để mua hàng', 'warning');
                 return;
             }
@@ -502,7 +477,7 @@
                     break;
             }
             
-            notificationMessage.innerHTML = message;
+            notificationMessage.textContent = message;
             
             setTimeout(() => {
                 notification.classList.remove('show');
@@ -511,8 +486,11 @@
 
         // Setup event listeners
         function setupEventListeners() {
-            btnDeposit.addEventListener('click', async () => {
-                if (!userData.isLoggedIn) {
+            btnDeposit.addEventListener('click', () => {
+                // Kiểm tra đăng nhập từ localStorage
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                
+                if (!isLoggedIn) {
                     showNotification('Vui lòng đăng nhập để nạp tiền', 'warning');
                     return;
                 }
@@ -532,22 +510,12 @@
 
         // Initialize the page
         async function init() {
-            // Kiểm tra trạng thái đăng nhập từ localStorage trước
-            const storedLogin = localStorage.getItem('isLoggedIn');
-            const storedUsername = localStorage.getItem('username');
-            const storedBalance = localStorage.getItem('balance');
-            
-            if (storedLogin) {
-                userData.isLoggedIn = storedLogin === 'true';
-                userData.name = storedUsername || 'Khách';
-                userData.balance = parseInt(storedBalance) || 0;
-                updateUserInfo();
-            }
-            
+            // Cập nhật giao diện ngay với dữ liệu hiện có
+            updateUserInfo();
             renderProducts();
             setupEventListeners();
             
-            // Thử lấy dữ liệu từ API nhưng không báo lỗi nếu fail
+            // Thử lấy dữ liệu mới từ API
             try {
                 await fetchUserData();
             } catch (e) {
