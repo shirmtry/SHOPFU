@@ -237,85 +237,6 @@
             transform: translateX(0);
         }
 
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 30px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: var(--shadow);
-            animation: modalFadeIn 0.3s ease;
-        }
-
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-title {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-
-        .modal-message {
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-        }
-
-        .modal-btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-        }
-
-        .modal-btn-confirm {
-            background: var(--success);
-            color: white;
-        }
-
-        .modal-btn-confirm:hover {
-            background: #00a884;
-        }
-
-        .modal-btn-cancel {
-            background: var(--danger);
-            color: white;
-        }
-
-        .modal-btn-cancel:hover {
-            background: #c0392b;
-        }
-
         @media (max-width: 768px) {
             .user-panel {
                 flex-direction: column;
@@ -330,14 +251,6 @@
             
             .shop-container {
                 grid-template-columns: 1fr;
-            }
-            
-            .modal-buttons {
-                flex-direction: column;
-            }
-            
-            .modal-btn {
-                width: 100%;
             }
         }
     </style>
@@ -366,17 +279,6 @@
         <div id="notification-message">Thông báo</div>
     </div>
 
-    <div class="modal" id="paymentModal">
-        <div class="modal-content">
-            <div class="modal-title" id="modalTitle">Xác nhận thanh toán</div>
-            <div class="modal-message" id="modalMessage">Bạn có muốn mua gói này không?</div>
-            <div class="modal-buttons">
-                <button class="modal-btn modal-btn-confirm" id="confirmPayment">Xác nhận</button>
-                <button class="modal-btn modal-btn-cancel" id="cancelPayment">Hủy bỏ</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         // Configuration
         const API_URL = 'https://script.google.com/macros/s/AKfycbwVRY9aMKt6Qrz_viA7kzZ5n9LU-Dp8nMlUzsPnfDglY1h9AhNBp4snVQecj9-C1Cm8uA/exec';
@@ -390,11 +292,6 @@
         const btnDeposit = document.getElementById('btn-deposit');
         const notification = document.getElementById('notification');
         const notificationMessage = document.getElementById('notification-message');
-        const paymentModal = document.getElementById('paymentModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalMessage = document.getElementById('modalMessage');
-        const confirmPaymentBtn = document.getElementById('confirmPayment');
-        const cancelPaymentBtn = document.getElementById('cancelPayment');
 
         // User data
         let userData = {
@@ -402,9 +299,6 @@
             balance: 0,
             isLoggedIn: false
         };
-
-        // Current selected product
-        let currentProduct = null;
 
         // Products data
         const products = [
@@ -480,12 +374,24 @@
                     updateUserInfo();
                     return true;
                 } else {
-                    throw new Error(data.message || 'Lỗi không xác định từ API');
+                    // Nếu API trả về lỗi, sử dụng dữ liệu từ localStorage
+                    const storedLogin = localStorage.getItem('isLoggedIn');
+                    const storedUsername = localStorage.getItem('username');
+                    const storedBalance = localStorage.getItem('balance');
+                    
+                    userData = {
+                        name: storedUsername || 'Khách',
+                        balance: parseInt(storedBalance) || 0,
+                        isLoggedIn: storedLogin === 'true'
+                    };
+                    
+                    updateUserInfo();
+                    return true;
                 }
             } catch (error) {
                 console.error('Lỗi khi lấy dữ liệu người dùng:', error);
                 
-                // Kiểm tra trạng thái đăng nhập từ localStorage nếu API fail
+                // Sử dụng dữ liệu từ localStorage nếu API fail
                 const storedLogin = localStorage.getItem('isLoggedIn');
                 const storedUsername = localStorage.getItem('username');
                 const storedBalance = localStorage.getItem('balance');
@@ -497,7 +403,7 @@
                 };
                 
                 updateUserInfo();
-                return false;
+                return true;
             }
         }
 
@@ -545,101 +451,26 @@
             });
         }
 
-        // Show payment modal
-        function showPaymentModal(product) {
-            currentProduct = product;
-            modalTitle.textContent = `Mua ${product.name}`;
+        // Process payment and redirect to banking
+        function processPayment(product) {
+            const randomDigits = generateRandom4Digits();
+            const transferContent = `${product.id}_${randomDigits}`;
             
-            if (userData.balance >= product.price) {
-                modalMessage.innerHTML = `
-                    Bạn có chắc muốn mua <strong>${product.name}</strong> với giá <strong>${product.price.toLocaleString('vi-VN')}đ</strong>?
-                    <br><br>Số dư sau khi mua: <strong>${(userData.balance - product.price).toLocaleString('vi-VN')}đ</strong>
-                `;
-            } else {
-                const needed = product.price - userData.balance;
-                modalMessage.innerHTML = `
-                    <div style="color: var(--warning); margin-bottom: 10px;">
-                        <i class="fas fa-exclamation-triangle"></i> Số dư không đủ!
-                    </div>
-                    Bạn cần thêm <strong>${needed.toLocaleString('vi-VN')}đ</strong> để mua <strong>${product.name}</strong>.
-                    <br><br>Bạn có muốn nạp tiền ngay bây giờ?
-                `;
-            }
+            const bankingInfo = {
+                amount: product.price,
+                productName: product.name,
+                transferContent: transferContent,
+                username: userData.name,
+                currentBalance: userData.balance
+            };
             
-            paymentModal.style.display = 'flex';
-        }
-
-        // Hide payment modal
-        function hidePaymentModal() {
-            paymentModal.style.display = 'none';
-            currentProduct = null;
-        }
-
-        // Process payment
-        async function processPayment() {
-            if (!currentProduct) return;
-            
-            if (userData.balance >= currentProduct.price) {
-                try {
-                    // Gọi API để thực hiện thanh toán
-                    const response = await fetch(`${API_URL}?action=purchase`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            userId: USER_ID,
-                            productId: currentProduct.id,
-                            amount: currentProduct.price
-                        })
-                    });
-                    
-                    const result = await response.json();
-                    
-                    if (result.status === "success") {
-                        userData.balance = result.data.newBalance || userData.balance - currentProduct.price;
-                        localStorage.setItem('balance', userData.balance);
-                        updateUserInfo();
-                        showNotification(`Mua thành công gói ${currentProduct.name}`, 'success');
-                        window.location.href = `thankyou.html?product=${currentProduct.id}`;
-                    } else {
-                        throw new Error(result.message || 'Lỗi khi xử lý thanh toán');
-                    }
-                } catch (error) {
-                    console.error('Lỗi thanh toán:', error);
-                    showNotification('Thanh toán thất bại: ' + error.message, 'error');
-                }
-            } else {
-                // Chuyển sang trang banking.html khi không đủ tiền
-                const needed = currentProduct.price - userData.balance;
-                const randomDigits = generateRandom4Digits();
-                const transferContent = `${currentProduct.id}_${randomDigits}`;
-                
-                const bankingInfo = {
-                    amount: needed,
-                    productName: currentProduct.name,
-                    transferContent: transferContent,
-                    fullPrice: currentProduct.price,
-                    username: userData.name,
-                    currentBalance: userData.balance
-                };
-                
-                localStorage.setItem('bankingInfo', JSON.stringify(bankingInfo));
-                window.location.href = 'banking.html';
-            }
-            
-            hidePaymentModal();
+            localStorage.setItem('bankingInfo', JSON.stringify(bankingInfo));
+            window.location.href = 'banking.html';
         }
 
         // Handle buy button click
         async function handleBuyClick(event) {
-            // Refresh user data trước khi mua
-            const success = await fetchUserData();
-            if (!success) {
-                showNotification('Không thể kiểm tra thông tin tài khoản', 'error');
-                return;
-            }
-            
+            // Kiểm tra đăng nhập trước
             if (!userData.isLoggedIn) {
                 showNotification('Vui lòng đăng nhập để mua hàng', 'warning');
                 return;
@@ -650,7 +481,7 @@
             const product = products.find(p => p.id === productId);
             
             if (product) {
-                showPaymentModal(product);
+                processPayment(product);
             }
         }
 
@@ -681,12 +512,6 @@
         // Setup event listeners
         function setupEventListeners() {
             btnDeposit.addEventListener('click', async () => {
-                const success = await fetchUserData();
-                if (!success) {
-                    showNotification('Không thể kiểm tra thông tin tài khoản', 'error');
-                    return;
-                }
-                
                 if (!userData.isLoggedIn) {
                     showNotification('Vui lòng đăng nhập để nạp tiền', 'warning');
                     return;
@@ -702,15 +527,6 @@
                 
                 localStorage.setItem('bankingInfo', JSON.stringify(bankingInfo));
                 window.location.href = 'banking.html';
-            });
-            
-            confirmPaymentBtn.addEventListener('click', processPayment);
-            cancelPaymentBtn.addEventListener('click', hidePaymentModal);
-            
-            paymentModal.addEventListener('click', (e) => {
-                if (e.target === paymentModal) {
-                    hidePaymentModal();
-                }
             });
         }
 
@@ -730,7 +546,13 @@
             
             renderProducts();
             setupEventListeners();
-            await fetchUserData();
+            
+            // Thử lấy dữ liệu từ API nhưng không báo lỗi nếu fail
+            try {
+                await fetchUserData();
+            } catch (e) {
+                console.log('Không thể kết nối đến server, sử dụng dữ liệu local');
+            }
         }
 
         // Initialize when page loads
