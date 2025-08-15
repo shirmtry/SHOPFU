@@ -45,7 +45,6 @@
             padding: 20px;
         }
         
-        /* Headers */
         h1, h2, h3 {
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
@@ -340,13 +339,21 @@
             color: var(--muted);
         }
 
-        #momo-qrcode {
+        #momo-qrcode-container {
             margin: 20px auto;
-            width: 256px;
-            height: 256px;
-            background: white;
-            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 10px solid white;
             border-radius: 8px;
+            width: 276px; /* 256px + 2*10px padding */
+            height: 276px;
+        }
+        
+        #momo-qrcode-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
         }
 
         .momo-note {
@@ -465,7 +472,9 @@
             <h2 class="momo-title">💰 Nạp tiền qua MoMo</h2>
             <p>Số điện thoại nhận: <b>0374756847</b></p>
             <p>Tên tài khoản: <b>NGUYEN VAN A</b></p>
-            <div id="momo-qrcode"></div>
+            <div id="momo-qrcode-container">
+                <img id="momo-qr-image" src="momo_qr.jpg" alt="Mã QR Momo" style="display: none;">
+            </div>
             <div id="momo-note" class="momo-note"></div>
             <div class="momo-instructions">
                 <p><strong>Hướng dẫn:</strong></p>
@@ -491,7 +500,6 @@
     <script>
         // Configuration
         const API_URL = 'https://script.google.com/macros/s/AKfycbwVRY9aMKt6Qrz_viA7kzZ5n9LU-Dp8nMlUzsPnfDglY1h9AhNBp4snVQecj9-C1Cm8uA/exec';
-        // Sử dụng một ID duy nhất cho mỗi trình duyệt để mô phỏng người dùng
         const USER_ID = localStorage.getItem('userId') || 'guest_' + Math.random().toString(36).substring(2, 9);
         localStorage.setItem('userId', USER_ID);
         const MOMO_PHONE = "0374756847";
@@ -514,7 +522,8 @@
         const btnDepositSubmit = document.getElementById('btn-deposit-submit');
         const btnDepositCancel = document.getElementById('btn-deposit-cancel');
         const btnMomoClose = document.getElementById('btn-momo-close');
-        const momoQrcode = document.getElementById('momo-qrcode');
+        const momoQrcodeContainer = document.getElementById('momo-qrcode-container');
+        const momoQrImage = document.getElementById('momo-qr-image');
         const momoNote = document.getElementById('momo-note');
         const notification = document.getElementById('notification');
         const notificationMessage = document.getElementById('notification-message');
@@ -531,97 +540,13 @@
 
         // Products data
         const products = [
-            {
-                id: "basic",
-                name: "Gói Basic (TOOL SEB)",
-                icon: "fas fa-star",
-                price: 400000,
-                period: "1 kì",
-                features: [
-                    "Auto chụp, giải, khoanh",
-                    "Hỗ trợ 24/7",
-                    "Cập nhật thường xuyên"
-                ],
-                popular: false
-            },
-            {
-                id: "vip1",
-                name: "Gói VIP1 (TOOL EOS)",
-                icon: "fas fa-crown",
-                price: 600000,
-                period: "1 kì",
-                features: [
-                    "Auto chụp, giải, khoanh",
-                    "Thêm tính năng EOS",
-                    "Ưu tiên hỗ trợ"
-                ],
-                popular: true
-            },
-            {
-                id: "vip2",
-                name: "Gói VIP2 (TOOL EOS + SEB)",
-                icon: "fas fa-gem",
-                price: 800000,
-                period: "1 kì",
-                features: [
-                    "Tất cả tính năng VIP1",
-                    "Tính năng SEB",
-                    "Hỗ trợ nhanh"
-                ],
-                popular: true
-            },
-            {
-                id: "vip3",
-                name: "Gói VIP3 (TOOL PRO)",
-                icon: "fas fa-diamond",
-                price: 3000000,
-                period: "4 năm",
-                features: [
-                    "Tất cả tính năng VIP2",
-                    "Hạn dùng 4 năm",
-                    "Hỗ trợ VIP riêng"
-                ],
-                popular: false
-            },
-            {
-                id: "Support",
-                name: "Gói Hỗ trợ",
-                icon: "fas fa-headset",
-                price: 100000,
-                period: "1 lần",
-                features: [
-                    "Hỗ trợ SEB EOS",
-                    "Cần thì mới mua",
-                    "Cái này là cần cho 9+ 10"
-                ],
-                popular: false
-            },
-            {
-                id: "FakeBill",
-                name: "App Banking ảo",
-                icon: "fas fa-mobile-screen",
-                price: 500000,
-                period: "Vĩnh viễn",
-                features: [
-                    "Tạo banking ảo",
-                    "Tùy chỉnh số dư",
-                    "Hỗ trợ cài đặt app trên adr và ios"
-                ],
-                popular: false
-            },
-            {
-                id: "Security",
-                name: "Gói Bảo mật",
-                icon: "fas fa-shield-halved",
-                price: 500000,
-                period: "3 tháng",
-                features: [
-                    "Bảo vệ tài khoản FB ZALO IG TIKTOK",
-                    "Chống theo dõi ADR và IOS",
-                    "FAKE IP chuẩn IP quốc tế"
-                ],
-                popular: false
-            }
+            { id: "basic", name: "Gói Basic (TOOL SEB)", icon: "fas fa-star", price: 400000, period: "1 kì", features: ["Auto chụp, giải, khoanh", "Hỗ trợ 24/7", "Cập nhật thường xuyên"], popular: false },
+            { id: "vip1", name: "Gói VIP1 (TOOL EOS)", icon: "fas fa-crown", price: 600000, period: "1 kì", features: ["Auto chụp, giải, khoanh", "Thêm tính năng EOS", "Ưu tiên hỗ trợ"], popular: true },
+            { id: "vip2", name: "Gói VIP2 (TOOL EOS + SEB)", icon: "fas fa-gem", price: 800000, period: "1 kì", features: ["Tất cả tính năng VIP1", "Tính năng SEB", "Hỗ trợ nhanh"], popular: true },
+            { id: "vip3", name: "Gói VIP3 (TOOL PRO)", icon: "fas fa-diamond", price: 3000000, period: "4 năm", features: ["Tất cả tính năng VIP2", "Hạn dùng 4 năm", "Hỗ trợ VIP riêng"], popular: false },
+            { id: "Support", name: "Gói Hỗ trợ", icon: "fas fa-headset", price: 100000, period: "1 lần", features: ["Hỗ trợ SEB EOS", "Cần thì mới mua", "Cái này là cần cho 9+ 10"], popular: false },
+            { id: "FakeBill", name: "App Banking ảo", icon: "fas fa-mobile-screen", price: 500000, period: "Vĩnh viễn", features: ["Tạo banking ảo", "Tùy chỉnh số dư", "Hỗ trợ cài đặt app trên adr và ios"], popular: false },
+            { id: "Security", name: "Gói Bảo mật", icon: "fas fa-shield-halved", price: 500000, period: "3 tháng", features: ["Bảo vệ tài khoản FB ZALO IG TIKTOK", "Chống theo dõi ADR và IOS", "FAKE IP chuẩn IP quốc tế"], popular: false }
         ];
 
         // Functions
@@ -629,26 +554,25 @@
             return Math.floor(1000 + Math.random() * 9000);
         }
 
-        function generateMomoQR(amount) {
+        // Updated function to display a static QR code image and dynamic content
+        function displayMomoQR(amount) {
             const randomNote = `${userData.name.toUpperCase().replace(/\s/g, '')}${random4Digits()}`;
-            momoQrcode.innerHTML = "";
+            
+            // Clear any previous QR code generated by the library
+            momoQrcodeContainer.innerHTML = ''; 
+            
+            // Show the static QR image
+            const img = document.createElement('img');
+            img.src = 'momo_qr.jpg'; // Assuming your image file is named momo_qr.jpg and is in the same folder
+            img.alt = 'Mã QR Momo';
+            momoQrcodeContainer.appendChild(img);
+
             momoNote.innerHTML = `
                 <p>Nội dung chuyển khoản: <strong>${randomNote}</strong></p>
                 <div style="margin-top:10px; font-size: 14px; text-align: center; color: #666;">
                     <p>Số tiền: <strong style="color: var(--momo-pink);">${amount.toLocaleString('vi-VN')}đ</strong></p>
                 </div>
             `;
-
-            const momoDeepLink = `momo://transfer?phone=${MOMO_PHONE}&amount=${amount}&note=${encodeURIComponent(randomNote)}`;
-            
-            new QRCode(momoQrcode, {
-                text: momoDeepLink,
-                width: 256,
-                height: 256,
-                colorDark: "#A50064",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
         }
 
         // Simulating API call for purchasing
@@ -669,17 +593,10 @@
 
         async function handleBuyClick(event) {
             const button = event.currentTarget;
-            const productId = button.getAttribute('data-id');
             const productPrice = parseInt(button.getAttribute('data-price'));
             const productName = button.getAttribute('data-name');
-            const productPeriod = button.getAttribute('data-period');
             
-            const product = {
-                id: productId,
-                name: productName,
-                price: productPrice,
-                period: productPeriod
-            };
+            const product = products.find(p => p.name === productName);
 
             if (!userData.isLoggedIn) {
                 showNotification('Vui lòng đăng nhập để mua hàng', 'warning');
@@ -709,7 +626,7 @@
             
             toggleModal('depositModal', false);
             toggleModal('momoModal', true);
-            generateMomoQR(amount);
+            displayMomoQR(amount); // Use the updated function here
         }
 
         function updateUserInfo() {
@@ -727,7 +644,6 @@
                 btnLogin.style.display = 'flex';
                 btnDeposit.style.display = 'none';
                 btnLogout.style.display = 'none';
-                // Reset to default guest info
                 userData.name = "Khách";
                 userData.balance = 0;
                 updateUserInfo();
@@ -810,7 +726,6 @@
                 return;
             }
             
-            // Simulating a successful login
             userData.name = username;
             userData.isLoggedIn = true;
             localStorage.setItem('isLoggedIn', 'true');
@@ -851,16 +766,14 @@
             
             btnMomoClose.addEventListener('click', () => toggleModal('momoModal', false));
             
-            // Close modal when clicking outside the content
             document.querySelectorAll('.modal').forEach(modal => {
                 modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
+                    if (e.target.classList.contains('modal')) {
                         toggleModal(modal.id, false);
                     }
                 });
             });
             
-            // Handle Enter key in login/deposit inputs
             loginPasswordInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
                     handleLogin();
@@ -873,7 +786,6 @@
             });
         }
 
-        // Initial setup
         document.addEventListener('DOMContentLoaded', () => {
             renderProducts();
             updateUserInfo();
