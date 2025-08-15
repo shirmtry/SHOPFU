@@ -241,9 +241,9 @@
     </div>
 
     <script>
-        const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxS7q1Y1Stq47HZgJrmK2eGC0S6WKz5OvWs9U6GGsqbdZPkzn9cZCwEn4NffKC-KEMmfA/exec";
+        // THAY THẾ API_ENDPOINT BẰNG URL MỚI CỦA BẠN
+        const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw_1F9_pipRKmsiDAw42L0ZCR6_UOmg7UlnZsZeg67C6fVeGgsCaQzJzkecSNUAVCwMdQ/exec";
         
-        // Hàm gọi API
         async function callApi(data) {
             try {
                 const response = await fetch(API_ENDPOINT, {
@@ -281,14 +281,12 @@
 
             let isLogin = true;
 
-            // Hiển thị thông báo
             function showAlert(message, isError = false) {
                 popupMessage.textContent = message;
                 popupTitle.className = isError ? 'popup-title error' : 'popup-title';
                 popupContainer.classList.add('show');
             }
 
-            // Ẩn thông báo
             popupOkBtn.addEventListener('click', () => {
                 popupContainer.classList.remove('show');
                 
@@ -298,7 +296,6 @@
                 }
             });
 
-            // Cập nhật giao diện form
             function updateFormState() {
                 formTitle.textContent = isLogin ? "Đăng Nhập" : "Đăng Ký";
                 submitBtn.innerHTML = isLogin 
@@ -307,7 +304,6 @@
                 switchLink.textContent = isLogin ? "Đăng ký ngay" : "Đăng nhập ngay";
             }
 
-            // Chuyển đổi giữa đăng nhập và đăng ký
             switchLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 isLogin = !isLogin;
@@ -316,7 +312,6 @@
                 passwordInput.value = '';
             });
 
-            // Xử lý submit form
             authForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const username = usernameInput.value.trim();
@@ -332,7 +327,6 @@
                     return;
                 }
 
-                // Hiển thị loading
                 submitBtn.style.display = 'none';
                 loading.style.display = 'block';
 
@@ -367,12 +361,10 @@
                 }
             });
 
-            // Kiểm tra nếu đã đăng nhập thì chuyển hướng
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 window.location.href = 'shop.html';
             }
 
-            // Khởi tạo form
             updateFormState();
         });
     </script>
