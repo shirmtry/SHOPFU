@@ -242,9 +242,38 @@
     </div>
 
     <script>
-        // Thay bằng URL Web App của bạn sau khi deploy Apps Script
+        // Sử dụng CORS proxy nếu cần
+        const USE_CORS_PROXY = true;
+        const CORS_PROXY_URL = "https://cors-anywhere.herokuapp.com/";
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxS7q1Y1Stq47HZgJrmK2eGC0S6WKz5OvWs9U6GGsqbdZPkzn9cZCwEn4NffKC-KEMmfA/exec";
         
+        // Hàm gọi API với xử lý CORS
+        async function callApi(data) {
+            const url = USE_CORS_PROXY ? CORS_PROXY_URL + API_ENDPOINT : API_ENDPOINT;
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error('API call failed:', error);
+                throw error;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const authForm = document.getElementById('auth-form');
             const formTitle = document.getElementById('form-title');
@@ -271,7 +300,6 @@
             popupOkBtn.addEventListener('click', () => {
                 popupContainer.classList.remove('show');
                 
-                // Nếu đăng ký thành công thì chuyển sang form đăng nhập
                 if (!isLogin && popupTitle.className !== 'popup-title error') {
                     isLogin = true;
                     updateFormState();
@@ -318,32 +346,17 @@
                 loading.style.display = 'block';
 
                 try {
-                    const response = await fetch(API_ENDPOINT, {
-                        method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({ 
-                            action: isLogin ? 'login' : 'register',
-                            username, 
-                            password 
-                        })
+                    const result = await callApi({
+                        action: isLogin ? 'login' : 'register',
+                        username, 
+                        password 
                     });
-
-                    if (!response.ok) {
-                        throw new Error(`Lỗi kết nối: ${response.status}`);
-                    }
-
-                    const result = await response.json();
 
                     if (result.status === 'success') {
                         if (isLogin) {
-                            // Lưu thông tin user vào localStorage
                             localStorage.setItem('user', JSON.stringify(result.user));
                             localStorage.setItem('isLoggedIn', 'true');
                             
-                            // Chuyển hướng đến trang shop
                             showAlert(result.message + " Đang chuyển hướng...");
                             setTimeout(() => {
                                 window.location.href = 'shop.html';
@@ -352,21 +365,27 @@
                             showAlert(result.message);
                         }
                     } else {
-                        showAlert(result.message, true);
+                        showAlert(result.message || "Đã xảy ra lỗi", true);
                     }
                 } catch (error) {
                     console.error('Lỗi khi kết nối API:', error);
                     showAlert("Không thể kết nối đến server. Vui lòng thử lại sau.", true);
+                    
+                    // Fallback: Thử không dùng CORS proxy nếu đang dùng
+                    if (USE_CORS_PROXY) {
+                        showAlert("Đang thử kết nối trực tiếp...");
+                        USE_CORS_PROXY = false;
+                        setTimeout(() => authForm.requestSubmit(), 1000);
+                        return;
+                    }
                 } finally {
-                    // Ẩn loading
                     submitBtn.style.display = 'flex';
                     loading.style.display = 'none';
                 }
             });
 
             // Kiểm tra nếu đã đăng nhập thì chuyển hướng
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            if (isLoggedIn) {
+            if (localStorage.getItem('isLoggedIn')) {
                 window.location.href = 'shop.html';
             }
 
