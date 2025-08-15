@@ -1,860 +1,790 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🛒 Premium Tools & Services</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
-    <style>
-        :root {
-            --primary: #6c5ce7;
-            --primary-dark: #5649c0;
-            --gold: #fdcb6e;
-            --muted: #a5b1c2;
-            --bg: #1e272e;
-            --card: #2d3436;
-            --success: #00b894;
-            --danger: #d63031;
-            --warning: #fdcb6e;
-            --text: #f5f6fa;
-            --radius: 16px;
-            --shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-            --momo-pink: #a50064;
-            --momo-dark-pink: #8c0053;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛒 Premium Tools & Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --primary-dark: #5649c0;
+            --gold: #fdcb6e;
+            --muted: #a5b1c2;
+            --bg: #1e272e;
+            --card: #2d3436;
+            --success: #00b894;
+            --danger: #d63031;
+            --warning: #fdcb6e;
+            --text: #f5f6fa;
+            --radius: 16px;
+            --shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            --momo-pink: #a50064;
+            --momo-dark-pink: #8c0053;
+        }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            padding: 20px;
-        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        h1, h2, h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
 
-        .user-panel {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--card);
-            padding: 15px 25px;
-            border-radius: var(--radius);
-            margin-bottom: 30px;
-            box-shadow: var(--shadow);
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+        .user-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card);
+            padding: 15px 25px;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-        .user-avatar {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: bold;
-            color: white;
-            text-transform: uppercase;
-        }
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+        }
 
-        .name {
-            font-weight: 600;
-            font-size: 18px;
-        }
+        .name {
+            font-weight: 600;
+            font-size: 18px;
+        }
 
-        .balance {
-            color: var(--muted);
-            font-size: 14px;
-        }
+        .balance {
+            color: var(--muted);
+            font-size: 14px;
+        }
 
-        .balance-amount {
-            color: var(--gold);
-            font-weight: 600;
-        }
+        .balance-amount {
+            color: var(--gold);
+            font-weight: 600;
+        }
 
-        .btn {
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
+        .btn {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
 
-        .btn-danger {
-            background: linear-gradient(135deg, var(--danger), #c0392b);
-            color: white;
-        }
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #c0392b);
+            color: white;
+        }
 
-        .btn-momo {
-            background: linear-gradient(45deg, var(--momo-pink), var(--momo-dark-pink));
-            color: white;
-        }
+        .btn-momo {
+            background: linear-gradient(45deg, var(--momo-pink), var(--momo-dark-pink));
+            color: white;
+        }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
-        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
 
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(214, 48, 49, 0.4);
-        }
+        .btn-primary:hover {
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
 
-        .btn-momo:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(165, 0, 100, 0.4);
-        }
-        .btn-copy {
-            background: #444;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            margin-left: 10px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-        .btn-copy:hover {
-            background: #666;
-        }
+        .btn-danger:hover {
+            box-shadow: 0 5px 15px rgba(214, 48, 49, 0.4);
+        }
 
-        .auth-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+        .btn-momo:hover {
+            box-shadow: 0 5px 15px rgba(165, 0, 100, 0.4);
+        }
 
-        .shop-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-        }
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
-        .package-card {
-            background: var(--card);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            position: relative;
-            transition: transform 0.3s ease;
-        }
+        .shop-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
 
-        .package-card:hover {
-            transform: translateY(-5px);
-        }
+        .package-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
 
-        .popular-badge {
-            position: absolute;
-            top: 15px;
-            right: -30px;
-            background: var(--gold);
-            color: #000;
-            padding: 5px 30px;
-            font-size: 12px;
-            font-weight: 600;
-            transform: rotate(45deg);
-            box-shadow: 0 2px 10px rgba(253, 203, 110, 0.3);
-        }
+        .package-card:hover {
+            transform: translateY(-5px);
+        }
 
-        .package-header {
-            padding: 25px;
-            background: linear-gradient(135deg, rgba(108, 92, 231, 0.2), rgba(86, 73, 192, 0.2));
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
+        .popular-badge {
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background: var(--gold);
+            color: #000;
+            padding: 5px 30px;
+            font-size: 12px;
+            font-weight: 600;
+            transform: rotate(45deg);
+            box-shadow: 0 2px 10px rgba(253, 203, 110, 0.3);
+        }
 
-        .package-icon {
-            font-size: 40px;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
+        .package-header {
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.2), rgba(86, 73, 192, 0.2));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
 
-        .package-title {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
+        .package-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
 
-        .package-body {
-            padding: 25px;
-        }
+        .package-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
 
-        .package-price {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--gold);
-            text-align: center;
-            margin-bottom: 5px;
-        }
+        .package-body {
+            padding: 25px;
+        }
 
-        .price-period {
-            color: var(--muted);
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
+        .package-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 5px;
+        }
 
-        .package-features {
-            margin-bottom: 25px;
-        }
+        .price-period {
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
 
-        .feature-item {
-            padding: 10px 0;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .package-features {
+            margin-bottom: 25px;
+        }
 
-        .feature-item:last-child {
-            border-bottom: none;
-        }
+        .feature-item {
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-        .feature-item:before {
-            content: "✓";
-            color: var(--success);
-            font-weight: bold;
-        }
+        .feature-item:last-child {
+            border-bottom: none;
+        }
 
-        .btn-buy {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-        }
+        .feature-item:before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+        }
 
-        .btn-buy:hover {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
-        }
+        .btn-buy {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
 
-        .notification {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--card);
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            border-left: 5px solid var(--success);
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-            max-width: 350px;
-        }
+        .btn-buy:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
 
-        .notification.show {
-            transform: translateX(0);
-        }
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--card);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--success);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            max-width: 350px;
+        }
 
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal.show {
-            display: flex;
-        }
+        .notification.show {
+            transform: translateX(0);
+        }
 
-        .modal-content {
-            background: var(--card);
-            width: 90%;
-            max-width: 400px;
-            padding: 25px;
-            border-radius: var(--radius);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-            animation: fadeIn 0.3s ease-in-out;
-            position: relative;
-        }
-        
-        .momo-content {
-            background: white;
-            color: #333;
-            text-align: center;
-        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
 
-        .modal-title {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .momo-title {
-            color: var(--momo-pink);
-            margin-bottom: 10px;
-        }
+        .modal-content {
+            background: var(--card);
+            width: 90%;
+            max-width: 400px;
+            padding: 25px;
+            border-radius: var(--radius);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s ease-in-out;
+            position: relative;
+        }
+        
+        .momo-content {
+            background: white;
+            color: #333;
+            text-align: center;
+        }
 
-        .modal-input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            margin-bottom: 15px;
-            font-size: 16px;
-        }
-        
-        .modal-input::placeholder {
-            color: var(--muted);
-        }
+        .modal-title {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .momo-title {
+            color: var(--momo-pink);
+            margin-bottom: 10px;
+        }
 
-        #momo-qrcode-container {
-            margin: 20px auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 10px solid white;
-            border-radius: 8px;
-            width: 276px; /* 256px + 2*10px padding */
-            height: 276px;
-        }
-        
-        #momo-qrcode-container img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
+        .modal-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .modal-input::placeholder {
+            color: var(--muted);
+        }
 
-        .momo-note {
-            background: #f1f1f1;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-weight: bold;
-            color: #333;
-            text-align: left;
-        }
-        
-        .momo-instructions {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #666;
-            text-align: left;
-            padding: 10px;
-            background: #f9f9f9;
-            border-radius: 8px;
-        }
-        
-        .momo-instructions ol {
-            margin-left: 20px;
-        }
+        #momo-qrcode-container {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 10px solid white;
+            border-radius: 8px;
+            width: 276px;
+            height: 276px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        #momo-qrcode-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
 
-        .copy-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 5px;
-            padding: 5px 0;
-            border-top: 1px dashed #ccc;
-        }
-        
-        .copy-container .value {
-            font-weight: bold;
-            color: var(--momo-pink);
-        }
+        .momo-note {
+            background: #f1f1f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+            color: #333;
+            border-left: 4px solid var(--momo-pink);
+            text-align: left;
+        }
+        
+        .momo-instructions {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+            text-align: left;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .momo-instructions ol {
+            margin-left: 20px;
+        }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
 
-        @media (max-width: 768px) {
-            .user-panel {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .user-info {
-                flex-direction: row;
-                text-align: left;
-                width: 100%;
-            }
-            
-            .auth-buttons {
-                flex-direction: row;
-                width: 100%;
-                justify-content: center;
-                gap: 5px;
-            }
-            
-            .auth-buttons .btn {
-                flex: 1;
-            }
+        @media (max-width: 768px) {
+            .user-panel {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .user-info {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .auth-buttons {
+                flex-direction: row;
+                width: 100%;
+                justify-content: center;
+                gap: 5px;
+            }
+            
+            .auth-buttons .btn {
+                flex: 1;
+            }
 
-            .shop-container {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+            .shop-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="user-panel">
-            <div class="user-info">
-                <div class="user-avatar" id="user-avatar">K</div>
-                <div>
-                    <div class="name" id="username">Khách</div>
-                    <div class="balance">Số dư: <span class="balance-amount" id="balance">0đ</span></div>
-                </div>
-            </div>
-            <div class="auth-buttons">
-                <button class="btn btn-primary" id="btn-login" style="display: none;">
-                    <i class="fas fa-sign-in-alt"></i> Đăng nhập
-                </button>
-                <button class="btn btn-momo" id="btn-deposit" style="display: none;">
-                    <i class="fas fa-coins"></i> Nạp tiền
-                </button>
-                <button class="btn btn-danger" id="btn-logout" style="display: none;">
-                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
-                </button>
-            </div>
-        </div>
+    <div class="container">
+        <div class="user-panel">
+            <div class="user-info">
+                <div class="user-avatar" id="user-avatar">K</div>
+                <div>
+                    <div class="name" id="username">Khách</div>
+                    <div class="balance">Số dư: <span class="balance-amount" id="balance">0đ</span></div>
+                </div>
+            </div>
+            <div class="auth-buttons">
+                <button class="btn btn-primary" id="btn-login" style="display: none;">
+                    <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                </button>
+                <button class="btn btn-momo" id="btn-deposit" style="display: none;">
+                    <i class="fas fa-coins"></i> Nạp tiền
+                </button>
+                <button class="btn btn-danger" id="btn-logout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </button>
+            </div>
+        </div>
 
-        <div class="shop-container" id="shopContainer">
-            </div>
-    </div>
+        <div class="shop-container" id="shopContainer">
+        </div>
+    </div>
 
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <h2 class="modal-title">Đăng nhập</h2>
-            <input type="text" id="login-username" class="modal-input" placeholder="Tên đăng nhập">
-            <input type="password" id="login-password" class="modal-input" placeholder="Mật khẩu">
-            <button class="btn btn-primary" id="btn-login-submit" style="width: 100%;">
-                <i class="fas fa-sign-in-alt"></i> Đăng nhập
-            </button>
-            <button class="btn btn-danger" id="btn-login-cancel" style="width: 100%; margin-top: 10px;">
-                <i class="fas fa-times"></i> Hủy bỏ
-            </button>
-        </div>
-    </div>
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Đăng nhập</h2>
+            <input type="text" id="login-username" class="modal-input" placeholder="Tên đăng nhập">
+            <input type="password" id="login-password" class="modal-input" placeholder="Mật khẩu">
+            <button class="btn btn-primary" id="btn-login-submit" style="width: 100%;">
+                <i class="fas fa-sign-in-alt"></i> Đăng nhập
+            </button>
+            <button class="btn btn-danger" id="btn-login-cancel" style="width: 100%; margin-top: 10px;">
+                <i class="fas fa-times"></i> Hủy bỏ
+            </button>
+        </div>
+    </div>
 
-    <div class="modal" id="depositModal">
-        <div class="modal-content">
-            <h2 class="modal-title">Nạp tiền</h2>
-            <input type="number" id="deposit-amount" class="modal-input" placeholder="Nhập số tiền cần nạp (VNĐ)" min="10000" step="10000">
-            <button class="btn btn-momo" id="btn-deposit-submit" style="width: 100%;">
-                <i class="fas fa-coins"></i> Nạp qua MoMo
-            </button>
-            <button class="btn btn-danger" id="btn-deposit-cancel" style="width: 100%; margin-top: 10px;">
-                <i class="fas fa-times"></i> Hủy bỏ
-            </button>
-        </div>
-    </div>
+    <div class="modal" id="depositModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Nạp tiền</h2>
+            <input type="number" id="deposit-amount" class="modal-input" placeholder="Nhập số tiền cần nạp (VNĐ)" min="10000" step="10000">
+            <button class="btn btn-momo" id="btn-deposit-submit" style="width: 100%;">
+                <i class="fas fa-coins"></i> Nạp qua MoMo
+            </button>
+            <button class="btn btn-danger" id="btn-deposit-cancel" style="width: 100%; margin-top: 10px;">
+                <i class="fas fa-times"></i> Hủy bỏ
+            </button>
+        </div>
+    </div>
 
-    <div class="modal" id="momoModal">
-        <div class="modal-content momo-content">
-            <h2 class="momo-title">💰 Nạp tiền qua MoMo</h2>
-            <p>Số điện thoại nhận: <b>0374756847</b></p>
-            <p>Tên tài khoản: <b>NGUYEN VAN A</b></p>
-            <div id="momo-qrcode-container">
-                <img id="momo-qr-image" src="momo.jpg" alt="Mã QR Momo" style="display: none;">
-            </div>
-            <div class="momo-note">
-                <div class="copy-container">
-                    <div>Số tiền: <strong id="momo-amount-display">0đ</strong></div>
-                    <button class="btn-copy" data-value-id="momo-amount-display"><i class="fas fa-copy"></i></button>
-                </div>
-                <div class="copy-container">
-                    <div>Nội dung CK: <strong id="momo-note-display"></strong></div>
-                    <button class="btn-copy" data-value-id="momo-note-display"><i class="fas fa-copy"></i></button>
-                </div>
-            </div>
-            <div class="momo-instructions">
-                <p><strong>Hướng dẫn:</strong></p>
-                <ol>
-                    <li>Mở ứng dụng MoMo trên điện thoại và quét mã QR bên trên.</li>
-                    <li>Nhập chính xác số tiền và nội dung chuyển khoản đã cung cấp.</li>
-                    <li>Hoặc chuyển khoản thủ công bằng cách sao chép thông tin ở trên.</li>
-                </ol>
-            </div>
-            <button class="btn btn-danger" id="btn-momo-close" style="width: 100%; margin-top: 20px;">
-                <i class="fas fa-times"></i> Đóng
-            </button>
-        </div>
-    </div>
+    <div class="modal" id="momoModal">
+        <div class="modal-content momo-content">
+            <h2 class="momo-title">💰 Nạp tiền qua MoMo</h2>
+            <p>Số điện thoại nhận: <b>0374756847</b></p>
+            <p>Tên tài khoản: <b>NGUYEN VAN A</b></p>
+            <div id="momo-qrcode-container">
+                <img src="https://i.ibb.co/h1GqJ1s/momo-qr.jpg" alt="Mã QR MoMo">
+            </div>
+            <div id="momo-note" class="momo-note"></div>
+            <div class="momo-instructions">
+                <p><strong>Hướng dẫn:</strong></p>
+                <ol>
+                    <li>Mở ứng dụng MoMo trên điện thoại</li>
+                    <li>Quét mã QR ở trên</li>
+                    <li>Kiểm tra thông tin và xác nhận thanh toán</li>
+                    <li><strong>Lưu ý:</strong> Nội dung chuyển khoản phải chính xác để hệ thống tự động xử lý.</li>
+                </ol>
+            </div>
+            <button class="btn btn-danger" id="btn-momo-close" style="width: 100%; margin-top: 20px;">
+                <i class="fas fa-times"></i> Đóng
+            </button>
+        </div>
+    </div>
 
-    <div class="notification" id="notification">
-        <div id="notification-message">Thông báo</div>
-    </div>
+    <div class="notification" id="notification">
+        <div id="notification-message">Thông báo</div>
+    </div>
 
-    <audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
+    <audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
 
-    <script>
-        // Configuration
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwVRY9aMKt6Qrz_viA7kzZ5n9LU-Dp8nMlUzsPnfDglY1h9AhNBp4snVQecj9-C1Cm8uA/exec';
-        const USER_ID = localStorage.getItem('userId') || 'guest_' + Math.random().toString(36).substring(2, 9);
-        localStorage.setItem('userId', USER_ID);
-        const MOMO_PHONE = "0374756847";
-        const MOMO_ACCOUNT_NAME = "NGUYEN VAN A";
+    <script>
+        // Configuration
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwVRY9aMKt6Qrz_viA7kzZ5n9LU-Dp8nMlUzsPnfDglY1h9AhNBp4snVQecj9-C1Cm8uA/exec';
+        const USER_ID = localStorage.getItem('userId') || 'guest_' + Math.random().toString(36).substring(2, 9);
+        localStorage.setItem('userId', USER_ID);
+        const MOMO_PHONE = "0374756847";
+        const MOMO_ACCOUNT_NAME = "NGUYEN VAN A";
 
-        // DOM elements
-        const shopContainer = document.getElementById('shopContainer');
-        const usernameElement = document.getElementById('username');
-        const balanceElement = document.getElementById('balance');
-        const userAvatarElement = document.getElementById('user-avatar');
-        const btnDeposit = document.getElementById('btn-deposit');
-        const btnLogin = document.getElementById('btn-login');
-        const btnLogout = document.getElementById('btn-logout');
-        const loginModal = document.getElementById('loginModal');
-        const depositModal = document.getElementById('depositModal');
-        const momoModal = document.getElementById('momoModal');
-        const depositAmountInput = document.getElementById('deposit-amount');
-        const btnLoginSubmit = document.getElementById('btn-login-submit');
-        const btnLoginCancel = document.getElementById('btn-login-cancel');
-        const btnDepositSubmit = document.getElementById('btn-deposit-submit');
-        const btnDepositCancel = document.getElementById('btn-deposit-cancel');
-        const btnMomoClose = document.getElementById('btn-momo-close');
-        const momoQrcodeContainer = document.getElementById('momo-qrcode-container');
-        const momoQrImage = document.getElementById('momo-qr-image');
-        const momoNoteDisplay = document.getElementById('momo-note-display');
-        const momoAmountDisplay = document.getElementById('momo-amount-display');
-        const notification = document.getElementById('notification');
-        const notificationMessage = document.getElementById('notification-message');
-        const successSound = document.getElementById('successSound');
-        const loginUsernameInput = document.getElementById('login-username');
-        const loginPasswordInput = document.getElementById('login-password');
-        const copyButtons = document.querySelectorAll('.btn-copy');
+        // DOM elements
+        const shopContainer = document.getElementById('shopContainer');
+        const usernameElement = document.getElementById('username');
+        const balanceElement = document.getElementById('balance');
+        const userAvatarElement = document.getElementById('user-avatar');
+        const btnDeposit = document.getElementById('btn-deposit');
+        const btnLogin = document.getElementById('btn-login');
+        const btnLogout = document.getElementById('btn-logout');
+        const loginModal = document.getElementById('loginModal');
+        const depositModal = document.getElementById('depositModal');
+        const momoModal = document.getElementById('momoModal');
+        const depositAmountInput = document.getElementById('deposit-amount');
+        const btnLoginSubmit = document.getElementById('btn-login-submit');
+        const btnLoginCancel = document.getElementById('btn-login-cancel');
+        const btnDepositSubmit = document.getElementById('btn-deposit-submit');
+        const btnDepositCancel = document.getElementById('btn-deposit-cancel');
+        const btnMomoClose = document.getElementById('btn-momo-close');
+        const momoQrcodeContainer = document.getElementById('momo-qrcode-container');
+        const momoNote = document.getElementById('momo-note');
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notification-message');
+        const successSound = document.getElementById('successSound');
+        const loginUsernameInput = document.getElementById('login-username');
+        const loginPasswordInput = document.getElementById('login-password');
 
-        // User data state
-        let userData = {
-            name: localStorage.getItem('username') || "Khách",
-            balance: parseInt(localStorage.getItem('balance')) || 0,
-            isLoggedIn: localStorage.getItem('isLoggedIn') === 'true'
-        };
+        // User data state
+        let userData = {
+            name: localStorage.getItem('username') || "Khách",
+            balance: parseInt(localStorage.getItem('balance')) || 0,
+            isLoggedIn: localStorage.getItem('isLoggedIn') === 'true'
+        };
 
-        // Products data
-        const products = [
-            { id: "basic", name: "Gói Basic (TOOL SEB)", icon: "fas fa-star", price: 400000, period: "1 kì", features: ["Auto chụp, giải, khoanh", "Hỗ trợ 24/7", "Cập nhật thường xuyên"], popular: false },
-            { id: "vip1", name: "Gói VIP1 (TOOL EOS)", icon: "fas fa-crown", price: 600000, period: "1 kì", features: ["Auto chụp, giải, khoanh", "Thêm tính năng EOS", "Ưu tiên hỗ trợ"], popular: true },
-            { id: "vip2", name: "Gói VIP2 (TOOL EOS + SEB)", icon: "fas fa-gem", price: 800000, period: "1 kì", features: ["Tất cả tính năng VIP1", "Tính năng SEB", "Hỗ trợ nhanh"], popular: true },
-            { id: "vip3", name: "Gói VIP3 (TOOL PRO)", icon: "fas fa-diamond", price: 3000000, period: "4 năm", features: ["Tất cả tính năng VIP2", "Hạn dùng 4 năm", "Hỗ trợ VIP riêng"], popular: false },
-            { id: "Support", name: "Gói Hỗ trợ", icon: "fas fa-headset", price: 100000, period: "1 lần", features: ["Hỗ trợ SEB EOS", "Cần thì mới mua", "Cái này là cần cho 9+ 10"], popular: false },
-            { id: "FakeBill", name: "App Banking ảo", icon: "fas fa-mobile-screen", price: 500000, period: "Vĩnh viễn", features: ["Tạo banking ảo", "Tùy chỉnh số dư", "Hỗ trợ cài đặt app trên adr và ios"], popular: false },
-            { id: "Security", name: "Gói Bảo mật", icon: "fas fa-shield-halved", price: 500000, period: "3 tháng", features: ["Bảo vệ tài khoản FB ZALO IG TIKTOK", "Chống theo dõi ADR và IOS", "FAKE IP chuẩn IP quốc tế"], popular: false }
-        ];
+        // Products data
+        const products = [
+            { id: "basic", name: "Gói Basic (TOOL SEB)", icon: "fas fa-star", price: 400000, period: "1 kì", features: ["Auto chụp, giải, khoanh", "Hỗ trợ 24/7", "Cập nhật thường xuyên"], popular: false },
+            { id: "vip1", name: "Gói VIP1 (TOOL EOS)", icon: "fas fa-crown", price: 600000, period: "1 kì", features: ["Auto chụp, giải, khoanh", "Thêm tính năng EOS", "Ưu tiên hỗ trợ"], popular: true },
+            { id: "vip2", name: "Gói VIP2 (TOOL EOS + SEB)", icon: "fas fa-gem", price: 800000, period: "1 kì", features: ["Tất cả tính năng VIP1", "Tính năng SEB", "Hỗ trợ nhanh"], popular: true },
+            { id: "vip3", name: "Gói VIP3 (TOOL PRO)", icon: "fas fa-diamond", price: 3000000, period: "4 năm", features: ["Tất cả tính năng VIP2", "Hạn dùng 4 năm", "Hỗ trợ VIP riêng"], popular: false },
+            { id: "Support", name: "Gói Hỗ trợ", icon: "fas fa-headset", price: 100000, period: "1 lần", features: ["Hỗ trợ SEB EOS", "Cần thì mới mua", "Cái này là cần cho 9+ 10"], popular: false },
+            { id: "FakeBill", name: "App Banking ảo", icon: "fas fa-mobile-screen", price: 500000, period: "Vĩnh viễn", features: ["Tạo banking ảo", "Tùy chỉnh số dư", "Hỗ trợ cài đặt app trên adr và ios"], popular: false },
+            { id: "Security", name: "Gói Bảo mật", icon: "fas fa-shield-halved", price: 500000, period: "3 tháng", features: ["Bảo vệ tài khoản FB ZALO IG TIKTOK", "Chống theo dõi ADR và IOS", "FAKE IP chuẩn IP quốc tế"], popular: false }
+        ];
 
-        // Functions
-        function random4Digits() {
-            return Math.floor(1000 + Math.random() * 9000);
-        }
+        // Functions
+        function random4Digits() {
+            return Math.floor(1000 + Math.random() * 9000);
+        }
 
-        function displayMomoQR(amount) {
-            const randomNote = `${userData.name.toUpperCase().replace(/\s/g, '')}${random4Digits()}`;
-            
-            const momoLink = `momo://?action=pay&phone=${MOMO_PHONE}&amount=${amount}&description=${randomNote}`;
-            
-            // Clear any previous QR code
-            momoQrcodeContainer.innerHTML = '';
-            
-            // Generate new QR code from the deep link
-            new QRCode(momoQrcodeContainer, {
-                text: momoLink,
-                width: 256,
-                height: 256,
-                colorDark : "#a50064",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
-            });
-            
-            // Update dynamic content in the modal
-            momoAmountDisplay.textContent = amount.toLocaleString('vi-VN') + 'đ';
-            momoNoteDisplay.textContent = randomNote;
-        }
+        function displayMomoQR(amount) {
+            const randomNote = `${userData.name.toUpperCase().replace(/\s/g, '')}${random4Digits()}`;
+            
+            momoNote.innerHTML = `
+                <p>Nội dung chuyển khoản: <br><strong>${randomNote}</strong></p>
+                <p>Số tiền: <strong style="color: var(--momo-pink);">${amount.toLocaleString('vi-VN')}đ</strong></p>
+            `;
+        }
 
-        // Simulating API call for purchasing
-        function purchaseProduct(product) {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    if (userData.balance >= product.price) {
-                        userData.balance -= product.price;
-                        updateUserInfo();
-                        localStorage.setItem('balance', userData.balance);
-                        resolve({ success: true, message: `Mua thành công gói ${product.name}!` });
-                    } else {
-                        reject({ success: false, message: `Bạn cần nạp thêm ${(product.price - userData.balance).toLocaleString('vi-VN')}đ để mua gói này.` });
-                    }
-                }, 500);
-            });
-        }
+        // Simulating API call for purchasing
+        function purchaseProduct(product) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    if (userData.balance >= product.price) {
+                        userData.balance -= product.price;
+                        updateUserInfo();
+                        localStorage.setItem('balance', userData.balance);
+                        resolve({ success: true, message: `Mua thành công gói ${product.name}!` });
+                    } else {
+                        reject({ success: false, message: `Bạn cần nạp thêm ${(product.price - userData.balance).toLocaleString('vi-VN')}đ để mua gói này.` });
+                    }
+                }, 500);
+            });
+        }
 
-        async function handleBuyClick(event) {
-            const button = event.currentTarget;
-            const productPrice = parseInt(button.getAttribute('data-price'));
-            const productName = button.getAttribute('data-name');
-            
-            const product = products.find(p => p.name === productName);
+        async function handleBuyClick(event) {
+            const button = event.currentTarget;
+            const productPrice = parseInt(button.getAttribute('data-price'));
+            const productName = button.getAttribute('data-name');
+            
+            const product = products.find(p => p.name === productName);
 
-            if (!userData.isLoggedIn) {
-                showNotification('Vui lòng đăng nhập để mua hàng', 'warning');
-                toggleModal('loginModal', true);
-                return;
-            }
+            if (!userData.isLoggedIn) {
+                showNotification('Vui lòng đăng nhập để mua hàng', 'warning');
+                toggleModal('loginModal', true);
+                return;
+            }
 
-            try {
-                const result = await purchaseProduct(product);
-                if (result.success) {
-                    showNotification(result.message, 'success');
-                    successSound.play();
-                }
-            } catch (error) {
-                showNotification(error.message, 'warning');
-                depositAmountInput.value = product.price - userData.balance;
-                toggleModal('depositModal', true);
-            }
-        }
+            try {
+                const result = await purchaseProduct(product);
+                if (result.success) {
+                    showNotification(result.message, 'success');
+                    successSound.play();
+                }
+            } catch (error) {
+                showNotification(error.message, 'warning');
+                depositAmountInput.value = product.price - userData.balance;
+                toggleModal('depositModal', true);
+            }
+        }
 
-        function processDeposit() {
-            const amount = parseInt(depositAmountInput.value);
-            if (!amount || amount < 10000) {
-                showNotification('Số tiền nạp tối thiểu là 10,000đ', 'warning');
-                return;
-            }
-            
-            toggleModal('depositModal', false);
-            toggleModal('momoModal', true);
-            displayMomoQR(amount);
-        }
+        function processDeposit() {
+            const amount = parseInt(depositAmountInput.value);
+            if (!amount || amount < 10000) {
+                showNotification('Số tiền nạp tối thiểu là 10,000đ', 'warning');
+                return;
+            }
+            
+            toggleModal('depositModal', false);
+            toggleModal('momoModal', true);
+            displayMomoQR(amount);
+        }
 
-        function copyToClipboard(elementId) {
-            const element = document.getElementById(elementId);
-            let valueToCopy = element.textContent;
-            
-            // Remove 'đ' and '.' from the amount before copying
-            if (elementId === 'momo-amount-display') {
-                valueToCopy = valueToCopy.replace('đ', '').replace(/\./g, '');
-            }
-            
-            navigator.clipboard.writeText(valueToCopy).then(() => {
-                showNotification('Đã sao chép vào clipboard!', 'success');
-            }).catch(err => {
-                showNotification('Lỗi khi sao chép.', 'error');
-            });
-        }
+        function updateUserInfo() {
+            usernameElement.textContent = userData.name;
+            balanceElement.textContent = userData.balance.toLocaleString('vi-VN') + 'đ';
+            userAvatarElement.textContent = userData.name.charAt(0).toUpperCase();
+        }
 
-        function updateUserInfo() {
-            usernameElement.textContent = userData.name;
-            balanceElement.textContent = userData.balance.toLocaleString('vi-VN') + 'đ';
-            userAvatarElement.textContent = userData.name.charAt(0).toUpperCase();
-        }
+        function updateAuthUI() {
+            if (userData.isLoggedIn) {
+                btnLogin.style.display = 'none';
+                btnDeposit.style.display = 'flex';
+                btnLogout.style.display = 'flex';
+            } else {
+                btnLogin.style.display = 'flex';
+                btnDeposit.style.display = 'none';
+                btnLogout.style.display = 'none';
+                userData.name = "Khách";
+                userData.balance = 0;
+                updateUserInfo();
+            }
+        }
 
-        function updateAuthUI() {
-            if (userData.isLoggedIn) {
-                btnLogin.style.display = 'none';
-                btnDeposit.style.display = 'flex';
-                btnLogout.style.display = 'flex';
-            } else {
-                btnLogin.style.display = 'flex';
-                btnDeposit.style.display = 'none';
-                btnLogout.style.display = 'none';
-                userData.name = "Khách";
-                userData.balance = 0;
-                updateUserInfo();
-            }
-        }
+        function renderProducts() {
+            shopContainer.innerHTML = '';
+            
+            products.forEach((product) => {
+                const card = document.createElement('div');
+                card.className = 'package-card';
+                
+                card.innerHTML = `
+                    ${product.popular ? '<div class="popular-badge">Phổ biến</div>' : ''}
+                    <div class="package-header">
+                        <div class="package-icon"><i class="${product.icon}"></i></div>
+                        <div class="package-title">${product.name}</div>
+                    </div>
+                    <div class="package-body">
+                        <div class="package-price">${product.price.toLocaleString('vi-VN')}đ</div>
+                        <div class="price-period">${product.period}</div>
+                        <div class="package-features">
+                            ${product.features.map(feature => `<div class="feature-item">${feature}</div>`).join('')}
+                        </div>
+                        <button class="btn-buy"
+                                data-id="${product.id}"
+                                data-price="${product.price}"
+                                data-name="${product.name}"
+                                data-period="${product.period}">
+                            <i class="fas fa-shopping-cart"></i> MUA NGAY
+                        </button>
+                    </div>
+                `;
+                
+                shopContainer.appendChild(card);
+            });
+            
+            document.querySelectorAll('.btn-buy').forEach(btn => {
+                btn.addEventListener('click', handleBuyClick);
+            });
+        }
 
-        function renderProducts() {
-            shopContainer.innerHTML = '';
-            
-            products.forEach((product) => {
-                const card = document.createElement('div');
-                card.className = 'package-card';
-                
-                card.innerHTML = `
-                    ${product.popular ? '<div class="popular-badge">Phổ biến</div>' : ''}
-                    <div class="package-header">
-                        <div class="package-icon"><i class="${product.icon}"></i></div>
-                        <div class="package-title">${product.name}</div>
-                    </div>
-                    <div class="package-body">
-                        <div class="package-price">${product.price.toLocaleString('vi-VN')}đ</div>
-                        <div class="price-period">${product.period}</div>
-                        <div class="package-features">
-                            ${product.features.map(feature => `<div class="feature-item">${feature}</div>`).join('')}
-                        </div>
-                        <button class="btn-buy"
-                                data-id="${product.id}"
-                                data-price="${product.price}"
-                                data-name="${product.name}"
-                                data-period="${product.period}">
-                            <i class="fas fa-shopping-cart"></i> MUA NGAY
-                        </button>
-                    </div>
-                `;
-                
-                shopContainer.appendChild(card);
-            });
-            
-            document.querySelectorAll('.btn-buy').forEach(btn => {
-                btn.addEventListener('click', handleBuyClick);
-            });
-        }
+        function showNotification(message, type = 'success') {
+            notification.className = 'notification';
+            notification.classList.add('show');
+            
+            switch(type) {
+                case 'success':
+                    notification.style.borderLeftColor = 'var(--success)';
+                    break;
+                case 'warning':
+                    notification.style.borderLeftColor = 'var(--warning)';
+                    break;
+                case 'error':
+                    notification.style.borderLeftColor = 'var(--danger)';
+                    break;
+            }
+            
+            notificationMessage.textContent = message;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
 
-        function showNotification(message, type = 'success') {
-            notification.className = 'notification';
-            notification.classList.add('show');
-            
-            switch(type) {
-                case 'success':
-                    notification.style.borderLeftColor = 'var(--success)';
-                    break;
-                case 'warning':
-                    notification.style.borderLeftColor = 'var(--warning)';
-                    break;
-                case 'error':
-                    notification.style.borderLeftColor = 'var(--danger)';
-                    break;
-            }
-            
-            notificationMessage.textContent = message;
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
+        function toggleModal(modalId, show) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.toggle('show', show);
+            }
+        }
 
-        function toggleModal(modalId, show) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.toggle('show', show);
-            }
-        }
+        async function handleLogin() {
+            const username = loginUsernameInput.value;
+            const password = loginPasswordInput.value;
+            
+            if (!username || !password) {
+                showNotification('Vui lòng nhập đầy đủ thông tin', 'warning');
+                return;
+            }
+            
+            userData.name = username;
+            userData.isLoggedIn = true;
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('username', username);
+            
+            updateUserInfo();
+            updateAuthUI();
+            toggleModal('loginModal', false);
+            showNotification('Đăng nhập thành công!', 'success');
+        }
 
-        async function handleLogin() {
-            const username = loginUsernameInput.value;
-            const password = loginPasswordInput.value;
-            
-            if (!username || !password) {
-                showNotification('Vui lòng nhập đầy đủ thông tin', 'warning');
-                return;
-            }
-            
-            userData.name = username;
-            userData.isLoggedIn = true;
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('username', username);
-            
-            updateUserInfo();
-            updateAuthUI();
-            toggleModal('loginModal', false);
-            showNotification('Đăng nhập thành công!', 'success');
-        }
+        function handleLogout() {
+            userData = {
+                name: "Khách",
+                balance: 0,
+                isLoggedIn: false
+            };
+            
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            localStorage.removeItem('balance');
+            
+            updateUserInfo();
+            updateAuthUI();
+            showNotification('Đã đăng xuất', 'success');
+        }
 
-        function handleLogout() {
-            userData = {
-                name: "Khách",
-                balance: 0,
-                isLoggedIn: false
-            };
-            
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('username');
-            localStorage.removeItem('balance');
-            
-            updateUserInfo();
-            updateAuthUI();
-            showNotification('Đã đăng xuất', 'success');
-        }
+        function setupEventListeners() {
+            btnLogin.addEventListener('click', () => toggleModal('loginModal', true));
+            btnDeposit.addEventListener('click', () => toggleModal('depositModal', true));
+            btnLogout.addEventListener('click', handleLogout);
+            
+            btnLoginSubmit.addEventListener('click', handleLogin);
+            btnLoginCancel.addEventListener('click', () => toggleModal('loginModal', false));
+            
+            btnDepositSubmit.addEventListener('click', processDeposit);
+            btnDepositCancel.addEventListener('click', () => toggleModal('depositModal', false));
+            
+            btnMomoClose.addEventListener('click', () => toggleModal('momoModal', false));
+            
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('modal')) {
+                        toggleModal(modal.id, false);
+                    }
+                });
+            });
+            
+            loginPasswordInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    handleLogin();
+                }
+            });
+            depositAmountInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    processDeposit();
+                }
+            });
+        }
 
-        function setupEventListeners() {
-            btnLogin.addEventListener('click', () => toggleModal('loginModal', true));
-            btnDeposit.addEventListener('click', () => toggleModal('depositModal', true));
-            btnLogout.addEventListener('click', handleLogout);
-            
-            btnLoginSubmit.addEventListener('click', handleLogin);
-            btnLoginCancel.addEventListener('click', () => toggleModal('loginModal', false));
-            
-            btnDepositSubmit.addEventListener('click', processDeposit);
-            btnDepositCancel.addEventListener('click', () => toggleModal('depositModal', false));
-            
-            btnMomoClose.addEventListener('click', () => toggleModal('momoModal', false));
-            
-            copyButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const valueId = e.currentTarget.getAttribute('data-value-id');
-                    copyToClipboard(valueId);
-                });
-            });
-            
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('modal')) {
-                        toggleModal(modal.id, false);
-                    }
-                });
-            });
-            
-            loginPasswordInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    handleLogin();
-                }
-            });
-            depositAmountInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    processDeposit();
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderProducts();
-            updateUserInfo();
-            updateAuthUI();
-            setupEventListeners();
-        });
-    </script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateUserInfo();
+            updateAuthUI();
+            setupEventListeners();
+        });
+    </script>
 </body>
 </html>
