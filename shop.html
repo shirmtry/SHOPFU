@@ -6,7 +6,6 @@
     <title>🛒 Premium Tools & Services</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <style>
         :root {
             --primary: #6c5ce7;
@@ -360,15 +359,6 @@
             margin-bottom: 10px;
         }
 
-        #momo-qrcode {
-            margin: 20px auto;
-            width: 256px;
-            height: 256px;
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-        }
-
         .momo-note {
             background: #f1f1f1;
             padding: 10px;
@@ -478,7 +468,10 @@
         <div class="momo-content">
             <h2 class="momo-title">💰 Nạp tiền qua Momo</h2>
             <p>Số điện thoại nhận: <b>0374756847</b></p>
-            <div id="momo-qrcode"></div>
+            
+            <!-- QR Code tĩnh -->
+            <img src="momo.jpg" alt="QR Code MoMo" style="width:256px;height:256px;margin:20px auto;display:block;border:1px solid #eee">
+            
             <div id="momo-note" class="momo-note"></div>
             <div class="momo-instructions">
                 <p><strong>Hướng dẫn:</strong></p>
@@ -526,7 +519,6 @@
         const btnDepositSubmit = document.getElementById('btn-deposit-submit');
         const btnDepositCancel = document.getElementById('btn-deposit-cancel');
         const btnMomoClose = document.getElementById('btn-momo-close');
-        const momoQrcode = document.getElementById('momo-qrcode');
         const momoNote = document.getElementById('momo-note');
         const notification = document.getElementById('notification');
         const notificationMessage = document.getElementById('notification-message');
@@ -643,38 +635,18 @@
             return digits;
         }
 
-        // Generate MoMo QR code using direct Momo deep link
+        // Generate MoMo QR code using static image
         function generateMomoQR(amount) {
             const randomNote = random13Digits();
-            momoQrcode.innerHTML = "";
-            momoNote.textContent = `Nội dung chuyển khoản: ${randomNote}`;
-
-            // Tạo deep link MoMo
-            const momoDeepLink = `momo://transfer?phone=${MOMO_PHONE}&amount=${amount}&note=${randomNote}`;
-            
-            // Sử dụng thư viện QRCode để tạo mã từ deep link
-            new QRCode(momoQrcode, {
-                text: momoDeepLink,
-                width: 256,
-                height: 256,
-                colorDark: "#A50064",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
-
-            // Thêm thông tin chuyển khoản thủ công
-            const manualTransferInfo = document.createElement('div');
-            manualTransferInfo.style.marginTop = '15px';
-            manualTransferInfo.style.fontSize = '14px';
-            manualTransferInfo.style.color = '#666';
-            manualTransferInfo.innerHTML = `
-                <p><strong>Hoặc chuyển khoản thủ công:</strong></p>
-                <p>Số điện thoại: <strong>${MOMO_PHONE}</strong></p>
-                <p>Số tiền: <strong>${amount.toLocaleString('vi-VN')}đ</strong></p>
-                <p>Nội dung: <strong>${randomNote}</strong></p>
+            momoNote.innerHTML = `
+                <p>Nội dung chuyển khoản: <strong>${randomNote}</strong></p>
+                <div style="margin-top:10px;">
+                    <p><strong>Hoặc chuyển khoản thủ công:</strong></p>
+                    <p>Số điện thoại: <strong>${MOMO_PHONE}</strong></p>
+                    <p>Số tiền: <strong>${amount.toLocaleString('vi-VN')}đ</strong></p>
+                    <p>Nội dung: <strong>${randomNote}</strong></p>
+                </div>
             `;
-            
-            momoQrcode.appendChild(manualTransferInfo);
             successSound.play();
         }
 
@@ -890,8 +862,7 @@
         function toggleMomoModal(show) {
             momoModal.style.display = show ? 'block' : 'none';
             if (!show) {
-                momoQrcode.innerHTML = "";
-                momoNote.textContent = "";
+                momoNote.innerHTML = "";
             }
         }
 
