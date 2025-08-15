@@ -293,7 +293,6 @@
                 popupContainer.classList.remove('show');
                 
                 if (!isLogin && popupTitle.className !== 'popup-title error') {
-                    // Chuyển về form đăng nhập sau khi đăng ký thành công
                     isLogin = true;
                     updateFormState();
                 }
@@ -363,7 +362,6 @@
                     console.error('Lỗi khi kết nối API:', error);
                     showAlert("Không thể kết nối đến server. Vui lòng thử lại sau.", true);
                 } finally {
-                    // Luôn khôi phục trạng thái nút bấm
                     submitBtn.style.display = 'flex';
                     loading.style.display = 'none';
                 }
