@@ -680,6 +680,12 @@
 
         // Process payment and redirect to banking
         function processPayment(product) {
+            if (userData.balance < product.price) {
+                showNotification('Số dư không đủ. Vui lòng nạp thêm tiền.', 'warning');
+                toggleDepositModal(true);
+                return;
+            }
+
             const randomDigits = generateRandom4Digits();
             const transferContent = `${product.id}_${randomDigits}`;
             
@@ -698,8 +704,12 @@
             console.log('Banking info:', bankingInfo);
             localStorage.setItem('bankingInfo', JSON.stringify(bankingInfo));
             
-            // Redirect to banking with query parameters
-            window.location.href = `banking.html?amount=${product.price}&package=${product.id}`;
+            // Update user balance
+            userData.balance -= product.price;
+            updateUserInfo();
+            localStorage.setItem('balance', userData.balance);
+            
+            showNotification(`Mua thành công gói ${product.name}!`, 'success');
         }
 
         // Generate random 4 digits
@@ -887,7 +897,13 @@
 
         // Handle login
         async function handleLogin(username, password) {
+            if (!username || !password) {
+                showNotification('Vui lòng nhập đầy đủ thông tin', 'warning');
+                return false;
+            }
+            
             try {
+                // Simulate API call
                 userData = {
                     name: username,
                     balance: userData.balance,
@@ -941,11 +957,6 @@
                 const username = document.getElementById('login-username').value;
                 const password = document.getElementById('login-password').value;
                 
-                if (!username || !password) {
-                    showNotification('Vui lòng nhập đầy đủ thông tin', 'warning');
-                    return;
-                }
-                
                 await handleLogin(username, password);
             });
             
@@ -995,6 +1006,17 @@
             // Logout button
             btnLogout.addEventListener('click', () => {
                 handleLogout();
+            });
+            
+            // Allow Enter key to submit forms
+            document.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    if (loginModal.style.display === 'block') {
+                        btnLoginSubmit.click();
+                    } else if (depositModal.style.display === 'block') {
+                        btnDepositSubmit.click();
+                    }
+                }
             });
         }
 
