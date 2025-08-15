@@ -25,13 +25,14 @@
         .loading i { animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Style cho pop-up thông báo */
+        /* Popup style */
         .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .popup.show { visibility: visible; opacity: 1; }
         .popup-content { background: var(--bg); padding: 25px; border-radius: 12px; max-width: 350px; text-align: center; box-shadow: var(--shadow); border: 1px solid var(--primary); }
         .popup-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; color: var(--primary); }
         .popup-message { margin-bottom: 20px; color: var(--text); }
         .popup-ok-btn { padding: 8px 20px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; }
+        .error { color: #ff7675; }
     </style>
 </head>
 <body>
@@ -40,11 +41,11 @@
         <form id="auth-form">
             <div class="form-group">
                 <label for="username">Tên người dùng:</label>
-                <input type="text" id="username" required>
+                <input type="text" id="username" autocomplete="username" required>
             </div>
             <div class="form-group">
                 <label for="password">Mật khẩu:</label>
-                <input type="password" id="password" required>
+                <input type="password" id="password" autocomplete="current-password" required>
             </div>
             <button type="submit" class="btn-submit" id="submit-btn">
                 <i class="fas fa-sign-in-alt"></i> Đăng nhập
@@ -60,15 +61,17 @@
 
     <div id="popup-container" class="popup">
         <div class="popup-content">
-            <div class="popup-title">Thông báo</div>
+            <div class="popup-title" id="popup-title">Thông báo</div>
             <div id="popup-message" class="popup-message"></div>
             <button id="popup-ok-btn" class="popup-ok-btn">OK</button>
         </div>
     </div>
 
     <script>
-        // Thay thế bằng API endpoint của bạn
-        const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxrbFbuRTs35R7BquwPApmO0x_-VXa3ukeE3CLsc9aTJozdGilgBA1lwki8_gqi6QlRSg/exec';
+        // Sử dụng JSON Server mẫu để test (bạn có thể thay thế bằng API thực tế)
+        const API_ENDPOINT = 'https://my-json-server.typicode.com/typicode/demo/auth';
+        // Hoặc sử dụng proxy CORS để test
+        // const API_ENDPOINT = 'https://cors-anywhere.herokuapp.com/https://your-real-api.com/endpoint';
 
         document.addEventListener('DOMContentLoaded', () => {
             const authForm = document.getElementById('auth-form');
@@ -78,57 +81,46 @@
             const submitBtn = document.getElementById('submit-btn');
             const loading = document.getElementById('loading');
             const popupContainer = document.getElementById('popup-container');
+            const popupTitle = document.getElementById('popup-title');
             const popupMessage = document.getElementById('popup-message');
             const popupOkBtn = document.getElementById('popup-ok-btn');
 
             let isLogin = true;
 
-            // Hiển thị thông báo
             function showAlert(message, isError = false) {
                 popupMessage.textContent = message;
+                popupTitle.className = isError ? 'popup-title error' : 'popup-title';
                 popupContainer.classList.add('show');
-                if (isError) {
-                    document.querySelector('.popup-title').style.color = '#ff7675';
-                } else {
-                    document.querySelector('.popup-title').style.color = 'var(--primary)';
-                }
             }
 
-            // Ẩn thông báo
             popupOkBtn.addEventListener('click', () => {
                 popupContainer.classList.remove('show');
             });
 
-            // Cập nhật giao diện form
             function updateFormState() {
                 formTitle.textContent = isLogin ? "Đăng nhập" : "Đăng ký";
-                submitBtn.innerHTML = isLogin ? '<i class="fas fa-sign-in-alt"></i> Đăng nhập' : '<i class="fas fa-user-plus"></i> Đăng ký';
-                const switchFormDiv = document.querySelector('.switch-form');
-                const newText = isLogin ? "Bạn chưa có tài khoản? " : "Bạn đã có tài khoản? ";
-                switchFormDiv.innerHTML = newText + `<a href="#" id="switch-link">${isLogin ? 'Đăng ký ngay' : 'Đăng nhập ngay'}</a>`;
+                submitBtn.innerHTML = isLogin 
+                    ? '<i class="fas fa-sign-in-alt"></i> Đăng nhập' 
+                    : '<i class="fas fa-user-plus"></i> Đăng ký';
+                document.querySelector('.switch-form').innerHTML = isLogin
+                    ? 'Bạn chưa có tài khoản? <a href="#" id="switch-link">Đăng ký ngay</a>'
+                    : 'Bạn đã có tài khoản? <a href="#" id="switch-link">Đăng nhập ngay</a>';
                 document.getElementById('switch-link').addEventListener('click', onSwitchClick);
             }
 
-            // Chuyển đổi giữa đăng nhập và đăng ký
             function onSwitchClick(e) {
                 e.preventDefault();
                 isLogin = !isLogin;
                 updateFormState();
-                usernameInput.value = '';
-                passwordInput.value = '';
             }
 
-            // Xử lý sự kiện chuyển đổi form
             document.getElementById('switch-link').addEventListener('click', onSwitchClick);
 
-            // Xử lý submit form
             authForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const username = usernameInput.value.trim();
                 const password = passwordInput.value.trim();
-                const action = isLogin ? 'login' : 'register';
 
-                // Kiểm tra dữ liệu đầu vào
                 if (!username || !password) {
                     showAlert("Vui lòng nhập đầy đủ tên người dùng và mật khẩu.", true);
                     return;
@@ -139,68 +131,96 @@
                     return;
                 }
 
-                // Hiển thị loading
                 submitBtn.style.display = 'none';
                 loading.style.display = 'block';
 
                 try {
-                    const response = await fetch(API_ENDPOINT, {
-                        method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({ 
-                            action, 
-                            username, 
-                            password,
-                            timestamp: new Date().toISOString()
-                        })
-                    });
-                    
-                    const result = await response.json();
-                    
-                    if (result.status === 'success') {
-                        showAlert(result.message);
+                    // Sử dụng mock data khi test
+                    if (API_ENDPOINT.includes('json-server')) {
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                        
+                        // Mock response
+                        const mockUsers = [
+                            { id: 1, username: 'user1', password: '123456' },
+                            { id: 2, username: 'user2', password: '123456' }
+                        ];
+                        
                         if (isLogin) {
-                            localStorage.setItem('user', JSON.stringify({ username }));
-                            setTimeout(() => {
-                                window.location.href = 'shop.html';
-                            }, 1500);
+                            const user = mockUsers.find(u => u.username === username && u.password === password);
+                            if (user) {
+                                localStorage.setItem('user', JSON.stringify(user));
+                                showAlert("Đăng nhập thành công! Chuyển hướng...");
+                                setTimeout(() => {
+                                    window.location.href = 'shop.html';
+                                }, 1500);
+                            } else {
+                                showAlert("Tên đăng nhập hoặc mật khẩu không đúng.", true);
+                            }
                         } else {
-                            // Sau khi đăng ký thành công, chuyển sang form đăng nhập
-                            isLogin = true;
-                            updateFormState();
+                            if (mockUsers.some(u => u.username === username)) {
+                                showAlert("Tên người dùng đã tồn tại.", true);
+                            } else {
+                                showAlert("Đăng ký thành công! Vui lòng đăng nhập.");
+                                isLogin = true;
+                                updateFormState();
+                            }
                         }
                     } else {
-                        showAlert(result.message || "Đã xảy ra lỗi. Vui lòng thử lại.", true);
+                        // Gọi API thực tế
+                        const response = await fetch(API_ENDPOINT, {
+                            method: 'POST',
+                            headers: { 
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({ 
+                                action: isLogin ? 'login' : 'register',
+                                username, 
+                                password
+                            })
+                        });
+
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                        const result = await response.json();
+                        
+                        if (result.status === 'success') {
+                            showAlert(result.message);
+                            if (isLogin) {
+                                localStorage.setItem('user', JSON.stringify(result.user));
+                                setTimeout(() => {
+                                    window.location.href = 'shop.html';
+                                }, 1500);
+                            } else {
+                                isLogin = true;
+                                updateFormState();
+                            }
+                        } else {
+                            showAlert(result.message || "Đã xảy ra lỗi", true);
+                        }
                     }
                 } catch (error) {
-                    console.error('Lỗi khi kết nối API:', error);
-                    showAlert("Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng và thử lại.", true);
+                    console.error('API Error:', error);
+                    showAlert("Không thể kết nối đến server. Vui lòng thử lại sau.", true);
                 } finally {
-                    // Ẩn loading
                     submitBtn.style.display = 'block';
                     loading.style.display = 'none';
                 }
             });
 
-            // Kiểm tra trạng thái đăng nhập khi tải trang
+            // Kiểm tra đăng nhập
             const user = localStorage.getItem('user');
             if (user) {
                 try {
                     const userObj = JSON.parse(user);
                     if (userObj && userObj.username) {
                         window.location.href = 'shop.html';
-                        return;
                     }
                 } catch (e) {
-                    console.error('Lỗi khi parse user data:', e);
                     localStorage.removeItem('user');
                 }
             }
 
-            // Khởi tạo form
             updateFormState();
         });
     </script>
