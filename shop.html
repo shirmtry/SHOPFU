@@ -360,33 +360,20 @@
             margin-bottom: 10px;
         }
 
-        .momo-input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            font-size: 16px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            outline: none;
-            box-sizing: border-box;
-        }
-
         #momo-qrcode {
             margin: 20px auto;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            max-width: 256px;
-        }
-
-        #momo-qrcode.show {
-            opacity: 1;
+            width: 256px;
+            height: 256px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
         }
 
         .momo-note {
             background: #f1f1f1;
             padding: 10px;
             border-radius: 8px;
-            margin-top: 10px;
+            margin: 15px 0;
             font-weight: bold;
             color: var(--momo-pink);
         }
@@ -501,6 +488,8 @@
         const API_URL = 'https://script.google.com/macros/s/AKfycbwVRY9aMKt6Qrz_viA7kzZ5n9LU-Dp8nMlUzsPnfDglY1h9AhNBp4snVQecj9-C1Cm8uA/exec';
         const USER_ID = localStorage.getItem('userId') || 'default_user';
         const MOMO_PHONE = "0374756847";
+        const MOMO_ACCOUNT_NAME = "NGUYEN VAN A"; // Thay bằng tên chủ tài khoản MoMo
+        const MOMO_TEMPLATE = "compact2"; // Template VietQR
 
         // DOM elements
         const shopContainer = document.getElementById('shopContainer');
@@ -636,30 +625,32 @@
             return digits;
         }
 
-        // Generate MoMo QR code
+        // Generate MoMo QR code using VietQR format
         function generateMomoQR(amount) {
             const randomNote = random13Digits();
-            const momoLink = `momo://app?action=payWithPhone&phone=${MOMO_PHONE}&amount=${amount}&note=${randomNote}`;
-
             momoQrcode.innerHTML = "";
-            momoQrcode.classList.remove("show");
             momoNote.textContent = `Nội dung chuyển khoản: ${randomNote}`;
 
-            // Create canvas element for QR code
-            const canvas = document.createElement('canvas');
-            momoQrcode.appendChild(canvas);
+            // VietQR API endpoint
+            const vietQRUrl = `https://img.vietqr.io/image/${MOMO_PHONE}-${MOMO_TEMPLATE}.png?amount=${amount}&addInfo=${randomNote}&accountName=${encodeURIComponent(MOMO_ACCOUNT_NAME)}`;
 
-            QRCode.toCanvas(canvas, momoLink, { width: 256 }, function (error) {
-                if (error) {
-                    console.error('Lỗi tạo QR code:', error);
-                    showNotification('Lỗi khi tạo mã QR', 'error');
-                } else {
-                    setTimeout(() => {
-                        momoQrcode.classList.add("show");
-                        successSound.play();
-                    }, 50);
-                }
-            });
+            // Create image element for QR code
+            const img = document.createElement('img');
+            img.src = vietQRUrl;
+            img.alt = "MoMo QR Code";
+            img.style.width = "100%";
+            img.style.height = "auto";
+            
+            img.onload = function() {
+                successSound.play();
+            };
+            
+            img.onerror = function() {
+                showNotification('Lỗi khi tạo mã QR', 'error');
+                console.error('Lỗi tải QR code từ VietQR');
+            };
+            
+            momoQrcode.appendChild(img);
         }
 
         // Process payment and redirect to banking
@@ -865,7 +856,6 @@
             momoModal.style.display = show ? 'block' : 'none';
             if (!show) {
                 momoQrcode.innerHTML = "";
-                momoQrcode.classList.remove("show");
                 momoNote.textContent = "";
             }
         }
