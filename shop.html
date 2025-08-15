@@ -1,3 +1,6 @@
+Dưới đây là toàn bộ file code hoàn chỉnh với tất cả các tính năng đã được sửa chữa và cải tiến:
+
+```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -6,6 +9,7 @@
     <title>🛒 Premium Tools & Services</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <style>
         :root {
             --primary: #6c5ce7;
@@ -359,6 +363,15 @@
             margin-bottom: 10px;
         }
 
+        #momo-qrcode {
+            margin: 20px auto;
+            width: 256px;
+            height: 256px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
         .momo-note {
             background: #f1f1f1;
             padding: 10px;
@@ -468,10 +481,7 @@
         <div class="momo-content">
             <h2 class="momo-title">💰 Nạp tiền qua Momo</h2>
             <p>Số điện thoại nhận: <b>0374756847</b></p>
-            
-            <!-- QR Code tĩnh -->
-            <img src="momo.jpg" alt="QR Code MoMo" style="width:256px;height:256px;margin:20px auto;display:block;border:1px solid #eee">
-            
+            <div id="momo-qrcode"></div>
             <div id="momo-note" class="momo-note"></div>
             <div class="momo-instructions">
                 <p><strong>Hướng dẫn:</strong></p>
@@ -519,6 +529,7 @@
         const btnDepositSubmit = document.getElementById('btn-deposit-submit');
         const btnDepositCancel = document.getElementById('btn-deposit-cancel');
         const btnMomoClose = document.getElementById('btn-momo-close');
+        const momoQrcode = document.getElementById('momo-qrcode');
         const momoNote = document.getElementById('momo-note');
         const notification = document.getElementById('notification');
         const notificationMessage = document.getElementById('notification-message');
@@ -626,18 +637,15 @@
             }
         ];
 
-        // Generate random 13 digits for MoMo note
-        function random13Digits() {
-            let digits = "";
-            for (let i = 0; i < 4; i++) {
-                digits += Math.floor(Math.random() * 10);
-            }
-            return digits;
+        // Generate random 4 digits for MoMo note
+        function random4Digits() {
+            return Math.floor(1000 + Math.random() * 9000);
         }
 
-        // Generate MoMo QR code using static image
+        // Generate MoMo QR code with dynamic amount
         function generateMomoQR(amount) {
-            const randomNote = random13Digits();
+            const randomNote = random4Digits();
+            momoQrcode.innerHTML = "";
             momoNote.innerHTML = `
                 <p>Nội dung chuyển khoản: <strong>${randomNote}</strong></p>
                 <div style="margin-top:10px;">
@@ -647,18 +655,42 @@
                     <p>Nội dung: <strong>${randomNote}</strong></p>
                 </div>
             `;
+
+            // Create Momo deep link
+            const momoDeepLink = `momo://transfer?phone=${MOMO_PHONE}&amount=${amount}&note=${randomNote}`;
+            
+            // Generate QR code
+            new QRCode(momoQrcode, {
+                text: momoDeepLink,
+                width: 256,
+                height: 256,
+                colorDark: "#A50064",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
             successSound.play();
         }
 
-        // Process payment and redirect to banking
+        // Process payment with balance check
         function processPayment(product) {
+            if (!userData.isLoggedIn) {
+                showNotification('Vui lòng đăng nhập để mua hàng', 'warning');
+                toggleLoginModal(true);
+                return;
+            }
+
             if (userData.balance < product.price) {
-                showNotification('Số dư không đủ. Vui lòng nạp thêm tiền.', 'warning');
+                const neededAmount = product.price - userData.balance;
+                showNotification(`Bạn cần nạp thêm ${neededAmount.toLocaleString('vi-VN')}đ để mua gói này`, 'warning');
+                
+                // Auto fill deposit amount
+                depositAmountInput.value = neededAmount;
                 toggleDepositModal(true);
                 return;
             }
 
-            const randomDigits = generateRandom4Digits();
+            const randomDigits = random4Digits();
             const transferContent = `${product.id}_${randomDigits}`;
             
             const bankingInfo = {
@@ -682,11 +714,6 @@
             localStorage.setItem('balance', userData.balance);
             
             showNotification(`Mua thành công gói ${product.name}!`, 'success');
-        }
-
-        // Generate random 4 digits
-        function generateRandom4Digits() {
-            return Math.floor(1000 + Math.random() * 9000);
         }
 
         // Process deposit
@@ -797,12 +824,6 @@
 
         // Handle buy button click
         function handleBuyClick(event) {
-            if (!userData.isLoggedIn) {
-                showNotification('Vui lòng đăng nhập để mua hàng', 'warning');
-                toggleLoginModal(true);
-                return;
-            }
-            
             const button = event.currentTarget;
             const productId = button.getAttribute('data-id');
             const productPrice = parseInt(button.getAttribute('data-price'));
@@ -862,6 +883,7 @@
         function toggleMomoModal(show) {
             momoModal.style.display = show ? 'block' : 'none';
             if (!show) {
+                momoQrcode.innerHTML = "";
                 momoNote.innerHTML = "";
             }
         }
@@ -1064,8 +1086,8 @@
         ov.style.position = 'fixed';
         ov.style.top = 0;
         ov.style.left = 0;
-        ov.style.width = '100%';
-        ov.style.height = '100%';
+        ov.style.width = '100';
+        ov.style.height = '100';
         ov.style.background = 'rgba(0,0,0,0.85)';
         ov.style.color = '#fff';
         ov.style.zIndex = 99999;
