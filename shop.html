@@ -6,6 +6,7 @@
     <title>🛒 Premium Tools & Services</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <style>
         :root {
             --primary: #6c5ce7;
@@ -20,6 +21,8 @@
             --text: #f5f6fa;
             --radius: 16px;
             --shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            --momo-pink: #a50064;
+            --momo-dark-pink: #8c0053;
         }
 
         * {
@@ -109,6 +112,11 @@
             color: white;
         }
 
+        .btn-momo {
+            background: linear-gradient(45deg, var(--momo-pink), var(--momo-dark-pink));
+            color: white;
+        }
+
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
@@ -117,6 +125,11 @@
         .btn-danger:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(214, 48, 49, 0.4);
+        }
+
+        .btn-momo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(165, 0, 100, 0.4);
         }
 
         .auth-buttons {
@@ -287,6 +300,102 @@
             margin-bottom: 15px;
         }
 
+        .deposit-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+        }
+
+        .deposit-content {
+            background: var(--card);
+            width: 90%;
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 25px;
+            border-radius: var(--radius);
+        }
+
+        .deposit-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .momo-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+        }
+
+        .momo-content {
+            background: white;
+            color: #333;
+            width: 90%;
+            max-width: 380px;
+            margin: 100px auto;
+            padding: 25px;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        .momo-title {
+            color: var(--momo-pink);
+            margin-bottom: 10px;
+        }
+
+        .momo-input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        #momo-qrcode {
+            margin: 20px auto;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            max-width: 256px;
+        }
+
+        #momo-qrcode.show {
+            opacity: 1;
+        }
+
+        .momo-note {
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-weight: bold;
+            color: var(--momo-pink);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
         @media (max-width: 768px) {
             .user-panel {
                 flex-direction: column;
@@ -324,7 +433,7 @@
                 <button class="btn btn-primary" id="btn-login" style="display: none;">
                     <i class="fas fa-sign-in-alt"></i> Đăng nhập
                 </button>
-                <button class="btn btn-primary" id="btn-deposit">
+                <button class="btn btn-momo" id="btn-deposit">
                     <i class="fas fa-coins"></i> Nạp tiền
                 </button>
                 <button class="btn btn-danger" id="btn-logout" style="display: none;">
@@ -353,14 +462,45 @@
         </div>
     </div>
 
+    <!-- Deposit Modal -->
+    <div class="deposit-modal" id="depositModal">
+        <div class="deposit-content">
+            <h2 class="login-title">Nạp tiền</h2>
+            <input type="number" id="deposit-amount" class="deposit-input" placeholder="Nhập số tiền cần nạp (VNĐ)" min="10000" step="10000">
+            <button class="btn btn-momo" id="btn-deposit-submit" style="width: 100%;">
+                <i class="fas fa-coins"></i> Nạp qua MoMo
+            </button>
+            <button class="btn btn-danger" id="btn-deposit-cancel" style="width: 100%; margin-top: 10px;">
+                <i class="fas fa-times"></i> Hủy bỏ
+            </button>
+        </div>
+    </div>
+
+    <!-- MoMo Payment Modal -->
+    <div class="momo-modal" id="momoModal">
+        <div class="momo-content">
+            <h2 class="momo-title">💰 Nạp tiền qua Momo</h2>
+            <p>Số điện thoại nhận: <b>0374756847</b></p>
+            <div id="momo-qrcode"></div>
+            <div id="momo-note" class="momo-note"></div>
+            <button class="btn btn-danger" id="btn-momo-close" style="width: 100%; margin-top: 20px;">
+                <i class="fas fa-times"></i> Đóng
+            </button>
+        </div>
+    </div>
+
     <div class="notification" id="notification">
         <div id="notification-message">Thông báo</div>
     </div>
+
+    <!-- Âm thanh thông báo -->
+    <audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
 
     <script>
         // Configuration
         const API_URL = 'https://script.google.com/macros/s/AKfycbwVRY9aMKt6Qrz_viA7kzZ5n9LU-Dp8nMlUzsPnfDglY1h9AhNBp4snVQecj9-C1Cm8uA/exec';
         const USER_ID = localStorage.getItem('userId') || 'default_user';
+        const MOMO_PHONE = "0374756847";
 
         // DOM elements
         const shopContainer = document.getElementById('shopContainer');
@@ -371,10 +511,19 @@
         const btnLogin = document.getElementById('btn-login');
         const btnLogout = document.getElementById('btn-logout');
         const loginModal = document.getElementById('loginModal');
+        const depositModal = document.getElementById('depositModal');
+        const momoModal = document.getElementById('momoModal');
+        const depositAmountInput = document.getElementById('deposit-amount');
         const btnLoginSubmit = document.getElementById('btn-login-submit');
         const btnLoginCancel = document.getElementById('btn-login-cancel');
+        const btnDepositSubmit = document.getElementById('btn-deposit-submit');
+        const btnDepositCancel = document.getElementById('btn-deposit-cancel');
+        const btnMomoClose = document.getElementById('btn-momo-close');
+        const momoQrcode = document.getElementById('momo-qrcode');
+        const momoNote = document.getElementById('momo-note');
         const notification = document.getElementById('notification');
         const notificationMessage = document.getElementById('notification-message');
+        const successSound = document.getElementById('successSound');
 
         // User data
         let userData = {
@@ -383,7 +532,7 @@
             isLoggedIn: localStorage.getItem('isLoggedIn') === 'true'
         };
 
-        // Products data - Updated to match banking.html packages
+        // Products data
         const products = [
             {
                 id: "basic",
@@ -478,9 +627,35 @@
             }
         ];
 
-        // Generate random 4 digits
-        function generateRandom4Digits() {
-            return Math.floor(1000 + Math.random() * 9000);
+        // Generate random 13 digits for MoMo note
+        function random13Digits() {
+            let digits = "";
+            for (let i = 0; i < 13; i++) {
+                digits += Math.floor(Math.random() * 10);
+            }
+            return digits;
+        }
+
+        // Generate MoMo QR code
+        function generateMomoQR(amount) {
+            const randomNote = random13Digits();
+            const momoLink = `momo://app?action=payWithPhone&phone=${MOMO_PHONE}&amount=${amount}&note=${randomNote}`;
+
+            momoQrcode.innerHTML = "";
+            momoQrcode.classList.remove("show");
+            momoNote.textContent = `Nội dung chuyển khoản: ${randomNote}`;
+
+            QRCode.toCanvas(momoQrcode, momoLink, { width: 256 }, function (error) {
+                if (error) {
+                    console.error(error);
+                    showNotification('Lỗi khi tạo mã QR', 'error');
+                } else {
+                    setTimeout(() => {
+                        momoQrcode.classList.add("show");
+                        successSound.play();
+                    }, 50);
+                }
+            });
         }
 
         // Process payment and redirect to banking
@@ -505,6 +680,23 @@
             
             // Redirect to banking with query parameters
             window.location.href = `banking.html?amount=${product.price}&package=${product.id}`;
+        }
+
+        // Generate random 4 digits
+        function generateRandom4Digits() {
+            return Math.floor(1000 + Math.random() * 9000);
+        }
+
+        // Process deposit
+        function processDeposit(amount) {
+            if (!amount || amount < 10000) {
+                showNotification('Số tiền nạp tối thiểu là 10,000đ', 'warning');
+                return;
+            }
+            
+            toggleDepositModal(false);
+            toggleMomoModal(true);
+            generateMomoQR(amount);
         }
 
         // Fetch user data from API
@@ -655,6 +847,25 @@
             loginModal.style.display = show ? 'block' : 'none';
         }
 
+        // Toggle deposit modal
+        function toggleDepositModal(show) {
+            depositModal.style.display = show ? 'block' : 'none';
+            if (show) {
+                depositAmountInput.value = '';
+                depositAmountInput.focus();
+            }
+        }
+
+        // Toggle MoMo modal
+        function toggleMomoModal(show) {
+            momoModal.style.display = show ? 'block' : 'none';
+            if (!show) {
+                momoQrcode.innerHTML = "";
+                momoQrcode.classList.remove("show");
+                momoNote.textContent = "";
+            }
+        }
+
         // Handle login
         async function handleLogin(username, password) {
             try {
@@ -732,17 +943,34 @@
                     return;
                 }
                 
-                const bankingInfo = {
-                    amount: 0,
-                    package: "deposit",
-                    productName: 'Nạp tiền',
-                    transferContent: `NAP_${generateRandom4Digits()}`,
-                    username: userData.name,
-                    currentBalance: userData.balance
-                };
+                toggleDepositModal(true);
+            });
+            
+            // Deposit submit
+            btnDepositSubmit.addEventListener('click', () => {
+                const amount = parseInt(depositAmountInput.value);
                 
-                localStorage.setItem('bankingInfo', JSON.stringify(bankingInfo));
-                window.location.href = 'banking.html?amount=0&package=deposit';
+                if (isNaN(amount)) {
+                    showNotification('Vui lòng nhập số tiền hợp lệ', 'warning');
+                    return;
+                }
+                
+                if (amount < 10000) {
+                    showNotification('Số tiền nạp tối thiểu là 10,000đ', 'warning');
+                    return;
+                }
+                
+                processDeposit(amount);
+            });
+            
+            // Deposit cancel
+            btnDepositCancel.addEventListener('click', () => {
+                toggleDepositModal(false);
+            });
+            
+            // MoMo close button
+            btnMomoClose.addEventListener('click', () => {
+                toggleMomoModal(false);
             });
             
             // Logout button
