@@ -1022,8 +1022,6 @@
   // disable right click
   document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
-    // optionally show message
-    // alert('Chuột phải đã bị vô hiệu hóa.');
     return false;
   }, {capture: true, passive: false});
 
@@ -1054,16 +1052,12 @@
     }
   }, {capture:true});
 
-  // Optional: detect when devtools opened (heuristic)
-  // This uses small timing hack / dimension check. It's not reliable.
+  // Detect devtools opening
   var devtoolsOpen = false;
   var element = new Image();
   Object.defineProperty(element, 'id', {
     get: function () {
       devtoolsOpen = true;
-      // do something if opened
-      // e.g., redirect or show overlay:
-      // window.location.href = 'about:blank';
       return '';
     }
   });
@@ -1071,8 +1065,6 @@
     devtoolsOpen = false;
     console.log(element);
     if (devtoolsOpen) {
-      // action when devtools detected (be careful with UX)
-      // show overlay as gentle deterrent
       if(!document.getElementById('devtools-overlay')) {
         var ov = document.createElement('div');
         ov.id = 'devtools-overlay';
