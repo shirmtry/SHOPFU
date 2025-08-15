@@ -137,7 +137,8 @@
 
     <script>
         // Thay thế bằng URL Apps Script đã triển khai của bạn
-        const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwVRY9aMKt6Qrz_viA7kzZ5n9LU-Dp8nMlUzsPnfDglY1h9AhNBp4snVQecj9-C1Cm8uA/exec
+        const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwVRY9aMKt6Qrz_viA7kzZ5n9LU-Dp8nMlUzsPnfDglY1h9AhNBp4snVQecj9-C1Cm8uA/exec';
+        
         document.addEventListener('DOMContentLoaded', () => {
             const authForm = document.getElementById('auth-form');
             const formTitle = document.getElementById('form-title');
@@ -159,8 +160,9 @@
 
             authForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const username = usernameInput.value;
-                const password = passwordInput.value;
+                // Sửa lỗi: thêm .trim() để loại bỏ khoảng trắng thừa
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
                 const action = isLogin ? 'login' : 'register';
 
                 try {
@@ -181,7 +183,6 @@
                             window.location.href = 'index.html';
                         } else {
                             alert(result.message);
-                            // Sau khi đăng ký thành công, chuyển sang form đăng nhập
                             isLogin = true;
                             formTitle.textContent = "Đăng nhập";
                             authForm.querySelector('.btn-submit').innerHTML = '<i class="fas fa-sign-in-alt"></i> Đăng nhập';
