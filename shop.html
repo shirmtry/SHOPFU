@@ -338,11 +338,7 @@
                         <div class="package-features">
                             ${product.features.map(feature => `<div class="feature-item">${feature}</div>`).join('')}
                         </div>
-                        <a href="banking.html?product_id=${product.id}" class="btn-buy"
-                                data-id="${product.id}"
-                                data-price="${product.price}"
-                                data-name="${product.name}"
-                                data-period="${product.period}">
+                        <a href="banking.html?id=${product.id}&name=${encodeURIComponent(product.name)}&price=${product.price}&period=${encodeURIComponent(product.period)}" class="btn-buy">
                             <i class="fas fa-shopping-cart"></i> MUA NGAY
                         </a>
                     </div>
@@ -353,7 +349,6 @@
         }
 
         btnLogin.addEventListener('click', () => {
-            // In a real application, this would go to a login page
             alert('Chức năng đăng nhập sẽ được thêm sau.');
         });
         
