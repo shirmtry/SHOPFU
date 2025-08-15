@@ -378,6 +378,16 @@
             color: var(--momo-pink);
         }
 
+        .momo-instructions {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+            text-align: left;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
@@ -470,6 +480,15 @@
             <p>Số điện thoại nhận: <b>0374756847</b></p>
             <div id="momo-qrcode"></div>
             <div id="momo-note" class="momo-note"></div>
+            <div class="momo-instructions">
+                <p><strong>Hướng dẫn:</strong></p>
+                <ol>
+                    <li>Mở ứng dụng MoMo trên điện thoại</li>
+                    <li>Chọn "Quét QR" và quét mã bên trên</li>
+                    <li>Kiểm tra thông tin và xác nhận thanh toán</li>
+                    <li>Hoặc chuyển khoản thủ công với nội dung bên trên</li>
+                </ol>
+            </div>
             <button class="btn btn-danger" id="btn-momo-close" style="width: 100%; margin-top: 20px;">
                 <i class="fas fa-times"></i> Đóng
             </button>
@@ -488,8 +507,7 @@
         const API_URL = 'https://script.google.com/macros/s/AKfycbwVRY9aMKt6Qrz_viA7kzZ5n9LU-Dp8nMlUzsPnfDglY1h9AhNBp4snVQecj9-C1Cm8uA/exec';
         const USER_ID = localStorage.getItem('userId') || 'default_user';
         const MOMO_PHONE = "0374756847";
-        const MOMO_ACCOUNT_NAME = "NGUYEN VAN A"; // Thay bằng tên chủ tài khoản MoMo
-        const MOMO_TEMPLATE = "compact2"; // Template VietQR
+        const MOMO_ACCOUNT_NAME = "NGUYEN VAN A";
 
         // DOM elements
         const shopContainer = document.getElementById('shopContainer');
@@ -625,32 +643,39 @@
             return digits;
         }
 
-        // Generate MoMo QR code using VietQR format
+        // Generate MoMo QR code using direct Momo deep link
         function generateMomoQR(amount) {
             const randomNote = random13Digits();
             momoQrcode.innerHTML = "";
             momoNote.textContent = `Nội dung chuyển khoản: ${randomNote}`;
 
-            // VietQR API endpoint
-            const vietQRUrl = `https://img.vietqr.io/image/${MOMO_PHONE}-${MOMO_TEMPLATE}.png?amount=${amount}&addInfo=${randomNote}&accountName=${encodeURIComponent(MOMO_ACCOUNT_NAME)}`;
+            // Tạo deep link MoMo
+            const momoDeepLink = `momo://transfer?phone=${MOMO_PHONE}&amount=${amount}&note=${randomNote}`;
+            
+            // Sử dụng thư viện QRCode để tạo mã từ deep link
+            new QRCode(momoQrcode, {
+                text: momoDeepLink,
+                width: 256,
+                height: 256,
+                colorDark: "#A50064",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
 
-            // Create image element for QR code
-            const img = document.createElement('img');
-            img.src = vietQRUrl;
-            img.alt = "MoMo QR Code";
-            img.style.width = "100%";
-            img.style.height = "auto";
+            // Thêm thông tin chuyển khoản thủ công
+            const manualTransferInfo = document.createElement('div');
+            manualTransferInfo.style.marginTop = '15px';
+            manualTransferInfo.style.fontSize = '14px';
+            manualTransferInfo.style.color = '#666';
+            manualTransferInfo.innerHTML = `
+                <p><strong>Hoặc chuyển khoản thủ công:</strong></p>
+                <p>Số điện thoại: <strong>${MOMO_PHONE}</strong></p>
+                <p>Số tiền: <strong>${amount.toLocaleString('vi-VN')}đ</strong></p>
+                <p>Nội dung: <strong>${randomNote}</strong></p>
+            `;
             
-            img.onload = function() {
-                successSound.play();
-            };
-            
-            img.onerror = function() {
-                showNotification('Lỗi khi tạo mã QR', 'error');
-                console.error('Lỗi tải QR code từ VietQR');
-            };
-            
-            momoQrcode.appendChild(img);
+            momoQrcode.appendChild(manualTransferInfo);
+            successSound.play();
         }
 
         // Process payment and redirect to banking
