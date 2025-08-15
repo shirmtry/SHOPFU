@@ -113,6 +113,11 @@
             color: white;
         }
 
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -120,6 +125,10 @@
 
         .btn-primary:hover {
             box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 5px 15px rgba(214, 48, 49, 0.4);
         }
 
         .auth-buttons {
@@ -281,8 +290,8 @@
                 </div>
             </div>
             <div class="auth-buttons">
-                <button class="btn btn-primary" id="btn-login">
-                    <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                <button class="btn btn-danger" id="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
                 </button>
             </div>
         </div>
@@ -292,80 +301,70 @@
     </div>
 
     <script>
-        const products = [
-            { id: "basic", name: "Gói Basic (TOOL SEB)", icon: "fas fa-star", price: 400000, period: "1 kì", features: ["Auto chụp, giải, khoanh", "Hỗ trợ 24/7", "Cập nhật thường xuyên"], popular: false },
-            { id: "vip1", name: "Gói VIP1 (TOOL EOS)", icon: "fas fa-crown", price: 600000, period: "1 kì", features: ["Auto chụp, giải, khoanh", "Thêm tính năng EOS", "Ưu tiên hỗ trợ"], popular: true },
-            { id: "vip2", name: "Gói VIP2 (TOOL EOS + SEB)", icon: "fas fa-gem", price: 800000, period: "1 kì", features: ["Tất cả tính năng VIP1", "Tính năng SEB", "Hỗ trợ nhanh"], popular: true },
-            { id: "vip3", name: "Gói VIP3 (TOOL PRO)", icon: "fas fa-diamond", price: 3000000, period: "4 năm", features: ["Tất cả tính năng VIP2", "Hạn dùng 4 năm", "Hỗ trợ VIP riêng"], popular: false },
-            { id: "Support", name: "Gói Hỗ trợ", icon: "fas fa-headset", price: 100000, period: "1 lần", features: ["Hỗ trợ SEB EOS", "Cần thì mới mua", "Cái này là cần cho 9+ 10"], popular: false },
-            { id: "FakeBill", name: "App Banking ảo", icon: "fas fa-mobile-screen", price: 500000, period: "Vĩnh viễn", features: ["Tạo banking ảo", "Tùy chỉnh số dư", "Hỗ trợ cài đặt app trên adr và ios"], popular: false },
-            { id: "Security", name: "Gói Bảo mật", icon: "fas fa-shield-halved", price: 500000, period: "3 tháng", features: ["Bảo vệ tài khoản FB ZALO IG TIKTOK", "Chống theo dõi ADR và IOS", "FAKE IP chuẩn IP quốc tế"], popular: false }
-        ];
-
-        const shopContainer = document.getElementById('shopContainer');
-        const usernameElement = document.getElementById('username');
-        const balanceElement = document.getElementById('balance');
-        const userAvatarElement = document.getElementById('user-avatar');
-        const btnLogin = document.getElementById('btn-login');
-
-        let userData = {
-            name: localStorage.getItem('username') || "Khách",
-            balance: parseInt(localStorage.getItem('balance')) || 0
-        };
-
-        function updateUserInfo() {
-            usernameElement.textContent = userData.name;
-            balanceElement.textContent = userData.balance.toLocaleString('vi-VN') + 'đ';
-            userAvatarElement.textContent = userData.name.charAt(0).toUpperCase();
-        }
-
-        function renderProducts() {
-            shopContainer.innerHTML = '';
-            
-            products.forEach((product) => {
-                const card = document.createElement('div');
-                card.className = 'package-card';
-                
-                card.innerHTML = `
-                    ${product.popular ? '<div class="popular-badge">Phổ biến</div>' : ''}
-                    <div class="package-header">
-                        <div class="package-icon"><i class="${product.icon}"></i></div>
-                        <div class="package-title">${product.name}</div>
-                    </div>
-                    <div class="package-body">
-                        <div class="package-price">${product.price.toLocaleString('vi-VN')}đ</div>
-                        <div class="price-period">${product.period}</div>
-                        <div class="package-features">
-                            ${product.features.map(feature => `<div class="feature-item">${feature}</div>`).join('')}
-                        </div>
-                        <a href="banking.html?id=${product.id}&name=${encodeURIComponent(product.name)}&price=${product.price}&period=${encodeURIComponent(product.period)}" class="btn-buy">
-                            <i class="fas fa-shopping-cart"></i> MUA NGAY
-                        </a>
-                    </div>
-                `;
-                
-                shopContainer.appendChild(card);
-            });
-        }
-
-        btnLogin.addEventListener('click', () => {
-            const newName = prompt("Vui lòng nhập tên của bạn:");
-            if (newName) {
-                const newBalance = parseInt(prompt("Vui lòng nhập số dư tài khoản của bạn (chỉ số):"));
-                if (!isNaN(newBalance)) {
-                    userData.name = newName;
-                    userData.balance = newBalance;
-                    localStorage.setItem('username', newName);
-                    localStorage.setItem('balance', newBalance);
-                    updateUserInfo();
-                    alert("Đăng nhập thành công! Thông tin của bạn đã được lưu.");
-                } else {
-                    alert("Số dư không hợp lệ. Vui lòng thử lại.");
-                }
-            }
-        });
-        
         document.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn) {
+                window.location.href = 'login.html';
+                return; 
+            }
+
+            const products = [
+                { id: "basic", name: "Gói Basic (TOOL SEB)", icon: "fas fa-star", price: 400000, period: "1 kì", features: ["Auto chụp, giải, khoanh", "Hỗ trợ 24/7", "Cập nhật thường xuyên"], popular: false },
+                { id: "vip1", name: "Gói VIP1 (TOOL EOS)", icon: "fas fa-crown", price: 600000, period: "1 kì", features: ["Auto chụp, giải, khoanh", "Thêm tính năng EOS", "Ưu tiên hỗ trợ"], popular: true },
+                { id: "vip2", name: "Gói VIP2 (TOOL EOS + SEB)", icon: "fas fa-gem", price: 800000, period: "1 kì", features: ["Tất cả tính năng VIP1", "Tính năng SEB", "Hỗ trợ nhanh"], popular: true },
+                { id: "vip3", name: "Gói VIP3 (TOOL PRO)", icon: "fas fa-diamond", price: 3000000, period: "4 năm", features: ["Tất cả tính năng VIP2", "Hạn dùng 4 năm", "Hỗ trợ VIP riêng"], popular: false },
+                { id: "Support", name: "Gói Hỗ trợ", icon: "fas fa-headset", price: 100000, period: "1 lần", features: ["Hỗ trợ SEB EOS", "Cần thì mới mua", "Cái này là cần cho 9+ 10"], popular: false },
+                { id: "FakeBill", name: "App Banking ảo", icon: "fas fa-mobile-screen", price: 500000, period: "Vĩnh viễn", features: ["Tạo banking ảo", "Tùy chỉnh số dư", "Hỗ trợ cài đặt app trên adr và ios"], popular: false },
+                { id: "Security", name: "Gói Bảo mật", icon: "fas fa-shield-halved", price: 500000, period: "3 tháng", features: ["Bảo vệ tài khoản FB ZALO IG TIKTOK", "Chống theo dõi ADR và IOS", "FAKE IP chuẩn IP quốc tế"], popular: false }
+            ];
+
+            const shopContainer = document.getElementById('shopContainer');
+            const usernameElement = document.getElementById('username');
+            const balanceElement = document.getElementById('balance');
+            const userAvatarElement = document.getElementById('user-avatar');
+            const btnLogout = document.getElementById('btn-logout');
+
+            let user = JSON.parse(localStorage.getItem('user'));
+            
+            function updateUserInfo() {
+                usernameElement.textContent = user.username;
+                balanceElement.textContent = user.balance.toLocaleString('vi-VN') + 'đ';
+                userAvatarElement.textContent = user.username.charAt(0).toUpperCase();
+            }
+
+            function renderProducts() {
+                shopContainer.innerHTML = '';
+                products.forEach((product) => {
+                    const card = document.createElement('div');
+                    card.className = 'package-card';
+                    
+                    card.innerHTML = `
+                        ${product.popular ? '<div class="popular-badge">Phổ biến</div>' : ''}
+                        <div class="package-header">
+                            <div class="package-icon"><i class="${product.icon}"></i></div>
+                            <div class="package-title">${product.name}</div>
+                        </div>
+                        <div class="package-body">
+                            <div class="package-price">${product.price.toLocaleString('vi-VN')}đ</div>
+                            <div class="price-period">${product.period}</div>
+                            <div class="package-features">
+                                ${product.features.map(feature => `<div class="feature-item">${feature}</div>`).join('')}
+                            </div>
+                            <a href="banking.html?id=${product.id}&name=${encodeURIComponent(product.name)}&price=${product.price}&period=${encodeURIComponent(product.period)}" class="btn-buy">
+                                <i class="fas fa-shopping-cart"></i> MUA NGAY
+                            </a>
+                        </div>
+                    `;
+                    
+                    shopContainer.appendChild(card);
+                });
+            }
+
+            btnLogout.addEventListener('click', () => {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'login.html';
+            });
+            
             renderProducts();
             updateUserInfo();
         });
