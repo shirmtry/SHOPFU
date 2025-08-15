@@ -21,6 +21,14 @@
         .switch-form { margin-top: 20px; font-size: 14px; }
         .switch-form a { color: var(--primary); text-decoration: none; font-weight: 500; }
         .switch-form a:hover { text-decoration: underline; }
+
+        /* Style cho pop-up thông báo */
+        .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .popup.show { visibility: visible; opacity: 1; }
+        .popup-content { background: var(--bg); padding: 25px; border-radius: 12px; max-width: 350px; text-align: center; box-shadow: var(--shadow); border: 1px solid var(--primary); }
+        .popup-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; color: var(--primary); }
+        .popup-message { margin-bottom: 20px; color: var(--text); }
+        .popup-ok-btn { padding: 8px 20px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -44,16 +52,36 @@
         </div>
     </div>
 
+    <div id="popup-container" class="popup">
+        <div class="popup-content">
+            <div class="popup-title">shopfu.vercel.app says</div>
+            <div id="popup-message" class="popup-message"></div>
+            <button id="popup-ok-btn" class="popup-ok-btn">OK</button>
+        </div>
+    </div>
+
     <script>
-        const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwfXBufY4RmN97PMc0LaTO1VMTkwC7LRv1KCKZwSeVW8CDKGUcjGp9JbnL_abSPCIEaMg/exec'; 
+        const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwfXBufY4RmN97PMc0LaTO1VMTkwC7LRv1KCKZwSeVW8CDKGUcjGp9JbnL_abSPCIEaMg/exec';
 
         document.addEventListener('DOMContentLoaded', () => {
             const authForm = document.getElementById('auth-form');
             const formTitle = document.getElementById('form-title');
             const usernameInput = document.getElementById('username');
             const passwordInput = document.getElementById('password');
+            const popupContainer = document.getElementById('popup-container');
+            const popupMessage = document.getElementById('popup-message');
+            const popupOkBtn = document.getElementById('popup-ok-btn');
 
             let isLogin = true;
+
+            function showAlert(message) {
+                popupMessage.textContent = message;
+                popupContainer.classList.add('show');
+            }
+
+            popupOkBtn.addEventListener('click', () => {
+                popupContainer.classList.remove('show');
+            });
 
             function updateFormState() {
                 formTitle.textContent = isLogin ? "Đăng nhập" : "Đăng ký";
@@ -70,8 +98,9 @@
                 updateFormState();
             }
 
-            if (document.getElementById('switch-link')) {
-                document.getElementById('switch-link').addEventListener('click', onSwitchClick);
+            const switchLink = document.getElementById('switch-link');
+            if (switchLink) {
+                switchLink.addEventListener('click', onSwitchClick);
             }
 
             authForm.addEventListener('submit', async (e) => {
@@ -79,6 +108,12 @@
                 const username = usernameInput.value.trim();
                 const password = passwordInput.value.trim();
                 const action = isLogin ? 'login' : 'register';
+
+                // Kiểm tra username và password trống
+                if (!username || !password) {
+                    showAlert("Vui lòng nhập đầy đủ tên người dùng và mật khẩu.");
+                    return;
+                }
 
                 try {
                     const response = await fetch(API_ENDPOINT, {
@@ -88,34 +123,38 @@
                     });
                     
                     if (!response.ok) {
-                        throw new Error(`Lỗi HTTP: ${response.status} - ${await response.text()}`);
+                        // Ném lỗi nếu phản hồi HTTP không thành công
+                        throw new Error(`Lỗi HTTP: ${response.status}`);
                     }
                     const result = await response.json();
                     
                     if (result.status === 'success') {
                         if (isLogin) {
                             localStorage.setItem('user', JSON.stringify(result.user));
-                            alert(result.message);
-                            window.location.href = 'shop.html'; 
+                            showAlert(result.message + " Chuyển hướng...");
+                            setTimeout(() => {
+                                window.location.href = 'shop.html';
+                            }, 1000);
                         } else {
-                            alert(result.message);
+                            showAlert(result.message);
                             isLogin = true;
                             updateFormState();
                         }
                     } else {
-                        alert(result.message);
+                        showAlert(result.message);
                     }
                 } catch (error) {
                     console.error('Lỗi khi kết nối API:', error);
-                    alert(`Đã xảy ra lỗi: ${error.message}. Vui lòng thử lại sau.`);
+                    showAlert("Đã xảy ra lỗi kết nối. Vui lòng thử lại sau.");
                 }
             });
 
+            // Kiểm tra trạng thái đăng nhập khi tải trang
             const user = JSON.parse(localStorage.getItem('user'));
             if (user && user.username) {
                 window.location.href = 'shop.html';
             } else {
-                updateFormState(); 
+                updateFormState();
             }
         });
     </script>
