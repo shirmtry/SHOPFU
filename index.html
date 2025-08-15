@@ -241,16 +241,18 @@
     </div>
 
     <script>
-        // === HÃY THAY THẾ URL DƯỚI ĐÂY BẰNG URL MỚI CỦA BẠN ===
-        const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw_1F9_pipRKmsiDAw42L0ZCR6_UOmg7UlnZsZeg67C6fVeGgsCaQzJzkecSNUAVCwMdQ/exec";
+        // === HÃY THAY THẾ URL VÀ API KEY CỦA BẠN TỪ RAPIDAPI ===
+        const API_ENDPOINT = "YOUR_RAPIDAPI_ENDPOINT";
+        const RAPIDAPI_KEY = "YOUR_RAPIDAPI_KEY";
         
         async function callApi(data) {
             try {
                 const response = await fetch(API_ENDPOINT, {
                     method: 'POST',
-                    mode: 'cors',
                     headers: { 
-                        'Content-Type': 'text/plain;charset=utf-8'
+                        'Content-Type': 'application/json',
+                        'x-rapidapi-key': RAPIDAPI_KEY,
+                        'x-rapidapi-host': 'YOUR_RAPIDAPI_HOST' // Thường là một phần của URL
                     },
                     body: JSON.stringify(data)
                 });
@@ -353,7 +355,7 @@
                         showAlert(result.message || "Đã xảy ra lỗi không xác định. Vui lòng thử lại.", true);
                     }
                 } catch (error) {
-                    console.error('Lỗi khi kết nối API:', error);
+                    console.error('API call failed:', error);
                     showAlert("Không thể kết nối đến server. Vui lòng thử lại sau.", true);
                 } finally {
                     submitBtn.style.display = 'flex';
