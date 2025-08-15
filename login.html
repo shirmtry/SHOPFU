@@ -7,111 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #6c5ce7;
-            --primary-dark: #5649c0;
-            --bg: #1e272e;
-            --card: #2d3436;
-            --text: #f5f6fa;
-            --muted: #a5b1c2;
-            --radius: 16px;
-            --shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .login-card {
-            background: var(--card);
-            padding: 40px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .login-card h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: var(--primary);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            background: var(--bg);
-            color: var(--text);
-            font-size: 16px;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 16px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
-        }
-
-        .switch-form {
-            margin-top: 20px;
-            font-size: 14px;
-        }
-
-        .switch-form a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .switch-form a:hover {
-            text-decoration: underline;
-        }
+        /* Các style CSS của bạn */
     </style>
 </head>
 <body>
@@ -136,8 +32,7 @@
     </div>
 
     <script>
-        // Thay thế bằng URL Apps Script đã triển khai của bạn
-        const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwVRY9aMKt6Qrz_viA7kzZ5n9LU-Dp8nMlUzsPnfDglY1h9AhNBp4snVQecj9-C1Cm8uA/exec';
+        const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwVRY9aMKt6Qrz_viA7kzZ5n9LU-Dp8nMlUzsPnfDglY1h9AhNBp4snVQecj9-C1Cm8uA/exec'; 
         
         document.addEventListener('DOMContentLoaded', () => {
             const authForm = document.getElementById('auth-form');
@@ -164,11 +59,6 @@
                 const password = passwordInput.value.trim();
                 const action = isLogin ? 'login' : 'register';
 
-                // Bắt đầu quá trình gỡ lỗi
-                console.log('Đang gửi dữ liệu đến Apps Script...');
-                console.log('Action:', action);
-                console.log('Username:', username);
-
                 try {
                     const response = await fetch(API_ENDPOINT, {
                         method: 'POST',
@@ -178,23 +68,20 @@
                         body: JSON.stringify({ action, username, password })
                     });
                     
-                    // Kiểm tra trạng thái phản hồi HTTP
                     if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(`Lỗi HTTP: ${response.status} - ${errorText}`);
+                        throw new Error('Lỗi kết nối API. Vui lòng kiểm tra lại URL hoặc Apps Script.');
                     }
 
                     const result = await response.json();
                     
-                    // Ghi kết quả phản hồi vào console
-                    console.log('Phản hồi từ Apps Script:', result);
-
                     if (result.status === 'success') {
                         if (isLogin) {
+                            // Lưu thông tin người dùng vào localStorage
                             localStorage.setItem('user', JSON.stringify(result.user));
                             localStorage.setItem('isLoggedIn', 'true');
+                            
                             alert(result.message);
-                            window.location.href = 'index.html';
+                            window.location.href = 'index.html'; // Chuyển hướng đến trang chính
                         } else {
                             alert(result.message);
                             isLogin = true;
@@ -208,7 +95,7 @@
                     }
                 } catch (error) {
                     console.error('Lỗi khi kết nối:', error);
-                    alert('Đã xảy ra lỗi. Vui lòng kiểm tra console để biết thêm chi tiết.');
+                    alert(error.message);
                 }
             });
         });
