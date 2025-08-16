@@ -436,7 +436,7 @@
         <div class="loading-spinner"></div>
     </div>
 
-    <!-- Auth Modal -->
+    <!-- Auth Modal with proper form tags -->
     <div class="auth-modal" id="authModal">
         <div class="auth-container">
             <span class="close-auth" id="closeAuth">&times;</span>
@@ -446,53 +446,53 @@
                 <div class="auth-tab" data-tab="register">Đăng ký</div>
             </div>
             
-            <!-- Login Form -->
-            <div class="auth-form active" id="loginForm">
+            <!-- Login Form wrapped in form tag -->
+            <form class="auth-form active" id="loginForm">
                 <div class="form-group">
                     <label for="loginUsername">Tên đăng nhập</label>
-                    <input type="text" id="loginUsername" class="form-control" placeholder="Nhập tên đăng nhập">
+                    <input type="text" id="loginUsername" class="form-control" placeholder="Nhập tên đăng nhập" required>
                     <div class="error-message" id="loginUsernameError"></div>
                 </div>
                 
                 <div class="form-group">
                     <label for="loginPassword">Mật khẩu</label>
-                    <input type="password" id="loginPassword" class="form-control" placeholder="Nhập mật khẩu">
+                    <input type="password" id="loginPassword" class="form-control" placeholder="Nhập mật khẩu" required>
                     <div class="error-message" id="loginPasswordError"></div>
                 </div>
                 
-                <button class="auth-submit" id="loginSubmit">Đăng nhập</button>
+                <button type="button" class="auth-submit" id="loginSubmit">Đăng nhập</button>
                 
                 <div class="auth-switch">
                     Chưa có tài khoản? <a id="switchToRegister">Đăng ký ngay</a>
                 </div>
-            </div>
+            </form>
             
-            <!-- Register Form -->
-            <div class="auth-form" id="registerForm">
+            <!-- Register Form wrapped in form tag -->
+            <form class="auth-form" id="registerForm">
                 <div class="form-group">
                     <label for="registerUsername">Tên đăng nhập</label>
-                    <input type="text" id="registerUsername" class="form-control" placeholder="Nhập tên đăng nhập">
+                    <input type="text" id="registerUsername" class="form-control" placeholder="Nhập tên đăng nhập" required>
                     <div class="error-message" id="registerUsernameError"></div>
                 </div>
                 
                 <div class="form-group">
                     <label for="registerPassword">Mật khẩu</label>
-                    <input type="password" id="registerPassword" class="form-control" placeholder="Nhập mật khẩu">
+                    <input type="password" id="registerPassword" class="form-control" placeholder="Nhập mật khẩu" required>
                     <div class="error-message" id="registerPasswordError"></div>
                 </div>
                 
                 <div class="form-group">
                     <label for="registerConfirmPassword">Xác nhận mật khẩu</label>
-                    <input type="password" id="registerConfirmPassword" class="form-control" placeholder="Nhập lại mật khẩu">
+                    <input type="password" id="registerConfirmPassword" class="form-control" placeholder="Nhập lại mật khẩu" required>
                     <div class="error-message" id="registerConfirmPasswordError"></div>
                 </div>
                 
-                <button class="auth-submit" id="registerSubmit">Đăng ký</button>
+                <button type="button" class="auth-submit" id="registerSubmit">Đăng ký</button>
                 
                 <div class="auth-switch">
                     Đã có tài khoản? <a id="switchToLogin">Đăng nhập ngay</a>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -591,20 +591,54 @@
                 
                 try {
                     showLoading();
-                    const response = await fetch(`${API_URL}?action=getUser&username=${encodeURIComponent(currentUser.username)}`);
+                    const response = await fetchWithCORS(`${API_URL}?action=getUser&username=${encodeURIComponent(currentUser.username)}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
                     const data = await response.json();
                     
                     if (data.status === 'success') {
                         currentUser.balance = data.user.balance || 0;
                         localStorage.setItem('currentUser', JSON.stringify(currentUser));
                         updateUserInfo();
-                    } else {
-                        console.error('Error fetching user data:', data.message);
                     }
                 } catch (error) {
-                    console.error('Network error:', error);
+                    console.error('Error fetching user data:', error);
                 } finally {
                     hideLoading();
+                }
+            }
+
+            // Enhanced fetch with CORS handling
+            async function fetchWithCORS(url, options = {}) {
+                try {
+                    // First try with normal fetch
+                    const response = await fetch(url, {
+                        ...options,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...options.headers
+                        }
+                    });
+                    
+                    // If response is ok, return it
+                    if (response.ok) return response;
+                    
+                    // If CORS error occurs, try with proxy
+                    console.warn('Direct fetch failed, trying CORS proxy');
+                    const proxyUrl = `https://cors-anywhere.herokuapp.com/${url}`;
+                    return await fetch(proxyUrl, {
+                        ...options,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...options.headers
+                        }
+                    });
+                } catch (error) {
+                    console.error('Fetch with CORS failed:', error);
+                    throw error;
                 }
             }
 
@@ -702,12 +736,22 @@
             async function callApi(params) {
                 try {
                     showLoading();
-                    const queryString = new URLSearchParams(params).toString();
-                    const response = await fetch(`${API_URL}?${queryString}`);
-                    return await response.json();
+                    
+                    // Create a unique cache-buster to prevent request caching
+                    const cacheBuster = '&_=' + Date.now();
+                    const queryString = new URLSearchParams(params).toString() + cacheBuster;
+                    
+                    const response = await fetchWithCORS(`${API_URL}?${queryString}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    return data;
                 } catch (error) {
                     console.error('API Error:', error);
-                    return { status: 'error', message: 'Lỗi kết nối mạng' };
+                    return { status: 'error', message: error.message || 'Lỗi kết nối' };
                 } finally {
                     hideLoading();
                 }
