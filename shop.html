@@ -250,6 +250,152 @@
             box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
         }
 
+        /* Auth Modal Styles */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-container {
+            background: var(--card);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .close-auth {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--muted);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .auth-tab.active {
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .auth-submit {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auth-submit:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .auth-switch a {
+            color: var(--primary);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-spinner {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 5px solid var(--primary);
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Responsive styles */
         @media (max-width: 768px) {
             .user-panel {
@@ -276,10 +422,86 @@
             .shop-container {
                 grid-template-columns: 1fr;
             }
+
+            .auth-container {
+                margin: 20px;
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-container">
+            <span class="close-auth" id="closeAuth">&times;</span>
+            
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-tab="login">Đăng nhập</div>
+                <div class="auth-tab" data-tab="register">Đăng ký</div>
+            </div>
+            
+            <!-- Login Form -->
+            <div class="auth-form active" id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" class="form-control" placeholder="Nhập email của bạn">
+                    <div class="error-message" id="loginEmailError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Mật khẩu</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="Nhập mật khẩu">
+                    <div class="error-message" id="loginPasswordError"></div>
+                </div>
+                
+                <button class="auth-submit" id="loginSubmit">Đăng nhập</button>
+                
+                <div class="auth-switch">
+                    Chưa có tài khoản? <a id="switchToRegister">Đăng ký ngay</a>
+                </div>
+            </div>
+            
+            <!-- Register Form -->
+            <div class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label for="registerUsername">Tên hiển thị</label>
+                    <input type="text" id="registerUsername" class="form-control" placeholder="Nhập tên hiển thị">
+                    <div class="error-message" id="registerUsernameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" class="form-control" placeholder="Nhập email của bạn">
+                    <div class="error-message" id="registerEmailError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerPassword">Mật khẩu</label>
+                    <input type="password" id="registerPassword" class="form-control" placeholder="Nhập mật khẩu">
+                    <div class="error-message" id="registerPasswordError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Xác nhận mật khẩu</label>
+                    <input type="password" id="registerConfirmPassword" class="form-control" placeholder="Nhập lại mật khẩu">
+                    <div class="error-message" id="registerConfirmPasswordError"></div>
+                </div>
+                
+                <button class="auth-submit" id="registerSubmit">Đăng ký</button>
+                
+                <div class="auth-switch">
+                    Đã có tài khoản? <a id="switchToLogin">Đăng nhập ngay</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="user-panel">
             <div class="user-info">
@@ -289,25 +511,48 @@
                     <div class="balance">Số dư: <span class="balance-amount" id="balance">0đ</span></div>
                 </div>
             </div>
-            <div class="auth-buttons">
-                <button class="btn btn-danger" id="btn-logout">
+            <div class="auth-buttons" id="authButtons">
+                <button class="btn btn-primary" id="btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                </button>
+                <button class="btn btn-danger" id="btn-logout" style="display: none;">
                     <i class="fas fa-sign-out-alt"></i> Đăng xuất
                 </button>
             </div>
         </div>
 
         <div class="shop-container" id="shopContainer">
+            <!-- Products will be loaded here -->
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            if (!isLoggedIn) {
-                window.location.href = 'login.html';
-                return; 
-            }
+        // Google Apps Script API URL
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxT22Zmx0JulaEgac1CzJ6Nsd6MwN9vpHcsBs5kcQ6A6y1gi-2eRtuCpZFoHl0ZJ0ud6w/exec';
 
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const shopContainer = document.getElementById('shopContainer');
+            const usernameElement = document.getElementById('username');
+            const balanceElement = document.getElementById('balance');
+            const userAvatarElement = document.getElementById('user-avatar');
+            const btnLogin = document.getElementById('btn-login');
+            const btnLogout = document.getElementById('btn-logout');
+            const authButtons = document.getElementById('authButtons');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            
+            // Auth Modal Elements
+            const authModal = document.getElementById('authModal');
+            const closeAuth = document.getElementById('closeAuth');
+            const authTabs = document.querySelectorAll('.auth-tab');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const switchToRegister = document.getElementById('switchToRegister');
+            const switchToLogin = document.getElementById('switchToLogin');
+            const loginSubmit = document.getElementById('loginSubmit');
+            const registerSubmit = document.getElementById('registerSubmit');
+            
+            // Product Data
             const products = [
                 { id: "basic", name: "Gói Basic (TOOL SEB)", icon: "fas fa-star", price: 400000, period: "1 kì", features: ["Auto chụp, giải, khoanh", "Hỗ trợ 24/7", "Cập nhật thường xuyên"], popular: false },
                 { id: "vip1", name: "Gói VIP1 (TOOL EOS)", icon: "fas fa-crown", price: 600000, period: "1 kì", features: ["Auto chụp, giải, khoanh", "Thêm tính năng EOS", "Ưu tiên hỗ trợ"], popular: true },
@@ -318,20 +563,65 @@
                 { id: "Security", name: "Gói Bảo mật", icon: "fas fa-shield-halved", price: 500000, period: "3 tháng", features: ["Bảo vệ tài khoản FB ZALO IG TIKTOK", "Chống theo dõi ADR và IOS", "FAKE IP chuẩn IP quốc tế"], popular: false }
             ];
 
-            const shopContainer = document.getElementById('shopContainer');
-            const usernameElement = document.getElementById('username');
-            const balanceElement = document.getElementById('balance');
-            const userAvatarElement = document.getElementById('user-avatar');
-            const btnLogout = document.getElementById('btn-logout');
+            // Current User
+            let currentUser = null;
 
-            let user = JSON.parse(localStorage.getItem('user'));
-            
-            function updateUserInfo() {
-                usernameElement.textContent = user.username;
-                balanceElement.textContent = user.balance.toLocaleString('vi-VN') + 'đ';
-                userAvatarElement.textContent = user.username.charAt(0).toUpperCase();
+            // Initialize the page
+            function init() {
+                checkAuthStatus();
+                renderProducts();
             }
 
+            // Check authentication status
+            function checkAuthStatus() {
+                const user = JSON.parse(localStorage.getItem('currentUser'));
+                if (user) {
+                    currentUser = user;
+                    updateUserInfo();
+                    btnLogin.style.display = 'none';
+                    btnLogout.style.display = 'flex';
+                    fetchUserData();
+                } else {
+                    currentUser = null;
+                    usernameElement.textContent = 'Khách';
+                    balanceElement.textContent = '0đ';
+                    userAvatarElement.textContent = 'K';
+                    btnLogin.style.display = 'flex';
+                    btnLogout.style.display = 'none';
+                }
+            }
+
+            // Fetch user data from API
+            async function fetchUserData() {
+                if (!currentUser) return;
+                
+                try {
+                    showLoading();
+                    const response = await fetch(`${API_URL}?action=getUser&username=${currentUser.username}`);
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        currentUser.balance = data.user.balance;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        updateUserInfo();
+                    }
+                } catch (error) {
+                    console.error('Error fetching user data:', error);
+                } finally {
+                    hideLoading();
+                }
+            }
+
+            // Update user info display
+            function updateUserInfo() {
+                if (currentUser) {
+                    usernameElement.textContent = currentUser.username;
+                    balanceElement.textContent = currentUser.balance.toLocaleString('vi-VN') + 'đ';
+                    userAvatarElement.textContent = currentUser.username.charAt(0).toUpperCase();
+                }
+            }
+
+            // Render products
             function renderProducts() {
                 shopContainer.innerHTML = '';
                 products.forEach((product) => {
@@ -350,23 +640,213 @@
                             <div class="package-features">
                                 ${product.features.map(feature => `<div class="feature-item">${feature}</div>`).join('')}
                             </div>
-                            <a href="banking.html?id=${product.id}&name=${encodeURIComponent(product.name)}&price=${product.price}&period=${encodeURIComponent(product.period)}" class="btn-buy">
+                            <button class="btn-buy" data-id="${product.id}" data-name="${encodeURIComponent(product.name)}" data-price="${product.price}" data-period="${encodeURIComponent(product.period)}">
                                 <i class="fas fa-shopping-cart"></i> MUA NGAY
-                            </a>
+                            </button>
                         </div>
                     `;
                     
                     shopContainer.appendChild(card);
                 });
+
+                // Add event listeners to buy buttons
+                document.querySelectorAll('.btn-buy').forEach(button => {
+                    button.addEventListener('click', function() {
+                        if (!currentUser) {
+                            showAuthModal('login');
+                            return;
+                        }
+                        
+                        const productId = this.getAttribute('data-id');
+                        const productName = decodeURIComponent(this.getAttribute('data-name'));
+                        const productPrice = parseFloat(this.getAttribute('data-price'));
+                        const productPeriod = decodeURIComponent(this.getAttribute('data-period'));
+                        
+                        // Redirect to banking page with product info
+                        window.location.href = `banking.html?id=${productId}&name=${encodeURIComponent(productName)}&price=${productPrice}&period=${encodeURIComponent(productPeriod)}`;
+                    });
+                });
             }
 
-            btnLogout.addEventListener('click', () => {
-                localStorage.removeItem('isLoggedIn');
-                window.location.href = 'login.html';
-            });
+            // Show loading overlay
+            function showLoading() {
+                loadingOverlay.style.display = 'flex';
+            }
+
+            // Hide loading overlay
+            function hideLoading() {
+                loadingOverlay.style.display = 'none';
+            }
+
+            // Auth Modal Functions
+            function showAuthModal(tab = 'login') {
+                authModal.style.display = 'flex';
+                switchTab(tab);
+            }
+
+            function hideAuthModal() {
+                authModal.style.display = 'none';
+            }
+
+            function switchTab(tab) {
+                authTabs.forEach(t => t.classList.remove('active'));
+                loginForm.classList.remove('active');
+                registerForm.classList.remove('active');
+                
+                if (tab === 'login') {
+                    document.querySelector('.auth-tab[data-tab="login"]').classList.add('active');
+                    loginForm.classList.add('active');
+                } else {
+                    document.querySelector('.auth-tab[data-tab="register"]').classList.add('active');
+                    registerForm.classList.add('active');
+                }
+            }
+
+            // API Call Functions
+            async function callApi(params) {
+                try {
+                    showLoading();
+                    const queryString = new URLSearchParams(params).toString();
+                    const response = await fetch(`${API_URL}?${queryString}`);
+                    return await response.json();
+                } catch (error) {
+                    console.error('API Error:', error);
+                    return { status: 'error', message: 'Network error' };
+                } finally {
+                    hideLoading();
+                }
+            }
+
+            // Event Listeners
+            btnLogin.addEventListener('click', () => showAuthModal('login'));
+            btnLogout.addEventListener('click', logout);
+            closeAuth.addEventListener('click', hideAuthModal);
+            switchToRegister.addEventListener('click', () => switchTab('register'));
+            switchToLogin.addEventListener('click', () => switchTab('login'));
             
-            renderProducts();
-            updateUserInfo();
+            authTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchTab(tab.getAttribute('data-tab'));
+                });
+            });
+
+            // Login Function
+            loginSubmit.addEventListener('click', async () => {
+                const email = document.getElementById('loginEmail').value.trim();
+                const password = document.getElementById('loginPassword').value.trim();
+                
+                // Simple validation
+                if (!email) {
+                    showError('loginEmailError', 'Vui lòng nhập email');
+                    return;
+                }
+                
+                if (!password) {
+                    showError('loginPasswordError', 'Vui lòng nhập mật khẩu');
+                    return;
+                }
+                
+                try {
+                    const result = await callApi({
+                        action: 'login',
+                        username: email,
+                        password: password
+                    });
+                    
+                    if (result.status === 'success') {
+                        currentUser = {
+                            username: result.user.username,
+                            balance: result.user.balance || 0
+                        };
+                        
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        hideAuthModal();
+                        checkAuthStatus();
+                    } else {
+                        showError('loginPasswordError', result.message || 'Đăng nhập thất bại');
+                    }
+                } catch (error) {
+                    showError('loginPasswordError', 'Lỗi kết nối');
+                }
+            });
+
+            // Register Function
+            registerSubmit.addEventListener('click', async () => {
+                const username = document.getElementById('registerUsername').value.trim();
+                const email = document.getElementById('registerEmail').value.trim();
+                const password = document.getElementById('registerPassword').value.trim();
+                const confirmPassword = document.getElementById('registerConfirmPassword').value.trim();
+                
+                // Validation
+                if (!username) {
+                    showError('registerUsernameError', 'Vui lòng nhập tên hiển thị');
+                    return;
+                }
+                
+                if (!email) {
+                    showError('registerEmailError', 'Vui lòng nhập email');
+                    return;
+                }
+                
+                if (!password) {
+                    showError('registerPasswordError', 'Vui lòng nhập mật khẩu');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    showError('registerPasswordError', 'Mật khẩu phải có ít nhất 6 ký tự');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showError('registerConfirmPasswordError', 'Mật khẩu không khớp');
+                    return;
+                }
+                
+                try {
+                    const result = await callApi({
+                        action: 'register',
+                        username: username,
+                        password: password,
+                        email: email
+                    });
+                    
+                    if (result.status === 'success') {
+                        currentUser = {
+                            username: result.user.username,
+                            balance: result.user.balance || 0
+                        };
+                        
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        hideAuthModal();
+                        checkAuthStatus();
+                    } else {
+                        showError('registerEmailError', result.message || 'Đăng ký thất bại');
+                    }
+                } catch (error) {
+                    showError('registerEmailError', 'Lỗi kết nối');
+                }
+            });
+
+            // Logout Function
+            function logout() {
+                localStorage.removeItem('currentUser');
+                currentUser = null;
+                checkAuthStatus();
+            }
+
+            // Helper function to show error messages
+            function showError(elementId, message) {
+                const element = document.getElementById(elementId);
+                element.textContent = message;
+                element.style.display = 'block';
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 3000);
+            }
+
+            // Initialize the application
+            init();
         });
     </script>
 </body>
