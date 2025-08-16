@@ -449,9 +449,9 @@
             <!-- Login Form -->
             <div class="auth-form active" id="loginForm">
                 <div class="form-group">
-                    <label for="loginEmail">Email</label>
-                    <input type="email" id="loginEmail" class="form-control" placeholder="Nhập email của bạn">
-                    <div class="error-message" id="loginEmailError"></div>
+                    <label for="loginUsername">Tên đăng nhập</label>
+                    <input type="text" id="loginUsername" class="form-control" placeholder="Nhập tên đăng nhập">
+                    <div class="error-message" id="loginUsernameError"></div>
                 </div>
                 
                 <div class="form-group">
@@ -470,15 +470,9 @@
             <!-- Register Form -->
             <div class="auth-form" id="registerForm">
                 <div class="form-group">
-                    <label for="registerUsername">Tên hiển thị</label>
-                    <input type="text" id="registerUsername" class="form-control" placeholder="Nhập tên hiển thị">
+                    <label for="registerUsername">Tên đăng nhập</label>
+                    <input type="text" id="registerUsername" class="form-control" placeholder="Nhập tên đăng nhập">
                     <div class="error-message" id="registerUsernameError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="registerEmail">Email</label>
-                    <input type="email" id="registerEmail" class="form-control" placeholder="Nhập email của bạn">
-                    <div class="error-message" id="registerEmailError"></div>
                 </div>
                 
                 <div class="form-group">
@@ -597,16 +591,18 @@
                 
                 try {
                     showLoading();
-                    const response = await fetch(`${API_URL}?action=getUser&username=${currentUser.username}`);
+                    const response = await fetch(`${API_URL}?action=getUser&username=${encodeURIComponent(currentUser.username)}`);
                     const data = await response.json();
                     
                     if (data.status === 'success') {
-                        currentUser.balance = data.user.balance;
+                        currentUser.balance = data.user.balance || 0;
                         localStorage.setItem('currentUser', JSON.stringify(currentUser));
                         updateUserInfo();
+                    } else {
+                        console.error('Error fetching user data:', data.message);
                     }
                 } catch (error) {
-                    console.error('Error fetching user data:', error);
+                    console.error('Network error:', error);
                 } finally {
                     hideLoading();
                 }
@@ -711,7 +707,7 @@
                     return await response.json();
                 } catch (error) {
                     console.error('API Error:', error);
-                    return { status: 'error', message: 'Network error' };
+                    return { status: 'error', message: 'Lỗi kết nối mạng' };
                 } finally {
                     hideLoading();
                 }
@@ -732,12 +728,12 @@
 
             // Login Function
             loginSubmit.addEventListener('click', async () => {
-                const email = document.getElementById('loginEmail').value.trim();
+                const username = document.getElementById('loginUsername').value.trim();
                 const password = document.getElementById('loginPassword').value.trim();
                 
                 // Simple validation
-                if (!email) {
-                    showError('loginEmailError', 'Vui lòng nhập email');
+                if (!username) {
+                    showError('loginUsernameError', 'Vui lòng nhập tên đăng nhập');
                     return;
                 }
                 
@@ -749,7 +745,7 @@
                 try {
                     const result = await callApi({
                         action: 'login',
-                        username: email,
+                        username: username,
                         password: password
                     });
                     
@@ -763,28 +759,22 @@
                         hideAuthModal();
                         checkAuthStatus();
                     } else {
-                        showError('loginPasswordError', result.message || 'Đăng nhập thất bại');
+                        showError('loginPasswordError', result.message || 'Tên đăng nhập hoặc mật khẩu không đúng');
                     }
                 } catch (error) {
-                    showError('loginPasswordError', 'Lỗi kết nối');
+                    showError('loginPasswordError', 'Lỗi kết nối. Vui lòng thử lại sau.');
                 }
             });
 
             // Register Function
             registerSubmit.addEventListener('click', async () => {
                 const username = document.getElementById('registerUsername').value.trim();
-                const email = document.getElementById('registerEmail').value.trim();
                 const password = document.getElementById('registerPassword').value.trim();
                 const confirmPassword = document.getElementById('registerConfirmPassword').value.trim();
                 
                 // Validation
                 if (!username) {
-                    showError('registerUsernameError', 'Vui lòng nhập tên hiển thị');
-                    return;
-                }
-                
-                if (!email) {
-                    showError('registerEmailError', 'Vui lòng nhập email');
+                    showError('registerUsernameError', 'Vui lòng nhập tên đăng nhập');
                     return;
                 }
                 
@@ -807,8 +797,7 @@
                     const result = await callApi({
                         action: 'register',
                         username: username,
-                        password: password,
-                        email: email
+                        password: password
                     });
                     
                     if (result.status === 'success') {
@@ -821,10 +810,10 @@
                         hideAuthModal();
                         checkAuthStatus();
                     } else {
-                        showError('registerEmailError', result.message || 'Đăng ký thất bại');
+                        showError('registerUsernameError', result.message || 'Đăng ký thất bại');
                     }
                 } catch (error) {
-                    showError('registerEmailError', 'Lỗi kết nối');
+                    showError('registerUsernameError', 'Lỗi kết nối. Vui lòng thử lại sau.');
                 }
             });
 
