@@ -450,13 +450,13 @@
             <form class="auth-form active" id="loginForm">
                 <div class="form-group">
                     <label for="loginUsername">Tên đăng nhập</label>
-                    <input type="text" id="loginUsername" class="form-control" placeholder="Nhập tên đăng nhập" required>
+                    <input type="text" id="loginUsername" class="form-control" placeholder="Nhập tên đăng nhập" required autocomplete="username">
                     <div class="error-message" id="loginUsernameError"></div>
                 </div>
                 
                 <div class="form-group">
                     <label for="loginPassword">Mật khẩu</label>
-                    <input type="password" id="loginPassword" class="form-control" placeholder="Nhập mật khẩu" required>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="Nhập mật khẩu" required autocomplete="current-password">
                     <div class="error-message" id="loginPasswordError"></div>
                 </div>
                 
@@ -471,19 +471,19 @@
             <form class="auth-form" id="registerForm">
                 <div class="form-group">
                     <label for="registerUsername">Tên đăng nhập</label>
-                    <input type="text" id="registerUsername" class="form-control" placeholder="Nhập tên đăng nhập" required>
+                    <input type="text" id="registerUsername" class="form-control" placeholder="Nhập tên đăng nhập" required autocomplete="username">
                     <div class="error-message" id="registerUsernameError"></div>
                 </div>
                 
                 <div class="form-group">
                     <label for="registerPassword">Mật khẩu</label>
-                    <input type="password" id="registerPassword" class="form-control" placeholder="Nhập mật khẩu" required>
+                    <input type="password" id="registerPassword" class="form-control" placeholder="Nhập mật khẩu" required autocomplete="new-password">
                     <div class="error-message" id="registerPasswordError"></div>
                 </div>
                 
                 <div class="form-group">
                     <label for="registerConfirmPassword">Xác nhận mật khẩu</label>
-                    <input type="password" id="registerConfirmPassword" class="form-control" placeholder="Nhập lại mật khẩu" required>
+                    <input type="password" id="registerConfirmPassword" class="form-control" placeholder="Nhập lại mật khẩu" required autocomplete="new-password">
                     <div class="error-message" id="registerConfirmPasswordError"></div>
                 </div>
                 
@@ -617,25 +617,14 @@
                     // First try with normal fetch
                     const response = await fetch(url, {
                         ...options,
+                        mode: 'cors',
                         headers: {
                             'Content-Type': 'application/json',
                             ...options.headers
                         }
                     });
                     
-                    // If response is ok, return it
-                    if (response.ok) return response;
-                    
-                    // If CORS error occurs, try with proxy
-                    console.warn('Direct fetch failed, trying CORS proxy');
-                    const proxyUrl = `https://cors-anywhere.herokuapp.com/${url}`;
-                    return await fetch(proxyUrl, {
-                        ...options,
-                        headers: {
-                            'Content-Type': 'application/json',
-                            ...options.headers
-                        }
-                    });
+                    return response;
                 } catch (error) {
                     console.error('Fetch with CORS failed:', error);
                     throw error;
