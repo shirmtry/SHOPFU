@@ -559,6 +559,7 @@
 
             // Current User
             let currentUser = null;
+            let authToken = localStorage.getItem('authToken');
 
             // Initialize the page
             function init() {
@@ -569,7 +570,9 @@
             // Check authentication status
             function checkAuthStatus() {
                 const user = JSON.parse(localStorage.getItem('currentUser'));
-                if (user) {
+                authToken = localStorage.getItem('authToken');
+                
+                if (user && authToken) {
                     currentUser = user;
                     updateUserInfo();
                     btnLogin.style.display = 'none';
@@ -585,49 +588,74 @@
                 }
             }
 
-            // Fetch user data from API
-            async function fetchUserData() {
-                if (!currentUser) return;
+            // Enhanced API request function with CORS handling
+            async function makeApiRequest(action, data = {}, method = 'GET') {
+                showLoading();
                 
                 try {
-                    showLoading();
-                    const response = await fetchWithCORS(`${API_URL}?action=getUser&username=${encodeURIComponent(currentUser.username)}`);
+                    const url = new URL(API_URL);
+                    url.searchParams.append('action', action);
+                    url.searchParams.append('_', Date.now()); // Cache buster
+                    
+                    const options = {
+                        method: method,
+                        mode: 'cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': authToken ? `Bearer ${authToken}` : ''
+                        }
+                    };
+                    
+                    if (method !== 'GET') {
+                        options.body = JSON.stringify(data);
+                    } else {
+                        // For GET requests, add data to URL parameters
+                        Object.keys(data).forEach(key => {
+                            url.searchParams.append(key, data[key]);
+                        });
+                    }
+                    
+                    const response = await fetch(url.toString(), options);
                     
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     
-                    const data = await response.json();
+                    const result = await response.json();
                     
-                    if (data.status === 'success') {
-                        currentUser.balance = data.user.balance || 0;
-                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                        updateUserInfo();
+                    if (result.status === 'error') {
+                        throw new Error(result.message || 'Unknown error occurred');
                     }
+                    
+                    return result;
                 } catch (error) {
-                    console.error('Error fetching user data:', error);
+                    console.error(`API Error (${action}):`, error);
+                    throw error;
                 } finally {
                     hideLoading();
                 }
             }
 
-            // Enhanced fetch with CORS handling
-            async function fetchWithCORS(url, options = {}) {
+            // Fetch user data from API
+            async function fetchUserData() {
+                if (!currentUser || !authToken) return;
+                
                 try {
-                    // First try with normal fetch
-                    const response = await fetch(url, {
-                        ...options,
-                        mode: 'cors',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            ...options.headers
-                        }
+                    const result = await makeApiRequest('getUser', {
+                        username: currentUser.username
                     });
                     
-                    return response;
+                    if (result.status === 'success') {
+                        currentUser.balance = result.user.balance || 0;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        updateUserInfo();
+                    }
                 } catch (error) {
-                    console.error('Fetch with CORS failed:', error);
-                    throw error;
+                    console.error('Error fetching user data:', error);
+                    // If token is invalid, force logout
+                    if (error.message.includes('Unauthorized') || error.message.includes('token')) {
+                        logout();
+                    }
                 }
             }
 
@@ -721,31 +749,6 @@
                 }
             }
 
-            // API Call Functions
-            async function callApi(params) {
-                try {
-                    showLoading();
-                    
-                    // Create a unique cache-buster to prevent request caching
-                    const cacheBuster = '&_=' + Date.now();
-                    const queryString = new URLSearchParams(params).toString() + cacheBuster;
-                    
-                    const response = await fetchWithCORS(`${API_URL}?${queryString}`);
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    
-                    const data = await response.json();
-                    return data;
-                } catch (error) {
-                    console.error('API Error:', error);
-                    return { status: 'error', message: error.message || 'Lỗi kết nối' };
-                } finally {
-                    hideLoading();
-                }
-            }
-
             // Event Listeners
             btnLogin.addEventListener('click', () => showAuthModal('login'));
             btnLogout.addEventListener('click', logout);
@@ -759,12 +762,11 @@
                 });
             });
 
-            // Login Function
+            // Login Function with token handling
             loginSubmit.addEventListener('click', async () => {
                 const username = document.getElementById('loginUsername').value.trim();
                 const password = document.getElementById('loginPassword').value.trim();
                 
-                // Simple validation
                 if (!username) {
                     showError('loginUsernameError', 'Vui lòng nhập tên đăng nhập');
                     return;
@@ -776,11 +778,10 @@
                 }
                 
                 try {
-                    const result = await callApi({
-                        action: 'login',
+                    const result = await makeApiRequest('login', {
                         username: username,
                         password: password
-                    });
+                    }, 'POST');
                     
                     if (result.status === 'success') {
                         currentUser = {
@@ -788,18 +789,22 @@
                             balance: result.user.balance || 0
                         };
                         
+                        authToken = result.token;
+                        
                         localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        localStorage.setItem('authToken', authToken);
+                        
                         hideAuthModal();
                         checkAuthStatus();
                     } else {
                         showError('loginPasswordError', result.message || 'Tên đăng nhập hoặc mật khẩu không đúng');
                     }
                 } catch (error) {
-                    showError('loginPasswordError', 'Lỗi kết nối. Vui lòng thử lại sau.');
+                    showError('loginPasswordError', error.message || 'Lỗi kết nối. Vui lòng thử lại sau.');
                 }
             });
 
-            // Register Function
+            // Register Function with token handling
             registerSubmit.addEventListener('click', async () => {
                 const username = document.getElementById('registerUsername').value.trim();
                 const password = document.getElementById('registerPassword').value.trim();
@@ -827,11 +832,10 @@
                 }
                 
                 try {
-                    const result = await callApi({
-                        action: 'register',
+                    const result = await makeApiRequest('register', {
                         username: username,
                         password: password
-                    });
+                    }, 'POST');
                     
                     if (result.status === 'success') {
                         currentUser = {
@@ -839,21 +843,27 @@
                             balance: result.user.balance || 0
                         };
                         
+                        authToken = result.token;
+                        
                         localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        localStorage.setItem('authToken', authToken);
+                        
                         hideAuthModal();
                         checkAuthStatus();
                     } else {
                         showError('registerUsernameError', result.message || 'Đăng ký thất bại');
                     }
                 } catch (error) {
-                    showError('registerUsernameError', 'Lỗi kết nối. Vui lòng thử lại sau.');
+                    showError('registerUsernameError', error.message || 'Lỗi kết nối. Vui lòng thử lại sau.');
                 }
             });
 
             // Logout Function
             function logout() {
                 localStorage.removeItem('currentUser');
+                localStorage.removeItem('authToken');
                 currentUser = null;
+                authToken = null;
                 checkAuthStatus();
             }
 
