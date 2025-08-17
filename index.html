@@ -5,346 +5,450 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="robots" content="index, follow">
-    <meta name="description" content="FuserShop is a premium digital marketplace offering high-quality software tools and services for professionals and power users.">
-    <meta name="author" content="FuserShop Team">
-    <meta name="generator" content="Jekyll v3.9.3">
+    <meta name="description" content="ShopFu - Premium digital tools marketplace for professionals">
+    <meta name="author" content="ShopFu Team">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>FuserShop - Premium Digital Marketplace</title>
+    <title>ShopFu - Digital Tools Marketplace</title>
 
-    <!-- Twitter Card data -->
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@fusershop">
-    <meta name="twitter:title" content="FuserShop - Premium Digital Marketplace">
-    <meta name="twitter:description" content="FuserShop is a premium digital marketplace offering high-quality software tools and services for professionals and power users.">
-    <meta name="twitter:image" content="https://fusershop.online/img/FuserShop_Card_Large.png">
+    <meta name="twitter:site" content="@shopfuapp">
+    <meta name="twitter:title" content="ShopFu - Digital Tools Marketplace">
+    <meta name="twitter:description" content="Premium digital tools for professionals and power users">
+    <meta name="twitter:image" content="https://shopfu.vercel.app/images/og-image.jpg">
 
-    <!-- Open Graph data -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="FuserShop - Premium Digital Marketplace" />
-    <meta property="og:url" content="https://fusershop.online/" />
-    <meta property="og:image" content="https://fusershop.online/img/FuserShop_Card_Large.png" />
-    <meta property="og:description" content="FuserShop is a premium digital marketplace offering high-quality software tools and services for professionals and power users." />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ShopFu - Digital Tools Marketplace">
+    <meta property="og:url" content="https://shopfu.vercel.app/">
+    <meta property="og:image" content="https://shopfu.vercel.app/images/og-image.jpg">
+    <meta property="og:description" content="Premium digital tools for professionals and power users">
 
     <link rel="icon" href="/favicon.ico">
+    <meta name="theme-color" content="#2563eb">
 
-    <meta name="theme-color" content="#1a5276">
-
+    <!-- Fonts & CSS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Roboto+Condensed:wght@400&display=swap" rel="stylesheet">
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/fontawesome.all.min.css" rel="stylesheet">
-    <link href="/css/jquery.fancybox.min.css" rel="stylesheet">
-    <link href="/css/main.css?1693674908" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #1a5276;
-            --secondary-color: #2980b9;
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #f59e0b;
+            --dark: #1f2937;
+            --light: #f3f4f6;
         }
         
         body {
-            font-family: 'Open Sans', sans-serif;
-            color: #333;
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
         }
         
         .navbar {
-            background-color: var(--primary-color);
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
-        .navbar .nav-link {
-            color: white !important;
+        .navbar-brand {
+            font-weight: 600;
+            color: var(--primary);
         }
         
-        .jumbotron-main {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        .nav-link {
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 100px 0;
-            text-align: center;
-            margin-bottom: 0;
+            padding: 6rem 0;
         }
         
-        .jumbotron-main h1 {
+        .hero-title {
             font-size: 3.5rem;
-            font-weight: 300;
-            margin-bottom: 20px;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
         }
         
-        .jumbotron-main p {
+        .hero-subtitle {
             font-size: 1.5rem;
-            margin-bottom: 30px;
+            font-weight: 300;
+            margin-bottom: 2.5rem;
         }
         
-        .btn {
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-weight: 400;
-            transition: all 0.3s;
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            padding: 0.75rem 2rem;
+            font-weight: 500;
         }
         
-        .sharex-download {
-            background-color: #f39c12;
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border-color: white;
             color: white;
-            font-size: 1.2rem;
-            padding: 12px 30px;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
         }
         
-        .sharex-download:hover {
-            background-color: #e67e22;
-            transform: translateY(-2px);
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
         }
         
-        .container-features {
-            padding: 60px 0;
-            border-bottom: 1px solid #eee;
+        .section {
+            padding: 5rem 0;
         }
         
-        .container-features h3 {
-            margin-bottom: 30px;
-            color: var(--primary-color);
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: var(--dark);
         }
         
-        .container-features h3 a {
-            color: inherit;
-            text-decoration: none;
+        .feature-card {
+            border-radius: 0.5rem;
+            padding: 2rem;
+            height: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #e5e7eb;
         }
         
-        .container-features h4 {
-            margin: 25px 0 15px;
-            color: var(--secondary-color);
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
         
-        .container-features .row div {
-            margin-bottom: 10px;
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .product-card {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-img {
+            height: 200px;
+            object-fit: cover;
         }
         
         footer {
-            background-color: #f8f9fa;
-            padding: 30px 0;
-            text-align: center;
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 0;
         }
         
-        footer p {
-            margin: 0;
-            color: #6c757d;
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s;
         }
         
-        footer a {
-            color: var(--primary-color);
+        .footer-links a:hover {
+            color: white;
         }
         
         @media (max-width: 768px) {
-            .jumbotron-main h1 {
+            .hero-title {
                 font-size: 2.5rem;
             }
             
-            .jumbotron-main p {
-                font-size: 1.2rem;
+            .hero-subtitle {
+                font-size: 1.25rem;
+            }
+            
+            .section {
+                padding: 3rem 0;
             }
         }
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md">
-        <div class="container container-home">
-            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbar"
-                aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span>
-                    <i class="fa-solid fa-bars"></i>
-                </span>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">ShopFu</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
             </button>
-
-            <div class="collapse navbar-collapse" id="navbar">
-                <ul class="navbar-nav nav-main mr-auto">
-                    <li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/products">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/pricing">Pricing</a></li>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#pricing">Pricing</a>
+                    </li>
                 </ul>
-                <ul class="navbar-nav nav-main">
-                    <li class="nav-item"><a class="nav-link" href="https://app.fusershop.online/support">Support</a></li>
-                    <li class="nav-item"><a class="nav-link" href="https://app.fusershop.online/login">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="https://app.fusershop.online/register">Register</a></li>
-                </ul>
-                <ul class="navbar-nav nav-links">
-                    <li class="nav-item"><a class="nav-link" href="https://t.me/fusershop" data-toggle="tooltip"
-                            data-placement="bottom" title="Telegram">
-                            <i class="fab fa-telegram fa-fw"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="https://twitter.com/fusershop" data-toggle="tooltip"
-                            data-placement="bottom" title="Twitter">
-                            <i class="fab fa-twitter fa-fw"></i></a></li>
-                </ul>
+                <div class="d-flex">
+                    <a href="https://app.shopfu.vercel.app/login" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="https://app.shopfu.vercel.app/register" class="btn btn-primary">Register</a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <div class="jumbotron jumbotron-main">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container text-center">
+            <h1 class="hero-title">Premium Digital Tools for Professionals</h1>
+            <p class="hero-subtitle">Powerful solutions designed to enhance your productivity and workflow</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#products" class="btn btn-primary btn-lg">Explore Products</a>
+                <a href="https://app.shopfu.vercel.app/register" class="btn btn-secondary btn-lg">Get Started</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section bg-light" id="features">
         <div class="container">
-            <h1>FuserShop</h1>
-            <p>Premium digital tools for professionals</p>
-            <div>
-                <button class="btn sharex-download" type="button" data-toggle="collapse" data-target="#download-panel">
-                    Get Started<i class="fa-solid fa-download"></i>
-                </button>
-            </div>
-            <div class="collapse" id="download-panel">
-                <p>Access our premium products by creating an account.</p>
-                <div class="d-inline-block">
-                    <a class="btn btn-primary" role="button" data-toggle="tooltip" data-placement="bottom" title="" href="https://app.fusershop.online/register">
-                        Register<i class="fa-solid fa-external-link"></i>
-                    </a>
-                    <a class="btn btn-secondary" role="button" data-toggle="tooltip" data-placement="bottom" title="" href="https://app.fusershop.online/login">
-                        Login<i class="fa-solid fa-arrow-right"></i>
-                    </a>
+            <h2 class="section-title text-center">Why Choose ShopFu?</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Privacy Focused</h3>
+                        <p>All our tools are designed with privacy in mind, featuring stealth modes and anti-detection technology.</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div>
-        <div class="container-fluid container-screenshot">
-            <!-- Placeholder for screenshot carousel -->
-            <div class="container text-center py-5">
-                <h2>Featured Products</h2>
-                <div class="row mt-4">
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">ScreenMaster Pro</h5>
-                                <p class="card-text">Advanced screen capture and recording tool with privacy features.</p>
-                            </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
                         </div>
+                        <h3 class="feature-title">Powerful Features</h3>
+                        <p>Professional-grade tools with advanced capabilities for power users and businesses.</p>
                     </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">FileSecure</h5>
-                                <p class="card-text">Secure file sharing with end-to-end encryption and stealth mode.</p>
-                            </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-headset"></i>
                         </div>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">PrivacyTools Suite</h5>
-                                <p class="card-text">Complete privacy toolkit for professionals and businesses.</p>
-                            </div>
-                        </div>
+                        <h3 class="feature-title">Premium Support</h3>
+                        <p>Dedicated support team ready to assist you with any questions or issues.</p>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div id="why-fusershop" class="container-fluid container-features">
-            <div class="container">
-                <h3><a href="#why-fusershop"><i class="fas fa-heart"></i>Why FuserShop?</a></h3>
-                <div class="row">
-                    <div class="col-sm-3">Premium digital tools</div>
-                    <div class="col-sm-3">Stealth mode operation</div>
-                    <div class="col-sm-3">Professional-grade features</div>
-                    <div class="col-sm-3">Secure file handling</div>
-                    <div class="col-sm-3">Privacy-focused design</div>
-                    <div class="col-sm-3">Regular updates</div>
-                    <div class="col-sm-3">Dedicated support</div>
+    <!-- Products Section -->
+    <section class="section" id="products">
+        <div class="container">
+            <h2 class="section-title text-center">Featured Products</h2>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" class="product-img w-100" alt="ScreenMaster">
+                        <div class="p-4">
+                            <h3>ScreenMaster Pro</h3>
+                            <p class="text-muted">Advanced screen capture tool with privacy protection</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-primary">$29.99</span>
+                                <a href="#" class="btn btn-sm btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" class="product-img w-100" alt="FileSecure">
+                        <div class="p-4">
+                            <h3>FileSecure</h3>
+                            <p class="text-muted">Secure file sharing with end-to-end encryption</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-primary">$39.99</span>
+                                <a href="#" class="btn btn-sm btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" class="product-img w-100" alt="PrivacySuite">
+                        <div class="p-4">
+                            <h3>PrivacySuite</h3>
+                            <p class="text-muted">Complete privacy toolkit for professionals</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-primary">$49.99</span>
+                                <a href="#" class="btn btn-sm btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <a href="#" class="btn btn-primary">View All Products</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section class="section bg-light" id="security">
+        <div class="container">
+            <h2 class="section-title text-center">Advanced Security Features</h2>
+            <div class="row g-4">
+                <div class="col-md-3 col-6">
+                    <div class="text-center p-3">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-lock fs-3"></i>
+                        </div>
+                        <h5 class="mt-3">Encryption</h5>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="text-center p-3">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-eye-slash fs-3"></i>
+                        </div>
+                        <h5 class="mt-3">Stealth Mode</h5>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="text-center p-3">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-shield-virus fs-3"></i>
+                        </div>
+                        <h5 class="mt-3">Anti-Detection</h5>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="text-center p-3">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-fingerprint fs-3"></i>
+                        </div>
+                        <h5 class="mt-3">Authentication</h5>
+                    </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div id="products" class="container-fluid container-features">
-            <div class="container">
-                <h3><a href="#products"><i class="fas fa-box-open"></i>Our Products</a></h3>
-                <h4>Software Tools</h4>
-                <div class="row">
-                    <div class="col-sm-3">ScreenMaster Pro</div>
-                    <div class="col-sm-3">FileSecure</div>
-                    <div class="col-sm-3">PrivacyTools Suite</div>
-                    <div class="col-sm-3">Network Guardian</div>
-                    <div class="col-sm-3">Data Shield</div>
-                    <div class="col-sm-3">Stealth Recorder</div>
-                </div>
-                <h4>Services</h4>
-                <div class="row">
-                    <div class="col-sm-3">Premium Support</div>
-                    <div class="col-sm-3">Custom Development</div>
-                    <div class="col-sm-3">Enterprise Solutions</div>
-                </div>
-            </div>
+    <!-- CTA Section -->
+    <section class="section py-5 bg-primary text-white">
+        <div class="container text-center">
+            <h2 class="mb-4">Ready to get started?</h2>
+            <p class="fs-5 mb-4">Join thousands of professionals using ShopFu to enhance their workflow</p>
+            <a href="https://app.shopfu.vercel.app/register" class="btn btn-light btn-lg px-5">Sign Up Free</a>
         </div>
+    </section>
 
-        <div id="features" class="container-fluid container-features">
-            <div class="container">
-                <h3><a href="#features"><i class="fas fa-star"></i>Key Features</a></h3>
-                <div class="row">
-                    <div class="col-sm-3">Anti-detection technology</div>
-                    <div class="col-sm-3">Secure file sharing</div>
-                    <div class="col-sm-3">Encrypted storage</div>
-                    <div class="col-sm-3">Stealth operation</div>
-                    <div class="col-sm-3">Custom workflows</div>
-                    <div class="col-sm-3">Multi-platform support</div>
-                    <div class="col-sm-3">Advanced automation</div>
-                    <div class="col-sm-3">Privacy protection</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="security" class="container-fluid container-features">
-            <div class="container">
-                <h3><a href="#security"><i class="fas fa-shield-alt"></i>Security Features</a></h3>
-                <div class="row">
-                    <div class="col-sm-3">End-to-end encryption</div>
-                    <div class="col-sm-3">Process hiding</div>
-                    <div class="col-sm-3">Anti-capture protection</div>
-                    <div class="col-sm-3">Secure deletion</div>
-                    <div class="col-sm-3">Traffic obfuscation</div>
-                    <div class="col-sm-3">Tamper detection</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="/js/jquery-3.6.0.min.js"></script>
-    <script src="/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/main.js"></script>
-    <script>
-        $(document).ready(function() {
-            $(".nav-links a").tooltip({
-                trigger: "hover"
-            });
-            
-            // Smooth scrolling for anchor links
-            $('a[href*="#"]').on('click', function(e) {
-                e.preventDefault();
-                $('html, body').animate(
-                    {
-                        scrollTop: $($(this).attr('href')).offset().top,
-                    },
-                    500,
-                    'linear'
-                );
-            });
-        });
-    </script>
-
+    <!-- Footer -->
     <footer>
-        <div>
-            <p>Copyright &copy; 2023 <a href="">FuserShop Team</a> · <a href="/privacy-policy">Privacy Policy</a> · <a href="/terms">Terms of Service</a></p>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h4 class="mb-4">ShopFu</h4>
+                    <p>Premium digital tools marketplace for professionals and businesses.</p>
+                    <div class="d-flex gap-3 mt-4">
+                        <a href="#" class="text-white"><i class="fab fa-telegram fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-discord fa-lg"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5 class="mb-3">Products</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">ScreenMaster</a></li>
+                        <li class="mb-2"><a href="#">FileSecure</a></li>
+                        <li class="mb-2"><a href="#">PrivacySuite</a></li>
+                        <li class="mb-2"><a href="#">All Products</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5 class="mb-3">Company</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">About Us</a></li>
+                        <li class="mb-2"><a href="#">Careers</a></li>
+                        <li class="mb-2"><a href="#">Blog</a></li>
+                        <li class="mb-2"><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5 class="mb-3">Legal</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="#">Terms of Service</a></li>
+                        <li class="mb-2"><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 mb-4">
+                    <h5 class="mb-3">Support</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">Help Center</a></li>
+                        <li class="mb-2"><a href="#">Documentation</a></li>
+                        <li class="mb-2"><a href="#">Community</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 border-gray-700">
+            <div class="text-center pt-3">
+                <p class="small text-muted">© 2023 ShopFu. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        (function(i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function() {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-        ga('create', 'UA-40712139-4', 'auto');
-        ga('send', 'pageview');
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Change navbar background on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-white', 'shadow-sm');
+            } else {
+                navbar.classList.remove('bg-white', 'shadow-sm');
+            }
+        });
     </script>
 </body>
 
