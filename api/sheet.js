@@ -8,7 +8,6 @@ export default async function handler(req, res) {
 
   const { action, username, password } = req.body;
 
-  // Lấy credentials từ biến môi trường Vercel
   const auth = new google.auth.GoogleAuth({
     credentials: {
       type: "service_account",
@@ -20,30 +19,28 @@ export default async function handler(req, res) {
   });
 
   const sheets = google.sheets({ version: "v4", auth });
-  const spreadsheetId = process.env.SHEET_ID; // ID sheet bạn lấy ở URL Google Sheet
+  const spreadsheetId = process.env.SHEET_ID;
 
   try {
-    // Lấy toàn bộ dữ liệu trong sheet
+    // Lấy toàn bộ rows (username, password, balance)
     const getRows = await sheets.spreadsheets.values.get({
       spreadsheetId,
-      range: "Sheet1!A2:B", // cột A: username, B: password
+      range: "Sheet1!A2:C",
     });
 
     let rows = getRows.data.values || [];
 
     if (action === "register") {
-      // check username tồn tại chưa
       if (rows.find(r => r[0] === username)) {
         return res.json({ success: false, message: "❌ Username đã tồn tại" });
       }
 
-      // ghi user mới vào sheet
       await sheets.spreadsheets.values.append({
         spreadsheetId,
-        range: "Sheet1!A:B",
+        range: "Sheet1!A:C",
         valueInputOption: "USER_ENTERED",
         requestBody: {
-          values: [[username, password, 0]], // balance = 0
+          values: [[username, password, 0]], // balance mặc định = 0
         },
       });
 
@@ -53,7 +50,7 @@ export default async function handler(req, res) {
     if (action === "login") {
       const user = rows.find(r => r[0] === username && r[1] === password);
       if (user) {
-        return res.json({ success: true, message: "✅ Đăng nhập thành công" });
+        return res.json({ success: true, message: `✅ Đăng nhập thành công. Balance: ${user[2]}` });
       } else {
         return res.json({ success: false, message: "❌ Sai Username hoặc Password" });
       }
