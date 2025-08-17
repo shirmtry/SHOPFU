@@ -31,5 +31,26 @@
     function register() { callAPI("register"); }
     function login() { callAPI("login"); }
   </script>
+  <!-- Thêm audio element vào cuối body (trước khi đóng </body>) -->
+<audio id="bgAudio" autoplay loop>
+  <source src="1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// Script phát nhạc khi trang load
+document.addEventListener('DOMContentLoaded', function() {
+  const audio = document.getElementById('bgAudio');
+  
+  // Bắt đầu phát nhạc (có thể bị chặn bởi trình duyệt)
+  function playAudio() {
+    audio.volume = 0.3; // Chỉnh âm lượng
+    audio.play().catch(e => {
+      console.log("Auto-play prevented. User interaction required.");
+    });
+  }
+  
+  // Thử phát nhạc khi trang load
+  playAudio();
+  </script>
 </body>
 </html>
