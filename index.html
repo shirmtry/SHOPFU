@@ -3,6 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <title>Login/Register with Google Sheet</title>
+  <!-- Thêm Font Awesome cho icon âm thanh -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Thêm style cho nút âm thanh */
+    #audioToggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+  </style>
 </head>
 <body>
   <h2>Đăng nhập / Đăng ký</h2>
@@ -12,6 +34,17 @@
 
   <button onclick="register()">Đăng ký</button>
   <button onclick="login()">Đăng nhập</button>
+
+  <!-- Thêm audio element -->
+  <audio id="bgAudio" loop>
+    <source src="1.mp3" type="audio/mpeg">
+    Trình duyệt của bạn không hỗ trợ audio element.
+  </audio>
+
+  <!-- Nút điều khiển âm thanh -->
+  <button id="audioToggle">
+    <i class="fas fa-volume-mute"></i>
+  </button>
 
   <script>
     async function callAPI(action) {
@@ -30,27 +63,44 @@
 
     function register() { callAPI("register"); }
     function login() { callAPI("login"); }
-  </script>
-  <!-- Thêm audio element vào cuối body (trước khi đóng </body>) -->
-<audio id="bgAudio" autoplay loop>
-  <source src="1.mp3" type="audio/mpeg">
-</audio>
 
-<script>
-// Script phát nhạc khi trang load
-document.addEventListener('DOMContentLoaded', function() {
-  const audio = document.getElementById('bgAudio');
-  
-  // Bắt đầu phát nhạc (có thể bị chặn bởi trình duyệt)
-  function playAudio() {
-    audio.volume = 0.3; // Chỉnh âm lượng
-    audio.play().catch(e => {
-      console.log("Auto-play prevented. User interaction required.");
+    // Xử lý âm thanh
+    document.addEventListener('DOMContentLoaded', function() {
+      const audio = document.getElementById('bgAudio');
+      const audioToggle = document.getElementById('audioToggle');
+      
+      // Đặt âm lượng mặc định
+      audio.volume = 0.3;
+      
+      // Thử phát nhạc khi có tương tác người dùng
+      function initAudio() {
+        // Thêm sự kiện click toàn trang để kích hoạt âm thanh
+        document.body.addEventListener('click', function firstInteraction() {
+          audio.play().then(() => {
+            audioToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+          }).catch(e => {
+            console.log("Auto-play prevented:", e);
+          });
+          // Xóa sự kiện sau khi đã xử lý
+          document.body.removeEventListener('click', firstInteraction);
+        }, { once: true });
+      }
+      
+      // Khởi tạo âm thanh
+      initAudio();
+      
+      // Xử lý nút bật/tắt âm thanh
+      audioToggle.addEventListener('click', function(e) {
+        e.stopPropagation(); // Ngăn sự kiện lan ra body
+        if (audio.paused) {
+          audio.play();
+          this.innerHTML = '<i class="fas fa-volume-up"></i>';
+        } else {
+          audio.pause();
+          this.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        }
+      });
     });
-  }
-  
-  // Thử phát nhạc khi trang load
-  playAudio();
   </script>
 </body>
 </html>
